@@ -1,0 +1,6 @@
+framework module Pods_MeloPlace_MeloPlaceUITests {
+  umbrella header "Pods-MeloPlace-MeloPlaceUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}
