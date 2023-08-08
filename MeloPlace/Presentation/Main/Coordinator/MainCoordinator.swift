@@ -31,23 +31,22 @@ class MainCoordinator: CoordinatorProtocol {
         
         let vc = MainViewController(viewModel: vm)
         
-//        vm.setActions(
-//            actions: PhotoListViewModelActions(
-//                showPhotoDetail: self.showPhotoDetail
-//            )
-//        )
+        vm.setActions(
+            actions: MainViewModelActions(
+                showAddMeloPlaceView: showAddMeloPlaceView
+            )
+        )
         
         self.navigation.pushViewController(vc, animated: true)
     }
     
-//    lazy var showPhotoDetail: (_ IndexPath: IndexPath) -> Void = { [weak self] indexPath in
-//        let container = DIContainer.shared.container
-//        guard let vm = container.resolve(PhotoDetailViewModel.self) else { return }
-//        vm.indexpath = indexPath
-//        let vc = PhotoDetailViewController(viewModel: vm)
-////        self?.navigation.present(vc, animated: true)
-//        self?.navigation.pushViewController(vc, animated: true)
-//    }
+    lazy var showAddMeloPlaceView: () -> Void = { [weak self]  in
+        guard let navigation = self?.navigation else { return }
+        let addMeloPlaceCoordinator = AddMeloPlaceCoordinator(navigation: navigation)
+        addMeloPlaceCoordinator.finishDelegate = self
+        self?.childCoordinators.append(addMeloPlaceCoordinator)
+        addMeloPlaceCoordinator.start()
+    }
 }
 
 extension MainCoordinator: CoordinatorFinishDelegate {
