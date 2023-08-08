@@ -33,13 +33,19 @@ class MainViewController: UIViewController {
         return label
     }()
     
+    lazy var addButton: UIButton = {
+        let button = UIButton()
+        button.frame.size = CGSize(width: 50.0, height: 50.0)
+        button.setImage(UIImage(systemName: "plus"), for: .normal)
+        button.backgroundColor = .yellow
+        button.tintColor = .black
+        button.layer.cornerRadius = 50.0 / 2
+        return button
+    }()
+    
     lazy var mainCollectionView: UICollectionView = {
         let layout = ZoomAndSnapFlowLayout()
-
-        
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        
-        collectionView.collectionViewLayout = layout
         collectionView.collectionViewLayout = layout
         collectionView.contentInsetAdjustmentBehavior = .always
         
@@ -76,22 +82,27 @@ class MainViewController: UIViewController {
 
 private extension MainViewController {
     func configureUI() {
-        [self.mainCollectionView].forEach {
+        [self.mainCollectionView, self.addButton].forEach {
             self.view.addSubview($0)
         }
         
         self.mainCollectionView.snp.makeConstraints { make in
-//            make.top.equalToSuperview().offset(UIScreen.main.bounds.height * 0.025)
-//            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-UIScreen.main.bounds.height * 0.03)
-//            make.left.right.equalToSuperview()
             make.edges.equalToSuperview()
-
+        }
+        self.addButton.snp.makeConstraints { make in
+            make.bottom.equalToSuperview().offset(-10)
+            make.right.equalToSuperview().offset(-10)
+            make.width.height.equalTo(50.0)
         }
     }
     
     func bind() {
-        let input = MainViewModel.Input()
+        let input = MainViewModel.Input(
+            didTapAddButton: self.addButton.rx.tap.asObservable()
+        )
+        
         let output = self.viewModel?.transform(input: input)
+        
         output?.dataSource
             .asDriver(onErrorJustReturn: [])
             .map({[weak self] models in
