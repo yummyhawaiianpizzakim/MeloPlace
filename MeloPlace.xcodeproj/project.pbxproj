@@ -33,6 +33,9 @@
 		E90E64982A80FAD9002A71B6 /* BrowseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64972A80FAD9002A71B6 /* BrowseCoordinator.swift */; };
 		E90E649A2A80FAE4002A71B6 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64992A80FAE4002A71B6 /* BrowseViewController.swift */; };
 		E90E649C2A80FAED002A71B6 /* BrowseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E649B2A80FAED002A71B6 /* BrowseViewModel.swift */; };
+		E90E649F2A810B37002A71B6 /* MainCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E649E2A810B37002A71B6 /* MainCollectionViewFlowLayout.swift */; };
+		E90E64A12A810D3E002A71B6 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64A02A810D3E002A71B6 /* MainCell.swift */; };
+		E90E64A52A820FB5002A71B6 /* MeloPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64A42A820FB5002A71B6 /* MeloPlace.swift */; };
 		F5799F688EC91F2B993C799E /* Pods_MeloPlaceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74DFAEE2E1A6B5551A2A2277 /* Pods_MeloPlaceTests.framework */; };
 		FA5C3C5E8A3EA8B36C6D1BCA /* Pods_MeloPlace_MeloPlaceUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FED2394756A4B4F983B47D3 /* Pods_MeloPlace_MeloPlaceUITests.framework */; };
 /* End PBXBuildFile section */
@@ -92,6 +95,9 @@
 		E90E64972A80FAD9002A71B6 /* BrowseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseCoordinator.swift; sourceTree = "<group>"; };
 		E90E64992A80FAE4002A71B6 /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
 		E90E649B2A80FAED002A71B6 /* BrowseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewModel.swift; sourceTree = "<group>"; };
+		E90E649E2A810B37002A71B6 /* MainCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
+		E90E64A02A810D3E002A71B6 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
+		E90E64A42A820FB5002A71B6 /* MeloPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloPlace.swift; sourceTree = "<group>"; };
 		F48083693CF0EB1227383675 /* Pods-MeloPlace.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeloPlace.release.xcconfig"; path = "Target Support Files/Pods-MeloPlace/Pods-MeloPlace.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -171,6 +177,7 @@
 		E90E64362A80F3F4002A71B6 /* MeloPlace */ = {
 			isa = PBXGroup;
 			children = (
+				E90E64A22A820F3C002A71B6 /* Domain */,
 				E90E64672A80F6BF002A71B6 /* Application */,
 				E90E646C2A80F76C002A71B6 /* Presentation */,
 				E90E643D2A80F3F4002A71B6 /* Main.storyboard */,
@@ -226,6 +233,7 @@
 		E90E646D2A80F7D3002A71B6 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				E90E649D2A810B2B002A71B6 /* View */,
 				E90E64732A80F916002A71B6 /* ViewModel */,
 				E90E64722A80F90E002A71B6 /* ViewController */,
 				E90E64712A80F906002A71B6 /* Coordinator */,
@@ -373,6 +381,31 @@
 				E90E64872A80F9EB002A71B6 /* TabBarCoordinator.swift */,
 			);
 			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		E90E649D2A810B2B002A71B6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E90E649E2A810B37002A71B6 /* MainCollectionViewFlowLayout.swift */,
+				E90E64A02A810D3E002A71B6 /* MainCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E90E64A22A820F3C002A71B6 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64A32A820F44002A71B6 /* Model */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		E90E64A32A820F44002A71B6 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64A42A820FB5002A71B6 /* MeloPlace.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -616,12 +649,14 @@
 			files = (
 				E90E64822A80F9BE002A71B6 /* MainViewController.swift in Sources */,
 				E90E64882A80F9EB002A71B6 /* TabBarCoordinator.swift in Sources */,
+				E90E64A52A820FB5002A71B6 /* MeloPlace.swift in Sources */,
 				E90E64982A80FAD9002A71B6 /* BrowseCoordinator.swift in Sources */,
 				E90E648A2A80F9FC002A71B6 /* AppCoordinator.swift in Sources */,
 				E90E64902A80FAA0002A71B6 /* SettingViewModel.swift in Sources */,
 				E90E643C2A80F3F4002A71B6 /* ViewController.swift in Sources */,
 				E90E649A2A80FAE4002A71B6 /* BrowseViewController.swift in Sources */,
 				E90E647E2A80F99C002A71B6 /* MainCoordinator.swift in Sources */,
+				E90E64A12A810D3E002A71B6 /* MainCell.swift in Sources */,
 				E90E648C2A80FA8C002A71B6 /* SettingCoordinator.swift in Sources */,
 				E90E649C2A80FAED002A71B6 /* BrowseViewModel.swift in Sources */,
 				E90E64962A80FABB002A71B6 /* MapViewModel.swift in Sources */,
@@ -631,6 +666,7 @@
 				E90E64692A80F6F8002A71B6 /* CoordinatorProtocol.swift in Sources */,
 				E90E643A2A80F3F4002A71B6 /* SceneDelegate.swift in Sources */,
 				E90E64842A80F9C8002A71B6 /* MainViewModel.swift in Sources */,
+				E90E649F2A810B37002A71B6 /* MainCollectionViewFlowLayout.swift in Sources */,
 				E90E64942A80FAB3002A71B6 /* MapViewController.swift in Sources */,
 				E90E648E2A80FA96002A71B6 /* SettingViewController.swift in Sources */,
 			);
