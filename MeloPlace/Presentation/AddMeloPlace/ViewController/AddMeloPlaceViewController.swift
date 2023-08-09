@@ -16,6 +16,10 @@ import RxCocoa
 class AddMeloPlaceViewController: UIViewController {
     var viewModel: AddMeloPlaceViewModel?
     
+    lazy var scrollView = UIScrollView()
+    
+    lazy var addMeloPlaceView = AddMeloPlaceView()
+    
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
     }
@@ -39,7 +43,17 @@ class AddMeloPlaceViewController: UIViewController {
 
 private extension AddMeloPlaceViewController {
     func configureUI() {
+        self.view.addSubview(self.scrollView)
+        self.scrollView.addSubview(self.addMeloPlaceView)
         
+        self.scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        self.addMeloPlaceView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
+        }
     }
     
     func bind() {
