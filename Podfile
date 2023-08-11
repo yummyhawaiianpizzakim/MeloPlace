@@ -9,9 +9,12 @@ target 'MeloPlace' do
   pod 'SnapKit'
   pod 'RxSwift'
   pod 'RxCocoa'
+  pod 'RxGesture'
   pod 'Alamofire'
   pod 'Kingfisher'
   pod 'Swinject'
+
+
 
      post_install do |installer|
          installer.generated_projects.each do |project|
