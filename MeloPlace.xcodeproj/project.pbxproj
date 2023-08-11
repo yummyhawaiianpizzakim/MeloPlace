@@ -40,6 +40,10 @@
 		E90E64AE2A823812002A71B6 /* AddMeloPlaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64AD2A823812002A71B6 /* AddMeloPlaceViewController.swift */; };
 		E90E64B02A82384E002A71B6 /* AddMeloPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64AF2A82384E002A71B6 /* AddMeloPlaceViewModel.swift */; };
 		E90E64B22A824BDF002A71B6 /* AddMeloPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64B12A824BDF002A71B6 /* AddMeloPlaceView.swift */; };
+		E90E64B52A84CAD5002A71B6 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64B42A84CAD5002A71B6 /* Extension.swift */; };
+		E90E64BD2A84F37E002A71B6 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64BC2A84F37E002A71B6 /* Spotify.swift */; };
+		E90E64BF2A84F578002A71B6 /* SpotifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64BE2A84F578002A71B6 /* SpotifyViewController.swift */; };
+		E90E64C02A8500BD002A71B6 /* SpotifyiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E90E64B62A84ED2A002A71B6 /* SpotifyiOS.framework */; };
 		F5799F688EC91F2B993C799E /* Pods_MeloPlaceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74DFAEE2E1A6B5551A2A2277 /* Pods_MeloPlaceTests.framework */; };
 		FA5C3C5E8A3EA8B36C6D1BCA /* Pods_MeloPlace_MeloPlaceUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FED2394756A4B4F983B47D3 /* Pods_MeloPlace_MeloPlaceUITests.framework */; };
 /* End PBXBuildFile section */
@@ -106,6 +110,11 @@
 		E90E64AD2A823812002A71B6 /* AddMeloPlaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMeloPlaceViewController.swift; sourceTree = "<group>"; };
 		E90E64AF2A82384E002A71B6 /* AddMeloPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMeloPlaceViewModel.swift; sourceTree = "<group>"; };
 		E90E64B12A824BDF002A71B6 /* AddMeloPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMeloPlaceView.swift; sourceTree = "<group>"; };
+		E90E64B42A84CAD5002A71B6 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
+		E90E64B62A84ED2A002A71B6 /* SpotifyiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyiOS.framework; sourceTree = "<group>"; };
+		E90E64B82A84EE74002A71B6 /* MeloPlace-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MeloPlace-Bridging-Header.h"; sourceTree = "<group>"; };
+		E90E64BC2A84F37E002A71B6 /* Spotify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
+		E90E64BE2A84F578002A71B6 /* SpotifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyViewController.swift; sourceTree = "<group>"; };
 		F48083693CF0EB1227383675 /* Pods-MeloPlace.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeloPlace.release.xcconfig"; path = "Target Support Files/Pods-MeloPlace/Pods-MeloPlace.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -115,6 +124,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2AC055D2C60EABBC7484183 /* Pods_MeloPlace.framework in Frameworks */,
+				E90E64C02A8500BD002A71B6 /* SpotifyiOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -140,6 +150,7 @@
 		539304E78576A6CEA358F46B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E90E64B62A84ED2A002A71B6 /* SpotifyiOS.framework */,
 				B8DFD7791FAE279CDDBF779A /* Pods_MeloPlace.framework */,
 				9FED2394756A4B4F983B47D3 /* Pods_MeloPlace_MeloPlaceUITests.framework */,
 				74DFAEE2E1A6B5551A2A2277 /* Pods_MeloPlaceTests.framework */,
@@ -185,6 +196,8 @@
 		E90E64362A80F3F4002A71B6 /* MeloPlace */ = {
 			isa = PBXGroup;
 			children = (
+				E90E64BB2A84F35D002A71B6 /* InfraStructure */,
+				E90E64B32A84CABE002A71B6 /* Util */,
 				E90E64A22A820F3C002A71B6 /* Domain */,
 				E90E64672A80F6BF002A71B6 /* Application */,
 				E90E646C2A80F76C002A71B6 /* Presentation */,
@@ -192,6 +205,7 @@
 				E90E64402A80F3F6002A71B6 /* Assets.xcassets */,
 				E90E64422A80F3F6002A71B6 /* LaunchScreen.storyboard */,
 				E90E64452A80F3F6002A71B6 /* Info.plist */,
+				E90E64B82A84EE74002A71B6 /* MeloPlace-Bridging-Header.h */,
 			);
 			path = MeloPlace;
 			sourceTree = "<group>";
@@ -460,6 +474,23 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		E90E64B32A84CABE002A71B6 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64B42A84CAD5002A71B6 /* Extension.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		E90E64BB2A84F35D002A71B6 /* InfraStructure */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64BC2A84F37E002A71B6 /* Spotify.swift */,
+				E90E64BE2A84F578002A71B6 /* SpotifyViewController.swift */,
+			);
+			path = InfraStructure;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -533,6 +564,7 @@
 				TargetAttributes = {
 					E90E64332A80F3F4002A71B6 = {
 						CreatedOnToolsVersion = 14.3.1;
+						LastSwiftMigration = 1430;
 					};
 					E90E64492A80F3F6002A71B6 = {
 						CreatedOnToolsVersion = 14.3.1;
@@ -701,6 +733,7 @@
 			files = (
 				E90E64822A80F9BE002A71B6 /* MainViewController.swift in Sources */,
 				E90E64882A80F9EB002A71B6 /* TabBarCoordinator.swift in Sources */,
+				E90E64BD2A84F37E002A71B6 /* Spotify.swift in Sources */,
 				E90E64AE2A823812002A71B6 /* AddMeloPlaceViewController.swift in Sources */,
 				E90E64A52A820FB5002A71B6 /* MeloPlace.swift in Sources */,
 				E90E64982A80FAD9002A71B6 /* BrowseCoordinator.swift in Sources */,
@@ -709,12 +742,14 @@
 				E90E643C2A80F3F4002A71B6 /* ViewController.swift in Sources */,
 				E90E649A2A80FAE4002A71B6 /* BrowseViewController.swift in Sources */,
 				E90E64B22A824BDF002A71B6 /* AddMeloPlaceView.swift in Sources */,
+				E90E64B52A84CAD5002A71B6 /* Extension.swift in Sources */,
 				E90E647E2A80F99C002A71B6 /* MainCoordinator.swift in Sources */,
 				E90E64A12A810D3E002A71B6 /* MainCell.swift in Sources */,
 				E90E648C2A80FA8C002A71B6 /* SettingCoordinator.swift in Sources */,
 				E90E649C2A80FAED002A71B6 /* BrowseViewModel.swift in Sources */,
 				E90E64962A80FABB002A71B6 /* MapViewModel.swift in Sources */,
 				E90E64AC2A8237AD002A71B6 /* AddMeloPlaceCoordinator.swift in Sources */,
+				E90E64BF2A84F578002A71B6 /* SpotifyViewController.swift in Sources */,
 				E90E64382A80F3F4002A71B6 /* AppDelegate.swift in Sources */,
 				E90E646B2A80F710002A71B6 /* DIContainer.swift in Sources */,
 				E90E64922A80FAA9002A71B6 /* MapCoordinator.swift in Sources */,
@@ -900,11 +935,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PMX8756RQ5;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MeloPlace/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "앨범 접근이 필요합니다";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앨범 접그이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -915,9 +957,39 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"Accelerate\"",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"Kingfisher\"",
+					"-framework",
+					"\"RxCocoa\"",
+					"-framework",
+					"\"RxGesture\"",
+					"-framework",
+					"\"RxRelay\"",
+					"-framework",
+					"\"RxSwift\"",
+					"-framework",
+					"\"SnapKit\"",
+					"-framework",
+					"\"Swinject\"",
+					"-weak_framework",
+					"\"Combine\"",
+					"-weak_framework",
+					"\"SwiftUI\"",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = yummyHawaiianPizzaKim.MeloPlace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "MeloPlace/MeloPlace-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -929,11 +1001,18 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = PMX8756RQ5;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MeloPlace/Info.plist;
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "앨범 접근이 필요합니다";
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "앨범 접그이 필요합니다.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -944,9 +1023,38 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-framework",
+					"\"Accelerate\"",
+					"-framework",
+					"\"Alamofire\"",
+					"-framework",
+					"\"CFNetwork\"",
+					"-framework",
+					"\"Kingfisher\"",
+					"-framework",
+					"\"RxCocoa\"",
+					"-framework",
+					"\"RxGesture\"",
+					"-framework",
+					"\"RxRelay\"",
+					"-framework",
+					"\"RxSwift\"",
+					"-framework",
+					"\"SnapKit\"",
+					"-framework",
+					"\"Swinject\"",
+					"-weak_framework",
+					"\"Combine\"",
+					"-weak_framework",
+					"\"SwiftUI\"",
+					"-ObjC",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = yummyHawaiianPizzaKim.MeloPlace;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OBJC_BRIDGING_HEADER = "MeloPlace/MeloPlace-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
