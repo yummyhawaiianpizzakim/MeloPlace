@@ -6,11 +6,16 @@
 //
 
 import Foundation
+import RxSwift
+import RxRelay
 
 class AddMeloPlaceViewModel {
     
+//    let image = BehaviorRelay<Data>(value: Data())
+    
     struct Input {
-        
+        var imageData: Observable<Data>
+        var date: Observable<Date>
     }
     
     struct Output {
@@ -22,4 +27,10 @@ class AddMeloPlaceViewModel {
         
         return output
     }
+}
+
+extension AddMeloPlaceViewModel {
+//    func addImage(data: Data) {
+//        self.image.accept(data)
+//    }
 }

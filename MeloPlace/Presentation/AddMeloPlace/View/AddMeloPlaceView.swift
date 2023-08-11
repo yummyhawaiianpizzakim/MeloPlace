@@ -16,11 +16,11 @@ class AddMeloPlaceView: UIView {
     lazy var inputStackView: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        
+        stackView.isUserInteractionEnabled = true
         return stackView
     }()
     
-    private lazy var imageView: UIImageView = {
+    lazy var imageView: UIImageView = {
         let imageView = UIImageView(frame: .zero)
         imageView.contentMode = .scaleAspectFill
         imageView.backgroundColor = .gray
@@ -209,11 +209,10 @@ class SelectButton: UIView {
         return imageView
     }()
 
-    var eventHandler: (() -> Void)?
+//    var eventHandler: (() -> Void)?
 
     convenience init(text: String) {
         self.init()
-
         label.text = text
         backgroundColor = .blue
 
@@ -221,14 +220,14 @@ class SelectButton: UIView {
 //        layer.borderWidth = FrameResource.commonBorderWidth
 //        layer.cornerRadius = FrameResource.commonCornerRadius
 
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGestureEvent(_:))))
+//        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGestureEvent(_:))))
         addSubViews()
         makeConstraints()
     }
 
-    @objc private func tapGestureEvent(_ sender: UITapGestureRecognizer) {
-        eventHandler?()
-    }
+//    @objc private func tapGestureEvent(_ sender: UITapGestureRecognizer) {
+//        eventHandler?()
+//    }
     
     func setText(_ text: String) {
         label.text = text
