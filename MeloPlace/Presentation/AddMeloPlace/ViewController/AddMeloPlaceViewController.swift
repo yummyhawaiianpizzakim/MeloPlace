@@ -95,14 +95,24 @@ private extension AddMeloPlaceViewController {
     func bindViewModel() {
         let imageData = self.pickedImage.asObservable()
         let date = self.date.asObservable()
-        
+            
         let input = AddMeloPlaceViewModel.Input(
             imageData: imageData,
-            date: date
+            date: date,
+            didTapPlaceButton: self.addMeloPlaceView.placeButton.rx.tapGesture()
+                .when(.recognized)
+                .map({ _ in  })
+                .asObservable()
         )
         
         let output = self.viewModel?.transform(input: input)
         
+        output?.selectedAddress
+            .asDriver(onErrorJustReturn: Address(full: "", simple: ""))
+            .drive(onNext: { address in
+                self.addMeloPlaceView.placeLabel.text = address.full
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 

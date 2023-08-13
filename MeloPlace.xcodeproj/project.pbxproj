@@ -43,7 +43,21 @@
 		E90E64B52A84CAD5002A71B6 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64B42A84CAD5002A71B6 /* Extension.swift */; };
 		E90E64BD2A84F37E002A71B6 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64BC2A84F37E002A71B6 /* Spotify.swift */; };
 		E90E64BF2A84F578002A71B6 /* SpotifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64BE2A84F578002A71B6 /* SpotifyViewController.swift */; };
-		E90E64C02A8500BD002A71B6 /* SpotifyiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E90E64B62A84ED2A002A71B6 /* SpotifyiOS.framework */; };
+		E90E64C92A876AD7002A71B6 /* MeloLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64C82A876AD7002A71B6 /* MeloLocationViewController.swift */; };
+		E90E64CB2A876E40002A71B6 /* MeloLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64CA2A876E40002A71B6 /* MeloLocationViewModel.swift */; };
+		E90E64CD2A876E6B002A71B6 /* MeloLocationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64CC2A876E6B002A71B6 /* MeloLocationCoordinator.swift */; };
+		E90E64CF2A876ED3002A71B6 /* MeloLocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64CE2A876ED3002A71B6 /* MeloLocationView.swift */; };
+		E90E64D12A8773DF002A71B6 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64D02A8773DF002A71B6 /* MapView.swift */; };
+		E90E64D32A877901002A71B6 /* ThemeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64D22A877901002A71B6 /* ThemeButton.swift */; };
+		E90E64D62A8779AC002A71B6 /* ThemeColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64D52A8779AC002A71B6 /* ThemeColor.swift */; };
+		E90E64D82A877D09002A71B6 /* ThemeFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64D72A877D09002A71B6 /* ThemeFont.swift */; };
+		E90E64DC2A87806D002A71B6 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64DB2A87806D002A71B6 /* LocationManager.swift */; };
+		E90E64DE2A8781D3002A71B6 /* GeoPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64DD2A8781D3002A71B6 /* GeoPoint.swift */; };
+		E90E64E02A878228002A71B6 /* Address.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64DF2A878228002A71B6 /* Address.swift */; };
+		E90E64E22A87864C002A71B6 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64E12A87864C002A71B6 /* Array+.swift */; };
+		E90E64E42A878797002A71B6 /* CLLocationManager+RX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64E32A878797002A71B6 /* CLLocationManager+RX.swift */; };
+		E90E64E62A8787D0002A71B6 /* MKMapView+RX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64E52A8787D0002A71B6 /* MKMapView+RX.swift */; };
+		E90E64E72A879F8B002A71B6 /* SpotifyiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E90E64B62A84ED2A002A71B6 /* SpotifyiOS.framework */; };
 		F5799F688EC91F2B993C799E /* Pods_MeloPlaceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74DFAEE2E1A6B5551A2A2277 /* Pods_MeloPlaceTests.framework */; };
 		FA5C3C5E8A3EA8B36C6D1BCA /* Pods_MeloPlace_MeloPlaceUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FED2394756A4B4F983B47D3 /* Pods_MeloPlace_MeloPlaceUITests.framework */; };
 /* End PBXBuildFile section */
@@ -115,6 +129,20 @@
 		E90E64B82A84EE74002A71B6 /* MeloPlace-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MeloPlace-Bridging-Header.h"; sourceTree = "<group>"; };
 		E90E64BC2A84F37E002A71B6 /* Spotify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
 		E90E64BE2A84F578002A71B6 /* SpotifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyViewController.swift; sourceTree = "<group>"; };
+		E90E64C82A876AD7002A71B6 /* MeloLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloLocationViewController.swift; sourceTree = "<group>"; };
+		E90E64CA2A876E40002A71B6 /* MeloLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloLocationViewModel.swift; sourceTree = "<group>"; };
+		E90E64CC2A876E6B002A71B6 /* MeloLocationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloLocationCoordinator.swift; sourceTree = "<group>"; };
+		E90E64CE2A876ED3002A71B6 /* MeloLocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloLocationView.swift; sourceTree = "<group>"; };
+		E90E64D02A8773DF002A71B6 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		E90E64D22A877901002A71B6 /* ThemeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeButton.swift; sourceTree = "<group>"; };
+		E90E64D52A8779AC002A71B6 /* ThemeColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeColor.swift; sourceTree = "<group>"; };
+		E90E64D72A877D09002A71B6 /* ThemeFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeFont.swift; sourceTree = "<group>"; };
+		E90E64DB2A87806D002A71B6 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
+		E90E64DD2A8781D3002A71B6 /* GeoPoint.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoPoint.swift; sourceTree = "<group>"; };
+		E90E64DF2A878228002A71B6 /* Address.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Address.swift; sourceTree = "<group>"; };
+		E90E64E12A87864C002A71B6 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
+		E90E64E32A878797002A71B6 /* CLLocationManager+RX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationManager+RX.swift"; sourceTree = "<group>"; };
+		E90E64E52A8787D0002A71B6 /* MKMapView+RX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapView+RX.swift"; sourceTree = "<group>"; };
 		F48083693CF0EB1227383675 /* Pods-MeloPlace.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeloPlace.release.xcconfig"; path = "Target Support Files/Pods-MeloPlace/Pods-MeloPlace.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -124,7 +152,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2AC055D2C60EABBC7484183 /* Pods_MeloPlace.framework in Frameworks */,
-				E90E64C02A8500BD002A71B6 /* SpotifyiOS.framework in Frameworks */,
+				E90E64E72A879F8B002A71B6 /* SpotifyiOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -243,12 +271,10 @@
 		E90E646C2A80F76C002A71B6 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				E90E64C42A876A8C002A71B6 /* Location */,
+				E90E64C32A876A26002A71B6 /* Tab */,
 				E90E64A62A823750002A71B6 /* AddMeloPlace */,
 				E90E64852A80F9D6002A71B6 /* Common */,
-				E90E64702A80F8FF002A71B6 /* Browse */,
-				E90E646F2A80F7ED002A71B6 /* Map */,
-				E90E646E2A80F7E6002A71B6 /* Setting */,
-				E90E646D2A80F7D3002A71B6 /* Main */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -393,7 +419,8 @@
 		E90E64852A80F9D6002A71B6 /* Common */ = {
 			isa = PBXGroup;
 			children = (
-				E90E64862A80F9DB002A71B6 /* Coordinator */,
+				E90E64DA2A877F9D002A71B6 /* View */,
+				E90E64D42A877991002A71B6 /* Components */,
 			);
 			path = Common;
 			sourceTree = "<group>";
@@ -427,6 +454,8 @@
 			isa = PBXGroup;
 			children = (
 				E90E64A42A820FB5002A71B6 /* MeloPlace.swift */,
+				E90E64DD2A8781D3002A71B6 /* GeoPoint.swift */,
+				E90E64DF2A878228002A71B6 /* Address.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -478,6 +507,9 @@
 			isa = PBXGroup;
 			children = (
 				E90E64B42A84CAD5002A71B6 /* Extension.swift */,
+				E90E64E12A87864C002A71B6 /* Array+.swift */,
+				E90E64E32A878797002A71B6 /* CLLocationManager+RX.swift */,
+				E90E64E52A8787D0002A71B6 /* MKMapView+RX.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -487,8 +519,82 @@
 			children = (
 				E90E64BC2A84F37E002A71B6 /* Spotify.swift */,
 				E90E64BE2A84F578002A71B6 /* SpotifyViewController.swift */,
+				E90E64DB2A87806D002A71B6 /* LocationManager.swift */,
 			);
 			path = InfraStructure;
+			sourceTree = "<group>";
+		};
+		E90E64C32A876A26002A71B6 /* Tab */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64862A80F9DB002A71B6 /* Coordinator */,
+				E90E64702A80F8FF002A71B6 /* Browse */,
+				E90E646F2A80F7ED002A71B6 /* Map */,
+				E90E646E2A80F7E6002A71B6 /* Setting */,
+				E90E646D2A80F7D3002A71B6 /* Main */,
+			);
+			path = Tab;
+			sourceTree = "<group>";
+		};
+		E90E64C42A876A8C002A71B6 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64D92A877F8B002A71B6 /* View */,
+				E90E64C72A876AA4002A71B6 /* ViewModel */,
+				E90E64C62A876A9F002A71B6 /* ViewController */,
+				E90E64C52A876A98002A71B6 /* Coordinator */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		E90E64C52A876A98002A71B6 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64CC2A876E6B002A71B6 /* MeloLocationCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		E90E64C62A876A9F002A71B6 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64C82A876AD7002A71B6 /* MeloLocationViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		E90E64C72A876AA4002A71B6 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64CA2A876E40002A71B6 /* MeloLocationViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E90E64D42A877991002A71B6 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64D22A877901002A71B6 /* ThemeButton.swift */,
+				E90E64D52A8779AC002A71B6 /* ThemeColor.swift */,
+				E90E64D72A877D09002A71B6 /* ThemeFont.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		E90E64D92A877F8B002A71B6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64CE2A876ED3002A71B6 /* MeloLocationView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E90E64DA2A877F9D002A71B6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64D02A8773DF002A71B6 /* MapView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -740,12 +846,20 @@
 				E90E648A2A80F9FC002A71B6 /* AppCoordinator.swift in Sources */,
 				E90E64902A80FAA0002A71B6 /* SettingViewModel.swift in Sources */,
 				E90E643C2A80F3F4002A71B6 /* ViewController.swift in Sources */,
+				E90E64D12A8773DF002A71B6 /* MapView.swift in Sources */,
+				E90E64CB2A876E40002A71B6 /* MeloLocationViewModel.swift in Sources */,
 				E90E649A2A80FAE4002A71B6 /* BrowseViewController.swift in Sources */,
 				E90E64B22A824BDF002A71B6 /* AddMeloPlaceView.swift in Sources */,
 				E90E64B52A84CAD5002A71B6 /* Extension.swift in Sources */,
+				E90E64E02A878228002A71B6 /* Address.swift in Sources */,
+				E90E64E22A87864C002A71B6 /* Array+.swift in Sources */,
 				E90E647E2A80F99C002A71B6 /* MainCoordinator.swift in Sources */,
+				E90E64C92A876AD7002A71B6 /* MeloLocationViewController.swift in Sources */,
 				E90E64A12A810D3E002A71B6 /* MainCell.swift in Sources */,
 				E90E648C2A80FA8C002A71B6 /* SettingCoordinator.swift in Sources */,
+				E90E64CD2A876E6B002A71B6 /* MeloLocationCoordinator.swift in Sources */,
+				E90E64D32A877901002A71B6 /* ThemeButton.swift in Sources */,
+				E90E64E42A878797002A71B6 /* CLLocationManager+RX.swift in Sources */,
 				E90E649C2A80FAED002A71B6 /* BrowseViewModel.swift in Sources */,
 				E90E64962A80FABB002A71B6 /* MapViewModel.swift in Sources */,
 				E90E64AC2A8237AD002A71B6 /* AddMeloPlaceCoordinator.swift in Sources */,
@@ -755,10 +869,16 @@
 				E90E64922A80FAA9002A71B6 /* MapCoordinator.swift in Sources */,
 				E90E64692A80F6F8002A71B6 /* CoordinatorProtocol.swift in Sources */,
 				E90E643A2A80F3F4002A71B6 /* SceneDelegate.swift in Sources */,
+				E90E64D82A877D09002A71B6 /* ThemeFont.swift in Sources */,
+				E90E64DE2A8781D3002A71B6 /* GeoPoint.swift in Sources */,
+				E90E64D62A8779AC002A71B6 /* ThemeColor.swift in Sources */,
 				E90E64842A80F9C8002A71B6 /* MainViewModel.swift in Sources */,
+				E90E64CF2A876ED3002A71B6 /* MeloLocationView.swift in Sources */,
 				E90E649F2A810B37002A71B6 /* MainCollectionViewFlowLayout.swift in Sources */,
 				E90E64942A80FAB3002A71B6 /* MapViewController.swift in Sources */,
 				E90E648E2A80FA96002A71B6 /* SettingViewController.swift in Sources */,
+				E90E64E62A8787D0002A71B6 /* MKMapView+RX.swift in Sources */,
+				E90E64DC2A87806D002A71B6 /* LocationManager.swift in Sources */,
 				E90E64B02A82384E002A71B6 /* AddMeloPlaceViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
