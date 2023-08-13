@@ -11,7 +11,7 @@ enum CoordinatorType {
     case app
     case tab
     case main, map, browse, setting
-    case addMelo
+    case addMelo, location
     case signIn, signUp
 }
 

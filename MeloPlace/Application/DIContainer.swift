@@ -39,6 +39,7 @@ class DIContainer {
         self.registerBrowseViewModel()
         self.registerSettingViewModel()
         self.registerAddMeloPlaceViewModel()
+        self.registerMeloLocationViewModel()
     }
 }
 
@@ -95,6 +96,14 @@ private extension DIContainer {
         self.container.register(AddMeloPlaceViewModel.self) { resolver in
             
             return AddMeloPlaceViewModel()
+        }
+        .inObjectScope(.graph)
+    }
+    
+    func registerMeloLocationViewModel() {
+        self.container.register(MeloLocationViewModel.self) { resolver in
+            
+            return MeloLocationViewModel()
         }
         .inObjectScope(.graph)
     }

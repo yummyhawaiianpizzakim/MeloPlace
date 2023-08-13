@@ -35,23 +35,21 @@ class AddMeloPlaceCoordinator: CoordinatorProtocol {
         
         let vc = AddMeloPlaceViewController(viewModel: vm)
         
-//        vm.setActions(
-//            actions: PhotoListViewModelActions(
-//                showPhotoDetail: self.showPhotoDetail
-//            )
-//        )
+        vm.setActions(
+            actions: AddMeloPlaceViewModelActions(showMeloLocationView: self.showMeloLocationView)
+        )
         
         self.navigation.pushViewController(vc, animated: true)
     }
     
-//    lazy var showPhotoDetail: (_ IndexPath: IndexPath) -> Void = { [weak self] indexPath in
-//        let container = DIContainer.shared.container
-//        guard let vm = container.resolve(PhotoDetailViewModel.self) else { return }
-//        vm.indexpath = indexPath
-//        let vc = PhotoDetailViewController(viewModel: vm)
-////        self?.navigation.present(vc, animated: true)
-//        self?.navigation.pushViewController(vc, animated: true)
-//    }
+    lazy var showMeloLocationView: (_ addViewModel: AddMeloPlaceViewModel) -> Void = { [weak self] addViewModel in
+        let navigation = UINavigationController()
+        let coordinator = MeloLocationCoordinator(navigation: self!.navigation, addViewModel: addViewModel)
+        self?.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
+    }
+    
 }
 
 extension AddMeloPlaceCoordinator: CoordinatorFinishDelegate {
