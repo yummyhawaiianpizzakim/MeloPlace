@@ -36,6 +36,7 @@ class AddMeloPlaceViewModel {
     let selectedAddress = PublishRelay<Address>()
     let selectedGeoPoint = PublishRelay<GeoPoint>()
     let selectedDate = PublishRelay<Date>()
+    let selectedMusic = PublishRelay<Music>()
     
     var actions: AddMeloPlaceViewModelActions?
     
@@ -104,5 +105,10 @@ extension AddMeloPlaceViewModel: SelectDateViewModelDelegate {
         self.selectedDate.accept(date)
     }
     
-    
+}
+
+extension AddMeloPlaceViewModel: MusicListViewModelDelegate {
+    func musicDidSelect(music: Music) {
+        self.selectedMusic.accept(music)
+    }
 }
