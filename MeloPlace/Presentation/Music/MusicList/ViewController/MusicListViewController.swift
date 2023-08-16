@@ -41,6 +41,7 @@ class MusicListViewController: UIViewController {
         let searchBar = UISearchBar()
         searchBar.backgroundColor = .white
         searchBar.barTintColor = .white
+//        searchBar.tintColor = .white
         return searchBar
     }()
     
@@ -52,7 +53,7 @@ class MusicListViewController: UIViewController {
         return collectionView
     }()
     
-    lazy var doneMusicButton = ThemeButton(title: "선택 완료")
+    lazy var doneButton = ThemeButton(title: "선택 완료")
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
@@ -79,7 +80,7 @@ class MusicListViewController: UIViewController {
 
 private extension MusicListViewController {
     func configureUI() {
-        [topView, musicCollectionView, doneMusicButton].forEach {
+        [topView, musicCollectionView, doneButton].forEach {
             self.view.addSubview($0)
         }
         
@@ -115,7 +116,8 @@ private extension MusicListViewController {
             make.height.equalTo(40)
         }
         
-        self.doneMusicButton.snp.makeConstraints { make in
+        self.doneButton.snp.makeConstraints { make in
+            make.top.equalTo(self.musicCollectionView.snp.bottom)
             make.bottom.equalToSuperview()
             make.horizontalEdges.equalToSuperview()
             make.height.equalTo(50)
@@ -124,6 +126,12 @@ private extension MusicListViewController {
     
     func bindUI() {
 //        self.musicCollectionView.rx
+        self.doneButton.rx.tap
+            .asDriver()
+            .drive(with: self) { owner, _ in
+                owner.dismiss(animated: true)
+            }
+            .disposed(by: self.disposeBag)
     }
     
     func bindViewModel() {
@@ -132,7 +140,7 @@ private extension MusicListViewController {
             connectSpotify: self.connectButton.rx.tap.asObservable(),
             searchText: self.searchBar.rx.text.orEmpty.asObservable(),
             didTapCell: self.musicCollectionView.rx.itemSelected.asObservable(),
-            didTapDoneButton: self.doneMusicButton.rx.tap.asObservable()
+            didTapDoneButton: self.doneButton.rx.tap.asObservable()
         )
         let output = self.viewModel?.transform(input: input)
         
@@ -146,7 +154,8 @@ private extension MusicListViewController {
             .asDriver()
             .drive(with: self,
                    onNext: { owner, isEnable in
-                owner.doneMusicButton.isEnabled = isEnable
+                owner.doneButton.isEnabled = isEnable
+                
             })
             .disposed(by: self.disposeBag)
         

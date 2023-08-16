@@ -82,13 +82,13 @@ private extension AddMeloPlaceViewController {
             }
             .disposed(by: self.disposeBag)
         
-        self.addMeloPlaceView.dateButton.rx.tapGesture()
-            .when(.recognized)
-            .withUnretained(self)
-            .subscribe { owner, _ in
-                owner.showDateSelectView()
-            }
-            .disposed(by: self.disposeBag)
+//        self.addMeloPlaceView.dateButton.rx.tapGesture()
+//            .when(.recognized)
+//            .withUnretained(self)
+//            .subscribe { owner, _ in
+//                owner.showDateSelectView()
+//            }
+//            .disposed(by: self.disposeBag)
         
     }
     
@@ -106,6 +106,10 @@ private extension AddMeloPlaceViewController {
             didTapMusicButton: self.addMeloPlaceView.musicButton.rx.tapGesture()
                 .when(.recognized)
                 .map({ _ in })
+                .asObservable(),
+            didTapDateButton: self.addMeloPlaceView.dateButton.rx.tapGesture()
+                .when(.recognized)
+                .map({ _ in })
                 .asObservable()
         )
         
@@ -113,8 +117,15 @@ private extension AddMeloPlaceViewController {
         
         output?.selectedAddress
             .asDriver(onErrorJustReturn: Address(full: "", simple: ""))
-            .drive(onNext: { address in
-                self.addMeloPlaceView.placeButton.setText(address.full) 
+            .drive(onNext: {[weak self] address in
+                self?.addMeloPlaceView.placeButton.setText(address.full)
+            })
+            .disposed(by: self.disposeBag)
+        
+        output?.selectedDate
+            .asDriver(onErrorJustReturn: Date())
+            .drive(with: self, onNext: { owner, date in
+                owner.addMeloPlaceView.dateButton.setText(date.toString())
             })
             .disposed(by: self.disposeBag)
     }

@@ -41,6 +41,7 @@ class DIContainer {
         self.registerAddMeloPlaceViewModel()
         self.registerMeloLocationViewModel()
         self.registerMusicListViewModel()
+        self.registerSelectDateViewModel()
     }
 }
 
@@ -112,6 +113,13 @@ private extension DIContainer {
     func registerMusicListViewModel() {
         self.container.register(MusicListViewModel.self) { resolver in
             return MusicListViewModel()
+        }
+        .inObjectScope(.graph)
+    }
+    
+    func registerSelectDateViewModel() {
+        self.container.register(SelectDateViewModel.self) { resolver in
+            return SelectDateViewModel()
         }
         .inObjectScope(.graph)
     }
