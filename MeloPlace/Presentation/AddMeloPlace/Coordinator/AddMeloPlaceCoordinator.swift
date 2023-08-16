@@ -47,7 +47,6 @@ class AddMeloPlaceCoordinator: CoordinatorProtocol {
     }
     
     lazy var showMeloLocationView: (_ addViewModel: AddMeloPlaceViewModel) -> Void = { [weak self] addViewModel in
-//        let navigation = UINavigationController()
         let coordinator = MeloLocationCoordinator(navigation: self!.navigation, addViewModel: addViewModel)
         self?.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
@@ -55,7 +54,6 @@ class AddMeloPlaceCoordinator: CoordinatorProtocol {
     }
     
     lazy var showMusicListView: (_ addViewModel: AddMeloPlaceViewModel) -> Void = { [weak self] addViewModel in
-//        let navigation = UINavigationController()
         let coordinator = MusicListCoordinator(navigation: self!.navigation, addViewModel: addViewModel)
         self?.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
@@ -63,7 +61,6 @@ class AddMeloPlaceCoordinator: CoordinatorProtocol {
     }
     
     lazy var showSelectDateView: (_ addViewModel: AddMeloPlaceViewModel) -> Void = { [weak self] addViewModel in
-//        let navigation = UINavigationController()
         let coordinator = SelectDateCoordinator(navigation: self!.navigation, addViewModel: addViewModel)
         self?.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
