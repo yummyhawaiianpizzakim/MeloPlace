@@ -25,53 +25,5 @@
             stopOnStyle = "0">
          </BreakpointContent>
       </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "B56CF1F5-32C9-423E-B874-27755EF3B474"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MeloPlace/Service/Service/Spotify/SpotifyService.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "107"
-            endingLineNumber = "107"
-            landmarkName = "playMusic(uri:)"
-            landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "B56CF1F5-32C9-423E-B874-27755EF3B474 - b2eabc5c34ca5575"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "MeloPlace.SpotifyService.playMusic(uri: Swift.String) -&gt; ()"
-                  moduleName = "MeloPlace"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/gim-yohan/Xcodeproject/MeloPlace/MeloPlace/Service/Service/Spotify/SpotifyService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "107"
-                  endingLineNumber = "107"
-                  offsetFromSymbolStart = "48">
-               </Location>
-               <Location
-                  uuid = "B56CF1F5-32C9-423E-B874-27755EF3B474 - 60363eab585646be"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "closure #1 (Swift.Optional&lt;Any&gt;, Swift.Optional&lt;Swift.Error&gt;) -&gt; () in MeloPlace.SpotifyService.playMusic(uri: Swift.String) -&gt; ()"
-                  moduleName = "MeloPlace"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/gim-yohan/Xcodeproject/MeloPlace/MeloPlace/Service/Service/Spotify/SpotifyService.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "108"
-                  endingLineNumber = "108"
-                  offsetFromSymbolStart = "84">
-               </Location>
-            </Locations>
-         </BreakpointContent>
-      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

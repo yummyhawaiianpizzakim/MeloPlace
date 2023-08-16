@@ -65,6 +65,9 @@
 		E90E64FB2A8B5587002A71B6 /* SpotifyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64FA2A8B5586002A71B6 /* SpotifyService.swift */; };
 		E90E64FF2A8B74D6002A71B6 /* SpotifySearchDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64FE2A8B74D6002A71B6 /* SpotifySearchDTO.swift */; };
 		E90E65052A8B8B28002A71B6 /* SpotifyiOS in Frameworks */ = {isa = PBXBuildFile; productRef = E90E65042A8B8B28002A71B6 /* SpotifyiOS */; };
+		E90E650E2A8CB881002A71B6 /* SelectDateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E650D2A8CB881002A71B6 /* SelectDateCoordinator.swift */; };
+		E90E65102A8CB89C002A71B6 /* SelectDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E650F2A8CB89C002A71B6 /* SelectDateViewController.swift */; };
+		E90E65122A8CB8CC002A71B6 /* SelectDateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65112A8CB8CC002A71B6 /* SelectDateViewModel.swift */; };
 		F5799F688EC91F2B993C799E /* Pods_MeloPlaceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74DFAEE2E1A6B5551A2A2277 /* Pods_MeloPlaceTests.framework */; };
 		FA5C3C5E8A3EA8B36C6D1BCA /* Pods_MeloPlace_MeloPlaceUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FED2394756A4B4F983B47D3 /* Pods_MeloPlace_MeloPlaceUITests.framework */; };
 /* End PBXBuildFile section */
@@ -156,6 +159,9 @@
 		E90E64F52A8B51F5002A71B6 /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
 		E90E64FA2A8B5586002A71B6 /* SpotifyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyService.swift; sourceTree = "<group>"; };
 		E90E64FE2A8B74D6002A71B6 /* SpotifySearchDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySearchDTO.swift; sourceTree = "<group>"; };
+		E90E650D2A8CB881002A71B6 /* SelectDateCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateCoordinator.swift; sourceTree = "<group>"; };
+		E90E650F2A8CB89C002A71B6 /* SelectDateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateViewController.swift; sourceTree = "<group>"; };
+		E90E65112A8CB8CC002A71B6 /* SelectDateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateViewModel.swift; sourceTree = "<group>"; };
 		F48083693CF0EB1227383675 /* Pods-MeloPlace.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeloPlace.release.xcconfig"; path = "Target Support Files/Pods-MeloPlace/Pods-MeloPlace.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -284,6 +290,7 @@
 		E90E646C2A80F76C002A71B6 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				E90E65092A8CB826002A71B6 /* Date */,
 				E90E64E82A8B460B002A71B6 /* Music */,
 				E90E64C42A876A8C002A71B6 /* Location */,
 				E90E64C32A876A26002A71B6 /* Tab */,
@@ -720,6 +727,40 @@
 			path = ViewController;
 			sourceTree = "<group>";
 		};
+		E90E65092A8CB826002A71B6 /* Date */ = {
+			isa = PBXGroup;
+			children = (
+				E90E650C2A8CB852002A71B6 /* ViewModel */,
+				E90E650B2A8CB845002A71B6 /* ViewContoller */,
+				E90E650A2A8CB839002A71B6 /* Coordinator */,
+			);
+			path = Date;
+			sourceTree = "<group>";
+		};
+		E90E650A2A8CB839002A71B6 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				E90E650D2A8CB881002A71B6 /* SelectDateCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		E90E650B2A8CB845002A71B6 /* ViewContoller */ = {
+			isa = PBXGroup;
+			children = (
+				E90E650F2A8CB89C002A71B6 /* SelectDateViewController.swift */,
+			);
+			path = ViewContoller;
+			sourceTree = "<group>";
+		};
+		E90E650C2A8CB852002A71B6 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E90E65112A8CB8CC002A71B6 /* SelectDateViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -971,6 +1012,7 @@
 				E90E64BD2A84F37E002A71B6 /* Spotify.swift in Sources */,
 				E90E64AE2A823812002A71B6 /* AddMeloPlaceViewController.swift in Sources */,
 				E90E64A52A820FB5002A71B6 /* MeloPlace.swift in Sources */,
+				E90E65122A8CB8CC002A71B6 /* SelectDateViewModel.swift in Sources */,
 				E90E64982A80FAD9002A71B6 /* BrowseCoordinator.swift in Sources */,
 				E90E648A2A80F9FC002A71B6 /* AppCoordinator.swift in Sources */,
 				E90E64902A80FAA0002A71B6 /* SettingViewModel.swift in Sources */,
@@ -992,6 +1034,7 @@
 				E90E64A12A810D3E002A71B6 /* MainCell.swift in Sources */,
 				E90E648C2A80FA8C002A71B6 /* SettingCoordinator.swift in Sources */,
 				E90E64F62A8B51F5002A71B6 /* Music.swift in Sources */,
+				E90E65102A8CB89C002A71B6 /* SelectDateViewController.swift in Sources */,
 				E90E64CD2A876E6B002A71B6 /* MeloLocationCoordinator.swift in Sources */,
 				E90E64D32A877901002A71B6 /* ThemeButton.swift in Sources */,
 				E90E64E42A878797002A71B6 /* CLLocationManager+RX.swift in Sources */,
@@ -1015,6 +1058,7 @@
 				E90E648E2A80FA96002A71B6 /* SettingViewController.swift in Sources */,
 				E90E64E62A8787D0002A71B6 /* MKMapView+RX.swift in Sources */,
 				E90E64DC2A87806D002A71B6 /* LocationManager.swift in Sources */,
+				E90E650E2A8CB881002A71B6 /* SelectDateCoordinator.swift in Sources */,
 				E90E64B02A82384E002A71B6 /* AddMeloPlaceViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

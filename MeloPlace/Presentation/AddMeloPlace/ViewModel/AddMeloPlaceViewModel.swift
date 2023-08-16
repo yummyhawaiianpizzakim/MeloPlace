@@ -12,26 +12,30 @@ import RxRelay
 struct AddMeloPlaceViewModelActions {
     let showMeloLocationView: (_ addViewModel: AddMeloPlaceViewModel) -> Void
     let showMusicListView: (_ addViewModel: AddMeloPlaceViewModel) -> Void
+    let showSelectDateView: (_ addViewModel: AddMeloPlaceViewModel) -> Void
 }
 
 class AddMeloPlaceViewModel {
     let disposeBag = DisposeBag()
-    
-//    let image = BehaviorRelay<Data>(value: Data())
-    let selectedAddress = PublishRelay<Address>()
-    let selectedGeoPoint = PublishRelay<GeoPoint>()
     
     struct Input {
         var imageData: Observable<Data>
         var date: Observable<Date>
         var didTapPlaceButton: Observable<Void>
         var didTapMusicButton: Observable<Void>
+        var didTapDateButton: Observable<Void>
     }
     
     struct Output {
         let selectedAddress = PublishRelay<Address>()
         let selectedGeoPoint = PublishRelay<GeoPoint>()
+        let selectedDate = PublishRelay<Date>()
     }
+    
+//    let image = BehaviorRelay<Data>(value: Data())
+    let selectedAddress = PublishRelay<Address>()
+    let selectedGeoPoint = PublishRelay<GeoPoint>()
+    let selectedDate = PublishRelay<Date>()
     
     var actions: AddMeloPlaceViewModelActions?
     
@@ -57,12 +61,23 @@ class AddMeloPlaceViewModel {
             })
             .disposed(by: self.disposeBag)
         
+        input.didTapDateButton
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                owner.actions?.showSelectDateView( self )
+            })
+            .disposed(by: self.disposeBag)
+        
         self.selectedAddress
             .bind(to: output.selectedAddress)
             .disposed(by: self.disposeBag)
         
         self.selectedGeoPoint
             .bind(to: output.selectedGeoPoint)
+            .disposed(by: self.disposeBag)
+        
+        self.selectedDate
+            .bind(to: output.selectedDate)
             .disposed(by: self.disposeBag)
         
         return output
@@ -81,5 +96,13 @@ extension AddMeloPlaceViewModel: MeloLocationViewModelDelegate {
         self.selectedGeoPoint.accept(geopoint)
         print(address, geopoint)
     }
+    
+}
+
+extension AddMeloPlaceViewModel: SelectDateViewModelDelegate {
+    func dateDidSelect(date: Date) {
+        self.selectedDate.accept(date)
+    }
+    
     
 }
