@@ -141,6 +141,15 @@ private extension MusicListViewController {
                 owner.setSnapshot(models: musics)
             })
             .disposed(by: self.disposeBag)
+        
+        output?.isDoneButtonEnable
+            .asDriver()
+            .drive(with: self,
+                   onNext: { owner, isEnable in
+                owner.doneMusicButton.isEnabled = isEnable
+            })
+            .disposed(by: self.disposeBag)
+        
     }
     
 }
