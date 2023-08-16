@@ -49,6 +49,9 @@ class SelectDateViewController: UIViewController {
         datePicker.tintColor = .themeColor300
         datePicker.backgroundColor = .white
         datePicker.setValue(UIColor.black, forKey: "textColor")
+        if #available(iOS 13.0, *) {
+            datePicker.overrideUserInterfaceStyle = .light
+        }
         
         return datePicker
     }()
