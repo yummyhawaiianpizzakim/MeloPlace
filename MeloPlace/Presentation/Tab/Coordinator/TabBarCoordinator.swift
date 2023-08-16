@@ -53,7 +53,8 @@ class TabBarCoordinator: CoordinatorProtocol {
         self.navigationController = navigationController
         self.tabBarController = UITabBarController()
         tabBarController.tabBar.tintColor = .orange
-        tabBarController.tabBar.unselectedItemTintColor = .black
+        tabBarController.tabBar.unselectedItemTintColor = .themeGray300
+        tabBarController.tabBar.backgroundColor = .white
     }
     
     func start() {

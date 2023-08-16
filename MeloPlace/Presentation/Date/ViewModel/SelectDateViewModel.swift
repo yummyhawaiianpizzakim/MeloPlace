@@ -53,7 +53,7 @@ class SelectDateViewModel {
             .withLatestFrom(input.selectedDate)
             .map({[weak self] date in
                 self?.delegate?.dateDidSelect(date: date)
-                print(date)
+                self?.actions?.closeSelectDateView()
                 return true
             })
             .bind(to: output.isDone)
