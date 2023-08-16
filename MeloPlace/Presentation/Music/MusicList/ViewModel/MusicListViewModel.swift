@@ -31,7 +31,7 @@ class MusicListViewModel {
     
     struct Output {
         let dataSource = BehaviorRelay<[Music]>(value: [])
-        let isDone = BehaviorRelay<Bool>(value: false)
+        let isDoneButtonEnable = BehaviorRelay<Bool>(value: false)
     }
     
     let disposeBag = DisposeBag()
@@ -75,15 +75,20 @@ class MusicListViewModel {
             .withUnretained(self)
             .subscribe { owner, indexPath in
                 let music = output.dataSource.value[indexPath.row]
+                owner.selectedMusic.accept(music)
                 print("trackName: \(music.name)")
                 owner.spotifyService.playMusic(uri: music.URI)
+                output.isDoneButtonEnable.accept(true)
 //                owner.actions?.showMusicPlayerView(music)
             }
             .disposed(by: self.disposeBag)
         
-//        input.didTapDoneButton
-//            .with
-//            .subscribe(<#T##observer: ObserverType##ObserverType#>)
+        input.didTapDoneButton
+            .withLatestFrom(self.selectedMusic.asObservable())
+            .subscribe { music in
+                
+            }
+            .disposed(by: self.disposeBag)
         
         return output
     }
