@@ -36,7 +36,8 @@ class AddMeloPlaceCoordinator: CoordinatorProtocol {
         let vc = AddMeloPlaceViewController(viewModel: vm)
         
         vm.setActions(
-            actions: AddMeloPlaceViewModelActions(showMeloLocationView: self.showMeloLocationView)
+            actions: AddMeloPlaceViewModelActions(showMeloLocationView: self.showMeloLocationView,
+                                                  showMusicListView: self.showMusicListView)
         )
         
         self.navigation.pushViewController(vc, animated: true)
@@ -45,6 +46,14 @@ class AddMeloPlaceCoordinator: CoordinatorProtocol {
     lazy var showMeloLocationView: (_ addViewModel: AddMeloPlaceViewModel) -> Void = { [weak self] addViewModel in
         let navigation = UINavigationController()
         let coordinator = MeloLocationCoordinator(navigation: self!.navigation, addViewModel: addViewModel)
+        self?.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
+    }
+    
+    lazy var showMusicListView: (_ addViewModel: AddMeloPlaceViewModel) -> Void = { [weak self] addViewModel in
+        let navigation = UINavigationController()
+        let coordinator = MusicListCoordinator(navigation: self!.navigation, addViewModel: addViewModel)
         self?.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
         coordinator.start()

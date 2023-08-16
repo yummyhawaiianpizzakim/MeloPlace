@@ -102,6 +102,10 @@ private extension AddMeloPlaceViewController {
             didTapPlaceButton: self.addMeloPlaceView.placeButton.rx.tapGesture()
                 .when(.recognized)
                 .map({ _ in  })
+                .asObservable(),
+            didTapMusicButton: self.addMeloPlaceView.musicButton.rx.tapGesture()
+                .when(.recognized)
+                .map({ _ in })
                 .asObservable()
         )
         
@@ -110,7 +114,7 @@ private extension AddMeloPlaceViewController {
         output?.selectedAddress
             .asDriver(onErrorJustReturn: Address(full: "", simple: ""))
             .drive(onNext: { address in
-                self.addMeloPlaceView.placeLabel.text = address.full
+                self.addMeloPlaceView.placeButton.setText(address.full) 
             })
             .disposed(by: self.disposeBag)
     }

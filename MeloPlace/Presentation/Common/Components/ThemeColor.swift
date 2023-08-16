@@ -21,5 +21,6 @@ extension UIColor {
     static let themeColor300 = UIColor(named: "orange300")
     static let themeGray300 = UIColor(named: "gray300")
     static let themeGray100 = UIColor(named: "gray100")
+    static let themeWhite300 = UIColor(named: "white300")
     static let themeBackground = UIColor(named: "systemBackground")
 }

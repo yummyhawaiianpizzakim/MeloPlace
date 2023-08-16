@@ -6,9 +6,9 @@
 //
 
 import Foundation
+import SpotifyiOS
 
 class Spotify {
-    
     let accessTokenKey = "access-token-key" 
     let redirectUri = URL(string:"MeloPlace://")!
     let spotifyClientId = "d9637d39e5de4cdb818324214648b5fe"

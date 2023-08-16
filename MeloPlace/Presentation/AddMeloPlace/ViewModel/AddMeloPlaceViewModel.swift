@@ -11,6 +11,7 @@ import RxRelay
 
 struct AddMeloPlaceViewModelActions {
     let showMeloLocationView: (_ addViewModel: AddMeloPlaceViewModel) -> Void
+    let showMusicListView: (_ addViewModel: AddMeloPlaceViewModel) -> Void
 }
 
 class AddMeloPlaceViewModel {
@@ -24,6 +25,7 @@ class AddMeloPlaceViewModel {
         var imageData: Observable<Data>
         var date: Observable<Date>
         var didTapPlaceButton: Observable<Void>
+        var didTapMusicButton: Observable<Void>
     }
     
     struct Output {
@@ -39,6 +41,14 @@ class AddMeloPlaceViewModel {
     
     func transform(input: Input) -> Output {
         let output = Output()
+        
+        input.didTapMusicButton
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                print("music tap!")
+                owner.actions?.showMusicListView( self )
+            })
+            .disposed(by: self.disposeBag)
         
         input.didTapPlaceButton
             .withUnretained(self)

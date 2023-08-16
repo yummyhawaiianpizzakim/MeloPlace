@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import SpotifyiOS
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     var appCoordinator: AppCoordinator?
     lazy var rootViewController = SpotifyViewController()
+    var spotifyService = SpotifyService.shared
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -35,16 +37,25 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
     
     func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
-            guard let url = URLContexts.first?.url else { return }
-            let parameters = rootViewController.appRemote.authorizationParameters(from: url)
-            if let code = parameters?["code"] {
-                rootViewController.responseCode = code
-            } else if let access_token = parameters?[SPTAppRemoteAccessTokenKey] {
-                rootViewController.accessToken = access_token
-            } else if let error_description = parameters?[SPTAppRemoteErrorDescriptionKey] {
-                print("No access token error =", error_description)
-            }
+        guard let url = URLContexts.first?.url else { return }
+//        let parameters = rootViewController.appRemote.authorizationParameters(from: url)
+//        if let code = parameters?["code"] {
+//            rootViewController.responseCode = code
+//        } else if let access_token = parameters?[SPTAppRemoteAccessTokenKey] {
+//            rootViewController.accessToken = access_token
+//        } else if let error_description = parameters?[SPTAppRemoteErrorDescriptionKey] {
+//            print("No access token error =", error_description)
+//        }
+        
+        let parameters = spotifyService.appRemote.authorizationParameters(from: url)
+        if let code = parameters?["code"] {
+            spotifyService.responseCode = code
+        } else if let access_token = parameters?[SPTAppRemoteAccessTokenKey] {
+            spotifyService.accessToken = access_token
+        } else if let error_description = parameters?[SPTAppRemoteErrorDescriptionKey] {
+            print("No access token error =", error_description)
         }
+    }
 
 
     func sceneDidDisconnect(_ scene: UIScene) {
@@ -57,20 +68,32 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func sceneDidBecomeActive(_ scene: UIScene) {
         // Called when the scene has moved from an inactive state to an active state.
         // Use this method to restart any tasks that were paused (or not yet started) when the scene was inactive.
-        if let accessToken = rootViewController.appRemote.connectionParameters.accessToken {
-            rootViewController.appRemote.connectionParameters.accessToken = accessToken
-            rootViewController.appRemote.connect()
-        } else if let accessToken = rootViewController.accessToken {
-            rootViewController.appRemote.connectionParameters.accessToken = accessToken
-            rootViewController.appRemote.connect()
+//        if let accessToken = rootViewController.appRemote.connectionParameters.accessToken {
+//            rootViewController.appRemote.connectionParameters.accessToken = accessToken
+//            rootViewController.appRemote.connect()
+//        } else if let accessToken = rootViewController.accessToken {
+//            rootViewController.appRemote.connectionParameters.accessToken = accessToken
+//            rootViewController.appRemote.connect()
+//        }
+        
+        if let accessToken = spotifyService.appRemote.connectionParameters.accessToken {
+            spotifyService.appRemote.connectionParameters.accessToken = accessToken
+            spotifyService.appRemote.connect()
+        } else if let accessToken = spotifyService.accessToken {
+            spotifyService.appRemote.connectionParameters.accessToken = accessToken
+            spotifyService.appRemote.connect()
         }
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
         // Called when the scene will move from an active state to an inactive state.
         // This may occur due to temporary interruptions (ex. an incoming phone call).
-        if rootViewController.appRemote.isConnected {
-            rootViewController.appRemote.disconnect()
+//        if rootViewController.appRemote.isConnected {
+//            rootViewController.appRemote.disconnect()
+//        }
+        
+        if spotifyService.appRemote.isConnected {
+            spotifyService.appRemote.disconnect()
         }
     }
 

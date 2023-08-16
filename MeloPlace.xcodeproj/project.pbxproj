@@ -57,7 +57,14 @@
 		E90E64E22A87864C002A71B6 /* Array+.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64E12A87864C002A71B6 /* Array+.swift */; };
 		E90E64E42A878797002A71B6 /* CLLocationManager+RX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64E32A878797002A71B6 /* CLLocationManager+RX.swift */; };
 		E90E64E62A8787D0002A71B6 /* MKMapView+RX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64E52A8787D0002A71B6 /* MKMapView+RX.swift */; };
-		E90E64E72A879F8B002A71B6 /* SpotifyiOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E90E64B62A84ED2A002A71B6 /* SpotifyiOS.framework */; };
+		E90E64EE2A8B4688002A71B6 /* MusicListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64ED2A8B4688002A71B6 /* MusicListCoordinator.swift */; };
+		E90E64F02A8B4734002A71B6 /* MusicListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64EF2A8B4734002A71B6 /* MusicListViewController.swift */; };
+		E90E64F22A8B47D0002A71B6 /* MusicListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64F12A8B47D0002A71B6 /* MusicListViewModel.swift */; };
+		E90E64F42A8B4FE6002A71B6 /* MusicListCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64F32A8B4FE6002A71B6 /* MusicListCollectionCell.swift */; };
+		E90E64F62A8B51F5002A71B6 /* Music.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64F52A8B51F5002A71B6 /* Music.swift */; };
+		E90E64FB2A8B5587002A71B6 /* SpotifyService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64FA2A8B5586002A71B6 /* SpotifyService.swift */; };
+		E90E64FF2A8B74D6002A71B6 /* SpotifySearchDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64FE2A8B74D6002A71B6 /* SpotifySearchDTO.swift */; };
+		E90E65052A8B8B28002A71B6 /* SpotifyiOS in Frameworks */ = {isa = PBXBuildFile; productRef = E90E65042A8B8B28002A71B6 /* SpotifyiOS */; };
 		F5799F688EC91F2B993C799E /* Pods_MeloPlaceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74DFAEE2E1A6B5551A2A2277 /* Pods_MeloPlaceTests.framework */; };
 		FA5C3C5E8A3EA8B36C6D1BCA /* Pods_MeloPlace_MeloPlaceUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FED2394756A4B4F983B47D3 /* Pods_MeloPlace_MeloPlaceUITests.framework */; };
 /* End PBXBuildFile section */
@@ -125,7 +132,6 @@
 		E90E64AF2A82384E002A71B6 /* AddMeloPlaceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMeloPlaceViewModel.swift; sourceTree = "<group>"; };
 		E90E64B12A824BDF002A71B6 /* AddMeloPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMeloPlaceView.swift; sourceTree = "<group>"; };
 		E90E64B42A84CAD5002A71B6 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
-		E90E64B62A84ED2A002A71B6 /* SpotifyiOS.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SpotifyiOS.framework; sourceTree = "<group>"; };
 		E90E64B82A84EE74002A71B6 /* MeloPlace-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MeloPlace-Bridging-Header.h"; sourceTree = "<group>"; };
 		E90E64BC2A84F37E002A71B6 /* Spotify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
 		E90E64BE2A84F578002A71B6 /* SpotifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyViewController.swift; sourceTree = "<group>"; };
@@ -143,6 +149,13 @@
 		E90E64E12A87864C002A71B6 /* Array+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Array+.swift"; sourceTree = "<group>"; };
 		E90E64E32A878797002A71B6 /* CLLocationManager+RX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationManager+RX.swift"; sourceTree = "<group>"; };
 		E90E64E52A8787D0002A71B6 /* MKMapView+RX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MKMapView+RX.swift"; sourceTree = "<group>"; };
+		E90E64ED2A8B4688002A71B6 /* MusicListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicListCoordinator.swift; sourceTree = "<group>"; };
+		E90E64EF2A8B4734002A71B6 /* MusicListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicListViewController.swift; sourceTree = "<group>"; };
+		E90E64F12A8B47D0002A71B6 /* MusicListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicListViewModel.swift; sourceTree = "<group>"; };
+		E90E64F32A8B4FE6002A71B6 /* MusicListCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicListCollectionCell.swift; sourceTree = "<group>"; };
+		E90E64F52A8B51F5002A71B6 /* Music.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Music.swift; sourceTree = "<group>"; };
+		E90E64FA2A8B5586002A71B6 /* SpotifyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyService.swift; sourceTree = "<group>"; };
+		E90E64FE2A8B74D6002A71B6 /* SpotifySearchDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifySearchDTO.swift; sourceTree = "<group>"; };
 		F48083693CF0EB1227383675 /* Pods-MeloPlace.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeloPlace.release.xcconfig"; path = "Target Support Files/Pods-MeloPlace/Pods-MeloPlace.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -152,7 +165,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C2AC055D2C60EABBC7484183 /* Pods_MeloPlace.framework in Frameworks */,
-				E90E64E72A879F8B002A71B6 /* SpotifyiOS.framework in Frameworks */,
+				E90E65052A8B8B28002A71B6 /* SpotifyiOS in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -178,7 +191,6 @@
 		539304E78576A6CEA358F46B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				E90E64B62A84ED2A002A71B6 /* SpotifyiOS.framework */,
 				B8DFD7791FAE279CDDBF779A /* Pods_MeloPlace.framework */,
 				9FED2394756A4B4F983B47D3 /* Pods_MeloPlace_MeloPlaceUITests.framework */,
 				74DFAEE2E1A6B5551A2A2277 /* Pods_MeloPlaceTests.framework */,
@@ -224,6 +236,7 @@
 		E90E64362A80F3F4002A71B6 /* MeloPlace */ = {
 			isa = PBXGroup;
 			children = (
+				E90E64F72A8B5557002A71B6 /* Service */,
 				E90E64BB2A84F35D002A71B6 /* InfraStructure */,
 				E90E64B32A84CABE002A71B6 /* Util */,
 				E90E64A22A820F3C002A71B6 /* Domain */,
@@ -271,6 +284,7 @@
 		E90E646C2A80F76C002A71B6 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				E90E64E82A8B460B002A71B6 /* Music */,
 				E90E64C42A876A8C002A71B6 /* Location */,
 				E90E64C32A876A26002A71B6 /* Tab */,
 				E90E64A62A823750002A71B6 /* AddMeloPlace */,
@@ -456,6 +470,7 @@
 				E90E64A42A820FB5002A71B6 /* MeloPlace.swift */,
 				E90E64DD2A8781D3002A71B6 /* GeoPoint.swift */,
 				E90E64DF2A878228002A71B6 /* Address.swift */,
+				E90E64F52A8B51F5002A71B6 /* Music.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -597,6 +612,114 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		E90E64E82A8B460B002A71B6 /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				E90E65062A8BE817002A71B6 /* MusicPlayer */,
+				E90E64FC2A8B6227002A71B6 /* MusicList */,
+			);
+			path = Music;
+			sourceTree = "<group>";
+		};
+		E90E64E92A8B4632002A71B6 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64ED2A8B4688002A71B6 /* MusicListCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		E90E64EA2A8B4638002A71B6 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64EF2A8B4734002A71B6 /* MusicListViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		E90E64EB2A8B4640002A71B6 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64F12A8B47D0002A71B6 /* MusicListViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E90E64EC2A8B4652002A71B6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64F32A8B4FE6002A71B6 /* MusicListCollectionCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E90E64F72A8B5557002A71B6 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64F82A8B5562002A71B6 /* Service */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		E90E64F82A8B5562002A71B6 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64FD2A8B74D0002A71B6 /* DTO */,
+				E90E64F92A8B556D002A71B6 /* Spotify */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		E90E64F92A8B556D002A71B6 /* Spotify */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64FA2A8B5586002A71B6 /* SpotifyService.swift */,
+			);
+			path = Spotify;
+			sourceTree = "<group>";
+		};
+		E90E64FC2A8B6227002A71B6 /* MusicList */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64EC2A8B4652002A71B6 /* View */,
+				E90E64EB2A8B4640002A71B6 /* ViewModel */,
+				E90E64EA2A8B4638002A71B6 /* ViewController */,
+				E90E64E92A8B4632002A71B6 /* Coordinator */,
+			);
+			path = MusicList;
+			sourceTree = "<group>";
+		};
+		E90E64FD2A8B74D0002A71B6 /* DTO */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64FE2A8B74D6002A71B6 /* SpotifySearchDTO.swift */,
+			);
+			path = DTO;
+			sourceTree = "<group>";
+		};
+		E90E65062A8BE817002A71B6 /* MusicPlayer */ = {
+			isa = PBXGroup;
+			children = (
+				E90E65082A8BE82E002A71B6 /* ViewController */,
+				E90E65072A8BE821002A71B6 /* Coordinator */,
+			);
+			path = MusicPlayer;
+			sourceTree = "<group>";
+		};
+		E90E65072A8BE821002A71B6 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		E90E65082A8BE82E002A71B6 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -615,6 +738,9 @@
 			dependencies = (
 			);
 			name = MeloPlace;
+			packageProductDependencies = (
+				E90E65042A8B8B28002A71B6 /* SpotifyiOS */,
+			);
 			productName = MeloPlace;
 			productReference = E90E64342A80F3F4002A71B6 /* MeloPlace.app */;
 			productType = "com.apple.product-type.application";
@@ -691,6 +817,9 @@
 				Base,
 			);
 			mainGroup = E90E642B2A80F3F4002A71B6;
+			packageReferences = (
+				E90E65032A8B8B28002A71B6 /* XCRemoteSwiftPackageReference "ios-sdk" */,
+			);
 			productRefGroup = E90E64352A80F3F4002A71B6 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -848,21 +977,28 @@
 				E90E643C2A80F3F4002A71B6 /* ViewController.swift in Sources */,
 				E90E64D12A8773DF002A71B6 /* MapView.swift in Sources */,
 				E90E64CB2A876E40002A71B6 /* MeloLocationViewModel.swift in Sources */,
+				E90E64F02A8B4734002A71B6 /* MusicListViewController.swift in Sources */,
 				E90E649A2A80FAE4002A71B6 /* BrowseViewController.swift in Sources */,
 				E90E64B22A824BDF002A71B6 /* AddMeloPlaceView.swift in Sources */,
 				E90E64B52A84CAD5002A71B6 /* Extension.swift in Sources */,
 				E90E64E02A878228002A71B6 /* Address.swift in Sources */,
+				E90E64F22A8B47D0002A71B6 /* MusicListViewModel.swift in Sources */,
 				E90E64E22A87864C002A71B6 /* Array+.swift in Sources */,
+				E90E64FB2A8B5587002A71B6 /* SpotifyService.swift in Sources */,
 				E90E647E2A80F99C002A71B6 /* MainCoordinator.swift in Sources */,
+				E90E64FF2A8B74D6002A71B6 /* SpotifySearchDTO.swift in Sources */,
+				E90E64F42A8B4FE6002A71B6 /* MusicListCollectionCell.swift in Sources */,
 				E90E64C92A876AD7002A71B6 /* MeloLocationViewController.swift in Sources */,
 				E90E64A12A810D3E002A71B6 /* MainCell.swift in Sources */,
 				E90E648C2A80FA8C002A71B6 /* SettingCoordinator.swift in Sources */,
+				E90E64F62A8B51F5002A71B6 /* Music.swift in Sources */,
 				E90E64CD2A876E6B002A71B6 /* MeloLocationCoordinator.swift in Sources */,
 				E90E64D32A877901002A71B6 /* ThemeButton.swift in Sources */,
 				E90E64E42A878797002A71B6 /* CLLocationManager+RX.swift in Sources */,
 				E90E649C2A80FAED002A71B6 /* BrowseViewModel.swift in Sources */,
 				E90E64962A80FABB002A71B6 /* MapViewModel.swift in Sources */,
 				E90E64AC2A8237AD002A71B6 /* AddMeloPlaceCoordinator.swift in Sources */,
+				E90E64EE2A8B4688002A71B6 /* MusicListCoordinator.swift in Sources */,
 				E90E64BF2A84F578002A71B6 /* SpotifyViewController.swift in Sources */,
 				E90E64382A80F3F4002A71B6 /* AppDelegate.swift in Sources */,
 				E90E646B2A80F710002A71B6 /* DIContainer.swift in Sources */,
@@ -1296,6 +1432,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		E90E65032A8B8B28002A71B6 /* XCRemoteSwiftPackageReference "ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/spotify/ios-sdk";
+			requirement = {
+				kind = exactVersion;
+				version = 1.2.3;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		E90E65042A8B8B28002A71B6 /* SpotifyiOS */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E90E65032A8B8B28002A71B6 /* XCRemoteSwiftPackageReference "ios-sdk" */;
+			productName = SpotifyiOS;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = E90E642C2A80F3F4002A71B6 /* Project object */;
 }

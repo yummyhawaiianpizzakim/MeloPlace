@@ -22,10 +22,10 @@ class MainViewController: UIViewController {
     
     var dataSource: DataSource?
     
-    var centerIndex: CGFloat {
-        return self.mainCollectionView.contentOffset.x / (216.0 * 0.75 + 10)
-       }
-    
+//    var centerIndex: CGFloat {
+//        return self.mainCollectionView.contentOffset.x / (216.0 * 0.75 + 10)
+//       }
+//
     lazy var testLabel: UILabel = {
         let label = UILabel()
         label.text = "aaa"
@@ -76,7 +76,7 @@ class MainViewController: UIViewController {
 //        self.view.backgroundColor = .green
         self.configureUI()
         self.setDataSource()
-        self.bind()
+        self.bindViewModel()
     }
 }
 
@@ -96,7 +96,7 @@ private extension MainViewController {
         }
     }
     
-    func bind() {
+    func bindViewModel() {
         let input = MainViewModel.Input(
             didTapAddButton: self.addButton.rx.tap.asObservable()
         )
@@ -138,10 +138,10 @@ private extension MainViewController {
         return snapshot
     }
     
-    func getIndexRange(index: Int) -> ClosedRange<CGFloat> {
-        let index = CGFloat(index)
-        return (index - 0.1)...(index + 0.1)
-    }
+//    func getIndexRange(index: Int) -> ClosedRange<CGFloat> {
+//        let index = CGFloat(index)
+//        return (index - 0.1)...(index + 0.1)
+//    }
 }
 
 extension MainViewController {
