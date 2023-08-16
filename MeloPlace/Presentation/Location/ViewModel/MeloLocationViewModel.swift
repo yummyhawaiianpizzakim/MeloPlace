@@ -29,17 +29,6 @@ struct MeloLocationViewModelActions {
 }
 
 final class MeloLocationViewModel {
-    var disposeBag: DisposeBag = DisposeBag()
-//    var coordinator: CapsuleLocateCoordinator?
-
-    var actions: MeloLocationViewModelActions?
-    var delegate: MeloLocationViewModelDelegate?
-    
-    func setActions(actions: MeloLocationViewModelActions) {
-        self.actions = actions
-    }
-    
-    let isDragging = PublishRelay<Bool>()
     
     struct Input {
         var done: Observable<Void>
@@ -61,6 +50,17 @@ final class MeloLocationViewModel {
                 (address: address, geopoint: geopoint)
             }
         }
+    }
+    
+    var disposeBag: DisposeBag = DisposeBag()
+
+    var actions: MeloLocationViewModelActions?
+    var delegate: MeloLocationViewModelDelegate?
+    
+    let isDragging = PublishRelay<Bool>()
+    
+    func setActions(actions: MeloLocationViewModelActions) {
+        self.actions = actions
     }
     
     func transform(input: Input) -> Output {

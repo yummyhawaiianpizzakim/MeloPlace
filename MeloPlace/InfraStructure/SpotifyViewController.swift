@@ -7,9 +7,15 @@
 
 import Foundation
 import UIKit
+import RxSwift
+import Alamofire
+import SpotifyiOS
 
 class SpotifyViewController: UIViewController {
     let spotify = Spotify()
+    let service = SpotifyService()
+    
+    var aaa = ""
 
     // MARK: - Spotify Authorization & Configuration
     var responseCode: String? {
@@ -22,6 +28,7 @@ class SpotifyViewController: UIViewController {
                 let accessToken = dictionary!["access_token"] as! String
                 DispatchQueue.main.async {
                     self.appRemote.connectionParameters.accessToken = accessToken
+                    self.aaa = accessToken
                     self.appRemote.connect()
                 }
             }
@@ -109,6 +116,9 @@ class SpotifyViewController: UIViewController {
     @objc func didTapPauseOrPlay(_ button: UIButton) {
         if let lastPlayerState = lastPlayerState, lastPlayerState.isPaused {
             appRemote.playerAPI?.resume(nil)
+            let dto = self.searchMusic(query: "bts", type: "track")
+//            let dto = self.service.searchMusic(query: "bts", type: "track")
+            print(dto.values)
         } else {
             appRemote.playerAPI?.pause(nil)
         }
@@ -255,6 +265,7 @@ extension SpotifyViewController: SPTSessionManagerDelegate {
     }
 
     func sessionManager(manager: SPTSessionManager, didInitiate session: SPTSession) {
+        self.aaa = session.accessToken
         appRemote.connectionParameters.accessToken = session.accessToken
         appRemote.connect()
     }
@@ -318,5 +329,57 @@ extension SpotifyViewController {
                 self?.update(playerState: playerState)
             }
         })
+        
+    }
+    
+    func searchMusic(query: String, type: String) -> Observable<SpotifySearchDTO> {
+        let baseURLString = "https://api.spotify.com/v1"
+        let searchRequestURLString = "/search"
+//            let headers: HTTPHeaders = [
+//                "Authorization": "Bearer \(self.accessToken)"
+//            ]
+//            print(self.responseCode)
+        var accessTokenString = ""
+//            self.fetchAccessToken { (dictionary, error) in
+//                if let error = error {
+//                    print("Fetching token request error \(error)")
+//                    return
+//                }
+//                let accessToken = dictionary!["access_token"] as! String
+//                accessTokenString = accessToken
+//            }
+        
+        let headers: HTTPHeaders = ["Accept":"application/json",
+                                    "Content-Type":"application/json",
+                                    "Authorization":"Bearer \(self.aaa)"]
+        print(self.aaa)
+        let parameters = [
+            "q": query,
+            "type": type
+        ]
+        
+        let url = baseURLString + searchRequestURLString
+        
+        return Observable.create {[weak self] observer in
+            AF.request(url,
+                       method: .get,
+                       parameters: parameters,
+                       headers: headers
+            )
+            .validate()
+            .responseDecodable(of: SpotifySearchDTO.self) { response in
+                switch response.result {
+                case .success(let dto):
+                    print("dto: \(dto)")
+                    return observer.onNext(dto)
+                case .failure(let error):
+                    print("dto: \(error)")
+                    return observer.onError(error)
+                }
+            }
+            
+            return Disposables.create()
+        }
+        
     }
 }
