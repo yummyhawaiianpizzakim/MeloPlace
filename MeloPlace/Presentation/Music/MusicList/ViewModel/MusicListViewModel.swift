@@ -10,11 +10,12 @@ import RxSwift
 import RxRelay
 
 protocol MusicListViewModelDelegate: AnyObject {
-    
+    func musicDidSelect(music: Music)
 }
 
 struct MusicListViewModelActions {
     let showMusicPlayerView: (_ music: Music) -> Void
+    let closeMusicListView: () -> Void
 }
 
 class MusicListViewModel {
@@ -36,9 +37,10 @@ class MusicListViewModel {
     
     let disposeBag = DisposeBag()
     
+    let selectedMusic = BehaviorRelay<Music?>(value: nil)
+    
     var actions: MusicListViewModelActions?
     weak var delegate: MusicListViewModelDelegate?
-    let selectedMusic = BehaviorRelay<Music?>(value: nil)
     
     func setActions(actions: MusicListViewModelActions) {
         self.actions = actions
@@ -85,8 +87,10 @@ class MusicListViewModel {
         
         input.didTapDoneButton
             .withLatestFrom(self.selectedMusic.asObservable())
-            .subscribe { music in
-                
+            .subscribe {[weak self] music in
+                guard let music = music else { return }
+                self?.delegate?.musicDidSelect(music: music)
+                self?.actions?.closeMusicListView()
             }
             .disposed(by: self.disposeBag)
         

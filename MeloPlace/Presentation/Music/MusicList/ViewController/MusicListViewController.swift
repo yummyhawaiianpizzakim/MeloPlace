@@ -80,11 +80,11 @@ class MusicListViewController: UIViewController {
 
 private extension MusicListViewController {
     func configureUI() {
-        [topView, musicCollectionView, doneButton].forEach {
+        [self.topView, self.musicCollectionView, self.doneButton].forEach {
             self.view.addSubview($0)
         }
         
-        [titleLabel, connectButton, searchBar].forEach {
+        [self.titleLabel, self.connectButton, self.searchBar].forEach {
             self.topView.addSubview($0)
         }
         
@@ -95,7 +95,8 @@ private extension MusicListViewController {
         
         self.musicCollectionView.snp.makeConstraints { make in
             make.top.equalTo(self.topView.snp.bottom).offset(10)
-            make.leading.trailing.bottom.equalToSuperview()
+            make.bottom.equalTo(self.doneButton.snp.top).offset(-10)
+            make.horizontalEdges.equalToSuperview()
         }
         
         self.titleLabel.snp.makeConstraints { make in
@@ -104,7 +105,6 @@ private extension MusicListViewController {
         }
         
         self.connectButton.snp.makeConstraints { make in
-//            make.leading.equalTo(self.titleLabel.snp.trailing).offset()
             make.trailing.top.equalToSuperview()
             make.width.equalTo(50)
             make.height.equalTo(30)
@@ -117,7 +117,6 @@ private extension MusicListViewController {
         }
         
         self.doneButton.snp.makeConstraints { make in
-            make.top.equalTo(self.musicCollectionView.snp.bottom)
             make.bottom.equalToSuperview()
             make.horizontalEdges.equalToSuperview()
             make.height.equalTo(50)

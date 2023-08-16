@@ -36,20 +36,21 @@ class MusicListCoordinator: CoordinatorProtocol {
         let container = DIContainer.shared.container
         guard let vm = container.resolve(MusicListViewModel.self) else { return }
         
-//        vm.delegate = self.musicListViewModel
+        vm.delegate = self.addViewModel
         let vc = MusicListViewController(viewModel: vm)
         
         vm.setActions(
             actions: MusicListViewModelActions(
 //                closeMeloLocationView: self.closeMeloLocationView
-                showMusicPlayerView: self.showMusicPlayerView)
+                showMusicPlayerView: self.showMusicPlayerView,
+                closeMusicListView: self.closeMusicListView)
         )
         
         self.navigation.present(vc, animated: true)
 //        self.navigation.pushViewController(vc, animated: true)
     }
     
-    lazy var closeMeloLocationView: () -> Void = { [weak self] in
+    lazy var closeMusicListView: () -> Void = { [weak self] in
         self?.finish()
 //        self?.viewController?.dismiss(animated: true)
     }

@@ -138,7 +138,7 @@ class SpotifyService: NSObject {
             .responseDecodable(of: SpotifySearchDTO.self) { response in
                 switch response.result {
                 case .success(let dto):
-                    print("dto: \(dto)")
+//                    print("dto: \(dto)")
                     return observer.onNext(dto)
                 case .failure(let error):
                     print("dto: \(error)")
