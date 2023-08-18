@@ -30,6 +30,7 @@ class AddMeloPlaceViewModel {
         let selectedAddress = PublishRelay<Address>()
         let selectedGeoPoint = PublishRelay<GeoPoint>()
         let selectedDate = PublishRelay<Date>()
+        let selectedMusic = PublishRelay<Music?>()
     }
     
 //    let image = BehaviorRelay<Data>(value: Data())
@@ -79,6 +80,10 @@ class AddMeloPlaceViewModel {
         
         self.selectedDate
             .bind(to: output.selectedDate)
+            .disposed(by: self.disposeBag)
+        
+        self.selectedMusic
+            .bind(to: output.selectedMusic)
             .disposed(by: self.disposeBag)
         
         return output

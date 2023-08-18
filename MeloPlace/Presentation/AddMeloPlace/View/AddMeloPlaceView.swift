@@ -178,7 +178,7 @@ private extension AddMeloPlaceView {
         }
         [self.titleLabel, self.musicLabel, self.placeLabel, self.DateLabel, self.contentLabel].forEach { label in self.inputStackView.setCustomSpacing(10, after: label) }
         
-        [self.titleLabel, self.musicButton, self.placeButton, self.dateButton, self.contentTextView].forEach { view in self.inputStackView.setCustomSpacing(8, after: view) }
+        [self.titleTextField, self.musicButton, self.placeButton, self.dateButton, self.contentTextView].forEach { view in self.inputStackView.setCustomSpacing(8, after: view) }
     }
     
     func bindUI() {
