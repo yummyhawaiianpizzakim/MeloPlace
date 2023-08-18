@@ -45,6 +45,8 @@ class SpotifyService: NSObject {
                             "user-follow-read", "user-follow-modify",
                         ]
     let token = BehaviorRelay<String>(value: "")
+    let isToken = PublishSubject<Bool>()
+    let isSession = PublishSubject<Bool>()
 
     // MARK: - Spotify Authorization & Configuration
     var responseCode: String? {
@@ -57,7 +59,14 @@ class SpotifyService: NSObject {
                 let accessToken = dictionary!["access_token"] as! String
                 DispatchQueue.main.async {
                     self.appRemote.connectionParameters.accessToken = accessToken
-                    self.token.accept(accessToken)
+                    if !accessToken.isEmpty {
+                        print("accesstoken: \(accessToken)")
+                        self.token.accept(accessToken)
+                        self.isToken.onNext(true)
+                    } else {
+                        print("accesstoken fail: \(accessToken)")
+                        self.isToken.onNext(false)
+                    }
                     self.appRemote.connect()
                 }
             }
@@ -83,6 +92,7 @@ class SpotifyService: NSObject {
         // Set the playURI to a non-nil value so that Spotify plays music after authenticating
         // otherwise another app switch will be required
         configuration.playURI = ""
+//        configuration.playURI = nil
         // Set these url's to your backend which contains the secret to exchange for an access token
         // You can use the provided ruby script spotify_token_swap.rb for testing purposes
         configuration.tokenSwapURL = URL(string: "http://localhost:1234/swap")
@@ -96,60 +106,6 @@ class SpotifyService: NSObject {
     }()
 
     private var lastPlayerState: SPTAppRemotePlayerState?
-    
-    func tryConnect() {
-        guard let sessionManager = sessionManager else { return }
-        sessionManager.initiateSession(with: self.spotify.scopes, options: .clientOnly)
-    }
-    
-    func playMusic(uri: String) {
-//        let trackURI = "spotify:track:1vCWHaC5f2uS3yhpwWbIA6"
-        appRemote.playerAPI?.play(uri, callback: { (result, error) in
-            if let error = error {
-                print("Error playing track: \(error.localizedDescription)")
-            } else {
-                print("Track is now playing")
-            }
-        })
-
-    }
-    
-    func searchMusic(query: String, type: String) -> Observable<SpotifySearchDTO> {
-        let baseURLString = "https://api.spotify.com/v1"
-        let searchRequestURLString = "/search"
-        let headers: HTTPHeaders = ["Accept":"application/json",
-                                    "Content-Type":"application/json",
-                                    "Authorization":"Bearer \(self.token.value)"]
-        print("token: \(self.token.value)")
-        let parameters = [
-            "q": query,
-            "type": type
-        ]
-        
-        let url = baseURLString + searchRequestURLString
-        
-        return Observable.create {[weak self] observer in
-            AF.request(url,
-                       method: .get,
-                       parameters: parameters,
-                       headers: headers
-            )
-            .validate()
-            .responseDecodable(of: SpotifySearchDTO.self) { response in
-                switch response.result {
-                case .success(let dto):
-//                    print("dto: \(dto)")
-                    return observer.onNext(dto)
-                case .failure(let error):
-                    print("dto: \(error)")
-                    return observer.onError(error)
-                }
-            }
-            
-            return Disposables.create()
-        }
-        
-    }
 
 }
 
@@ -190,8 +146,10 @@ extension SpotifyService: SPTSessionManagerDelegate {
     func sessionManager(manager: SPTSessionManager, didFailWith error: Error) {
         if error.localizedDescription == "The operation couldn’t be completed. (com.spotify.sdk.login error 1.)" {
             print("AUTHENTICATE with WEBAPI")
+            self.isSession.onNext(false)
         } else {
 //            presentAlertController(title: "Authorization Failed", message: error.localizedDescription, buttonTitle: "Bummer")
+            self.isSession.onNext(false)
         }
     }
 
@@ -202,6 +160,7 @@ extension SpotifyService: SPTSessionManagerDelegate {
     func sessionManager(manager: SPTSessionManager, didInitiate session: SPTSession) {
         appRemote.connectionParameters.accessToken = session.accessToken
         appRemote.connect()
+        self.isSession.onNext(true)
     }
 }
 
@@ -269,4 +228,113 @@ extension SpotifyService {
         })
         
     }
+}
+
+extension SpotifyService {
+    
+    func tryConnect() {
+        guard let sessionManager = sessionManager else { return }
+        sessionManager.initiateSession(with: self.spotify.scopes, options: .clientOnly)
+    }
+    
+    func playMusic(uri: String) {
+//        let trackURI = "spotify:track:1vCWHaC5f2uS3yhpwWbIA6"
+        appRemote.playerAPI?.play(uri, callback: { (result, error) in
+            if let error = error {
+                print("Error playing track: \(error.localizedDescription)")
+            } else {
+                print("Track is now playing")
+            }
+        })
+
+    }
+    
+    func searchMusic(query: String, type: String) -> Observable<SpotifySearchDTO> {
+//        let token = UserDefaults.standard.string(forKey: self.spotify.accessTokenKey) ?? ""
+        let baseURLString = "https://api.spotify.com/v1"
+        let token = self.token.value
+        let searchRequestURLString = "/search"
+        let headers: HTTPHeaders = ["Accept":"application/json",
+                                    "Content-Type":"application/json",
+                                    "Authorization":"Bearer \(token)"]
+        print("token: \(token)")
+//        print("token: \(token)")
+        let parameters = [
+            "q": query,
+            "type": type
+        ]
+        
+        let url = baseURLString + searchRequestURLString
+        
+        return Observable.create {[weak self] observer in
+            AF.request(url,
+                       method: .get,
+                       parameters: parameters,
+                       headers: headers
+            )
+            .validate()
+            .responseDecodable(of: SpotifySearchDTO.self) { response in
+                switch response.result {
+                case .success(let dto):
+//                    print("dto: \(dto)")
+                    return observer.onNext(dto)
+                case .failure(let error):
+                    print("dto: \(error)")
+                    return observer.onError(error)
+                }
+            }
+            
+            return Disposables.create()
+        }
+        
+    }
+    
+    func fetchSpotifyUserProfile() -> Observable<SpotifyUserProfileDTO> {
+//        let url = URL(string: "https://api.spotify.com/v1/me")!
+        let url = "https://api.spotify.com/v1/me"
+        let token = self.token.value
+        let headers: HTTPHeaders = ["Authorization":"Bearer \(token)"]
+        print("token: \(token)")
+        return Observable.create { observer in
+            AF.request(url,
+                       method: .get,
+                       headers: headers
+            )
+            .validate()
+            .responseDecodable(of: SpotifyUserProfileDTO.self) { response in
+                switch response.result {
+                case .success(let dto):
+//                    print("dto: \(dto)")
+                    return observer.onNext(dto)
+                case .failure(let error):
+                    print("dto: \(error)")
+                    return observer.onError(error)
+                }
+            }
+
+            return Disposables.create()
+        }
+
+    }
+    
+//    func fetchSpotifyUserProfile(accessToken: String) {
+//        let url = URL(string: "https://api.spotify.com/v1/me")!
+//        var request = URLRequest(url: url)
+//        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+//
+//        URLSession.shared.dataTask(with: request) { data, response, error in
+//            guard let data = data else { return }
+//
+//            do {
+//                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] {
+//                    if let userId = json["id"] as? String {
+//                        print("User ID is \(userId)")
+//                    }
+//                }
+//            } catch let error {
+//                print(error.localizedDescription)
+//            }
+//        }.resume()
+//    }
+    
 }

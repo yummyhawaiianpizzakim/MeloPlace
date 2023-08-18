@@ -13,6 +13,9 @@ target 'MeloPlace' do
   pod 'Alamofire'
   pod 'Kingfisher'
   pod 'Swinject'
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
+  pod 'FirebaseFirestoreSwift'
 
 
 
