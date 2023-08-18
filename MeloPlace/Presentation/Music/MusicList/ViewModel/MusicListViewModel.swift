@@ -84,7 +84,7 @@ class MusicListViewModel {
 //                owner.actions?.showMusicPlayerView(music)
             }
             .disposed(by: self.disposeBag)
-        
+         
         input.didTapDoneButton
             .withLatestFrom(self.selectedMusic.asObservable())
             .subscribe {[weak self] music in

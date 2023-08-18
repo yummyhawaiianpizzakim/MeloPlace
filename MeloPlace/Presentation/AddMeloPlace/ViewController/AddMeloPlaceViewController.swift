@@ -128,6 +128,14 @@ private extension AddMeloPlaceViewController {
                 owner.addMeloPlaceView.dateButton.setText(date.toString())
             })
             .disposed(by: self.disposeBag)
+        
+        output?.selectedMusic
+            .asDriver(onErrorJustReturn: nil)
+            .drive(with: self, onNext: { owner, music in
+                guard let music = music else { return }
+                owner.addMeloPlaceView.musicButton.setText(music.name)
+            })
+            .disposed(by: self.disposeBag)
     }
 }
 
