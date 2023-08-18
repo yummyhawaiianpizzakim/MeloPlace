@@ -36,8 +36,8 @@ class AppCoordinator: CoordinatorProtocol {
 //              self.showTabBarFlow()
 //          }
 //        }
-//        self.showSignInFlow()
-        self.showTabBarFlow()
+        self.showSignInFlow()
+//        self.showTabBarFlow()
     }
 
 }
@@ -51,13 +51,13 @@ extension AppCoordinator {
         
     }
     
-//    func showSignInFlow() {
-//        let signInCoordinator = SignInCoordinator(navigation: self.navigation)
-//        signInCoordinator.finishDelegate = self
-//        signInCoordinator.start()
-//        childCoordinators.append(signInCoordinator)
-//
-//    }
+    func showSignInFlow() {
+        let signInCoordinator = SignInCoordinator(navigation: self.navigation)
+        signInCoordinator.finishDelegate = self
+        signInCoordinator.start()
+        childCoordinators.append(signInCoordinator)
+
+    }
 }
 
 extension AppCoordinator: CoordinatorFinishDelegate {
@@ -66,17 +66,17 @@ extension AppCoordinator: CoordinatorFinishDelegate {
             coordinator.type != childCoordinator.type
         })
         
-//        self.navigation.view.backgroundColor = .systemBackground
-//        self.navigation.viewControllers.removeAll()
+        self.navigation.view.backgroundColor = .systemBackground
+        self.navigation.viewControllers.removeAll()
         
-//        switch childCoordinator.type {
-//        case .tab:
-//            self.showSignInFlow()
-//        case .signIn:
-//            self.showTabBarFlow()
-//        default:
-//            break
-//        }
+        switch childCoordinator.type {
+        case .tab:
+            self.showSignInFlow()
+        case .signIn:
+            self.showTabBarFlow()
+        default:
+            break
+        }
         
     }
     

@@ -42,11 +42,18 @@ class DIContainer {
         self.registerMeloLocationViewModel()
         self.registerMusicListViewModel()
         self.registerSelectDateViewModel()
+        self.registerSignInViewModel()
+        self.registerSignUpViewModel()
     }
 }
 
 private extension DIContainer {
-    
+    func registerFireBaseNetworkService() {
+        self.container.register(FireBaseNetworkServiceProtocol.self) { resolver in
+            return FireBaseNetworkService()
+        }
+        .inObjectScope(.container)
+    }
 }
 
 private extension DIContainer {
@@ -120,6 +127,20 @@ private extension DIContainer {
     func registerSelectDateViewModel() {
         self.container.register(SelectDateViewModel.self) { resolver in
             return SelectDateViewModel()
+        }
+        .inObjectScope(.graph)
+    }
+    
+    func registerSignInViewModel() {
+        self.container.register(SignInViewModel.self) { resolver in
+            return SignInViewModel()
+        }
+        .inObjectScope(.graph)
+    }
+    
+    func registerSignUpViewModel() {
+        self.container.register(SignUpViewModel.self) { resolver in
+            return SignUpViewModel()
         }
         .inObjectScope(.graph)
     }

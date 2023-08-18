@@ -68,6 +68,17 @@
 		E90E650E2A8CB881002A71B6 /* SelectDateCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E650D2A8CB881002A71B6 /* SelectDateCoordinator.swift */; };
 		E90E65102A8CB89C002A71B6 /* SelectDateViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E650F2A8CB89C002A71B6 /* SelectDateViewController.swift */; };
 		E90E65122A8CB8CC002A71B6 /* SelectDateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65112A8CB8CC002A71B6 /* SelectDateViewModel.swift */; };
+		E90E65142A8DDF79002A71B6 /* SpotifyUserProfileDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65132A8DDF79002A71B6 /* SpotifyUserProfileDTO.swift */; };
+		E90E651C2A8DEE23002A71B6 /* SignInCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E651B2A8DEE23002A71B6 /* SignInCoordinator.swift */; };
+		E90E651E2A8DEE65002A71B6 /* SignInViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E651D2A8DEE65002A71B6 /* SignInViewController.swift */; };
+		E90E65202A8DEE6F002A71B6 /* SignInViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E651F2A8DEE6F002A71B6 /* SignInViewModel.swift */; };
+		E90E65222A8DF569002A71B6 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = E90E65212A8DF569002A71B6 /* GoogleService-Info.plist */; };
+		E90E65242A8DF7B3002A71B6 /* FireBaseNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65232A8DF7B3002A71B6 /* FireBaseNetworkService.swift */; };
+		E90E65262A8DF975002A71B6 /* DTOProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65252A8DF975002A71B6 /* DTOProtocol.swift */; };
+		E90E65282A8DF9F4002A71B6 /* UserDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65272A8DF9F4002A71B6 /* UserDTO.swift */; };
+		E90E652E2A8E22C9002A71B6 /* SignUpCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E652D2A8E22C9002A71B6 /* SignUpCoordinator.swift */; };
+		E90E65302A8E22D7002A71B6 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E652F2A8E22D7002A71B6 /* SignUpViewController.swift */; };
+		E90E65322A8E22E4002A71B6 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65312A8E22E4002A71B6 /* SignUpViewModel.swift */; };
 		F5799F688EC91F2B993C799E /* Pods_MeloPlaceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74DFAEE2E1A6B5551A2A2277 /* Pods_MeloPlaceTests.framework */; };
 		FA5C3C5E8A3EA8B36C6D1BCA /* Pods_MeloPlace_MeloPlaceUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FED2394756A4B4F983B47D3 /* Pods_MeloPlace_MeloPlaceUITests.framework */; };
 /* End PBXBuildFile section */
@@ -162,6 +173,17 @@
 		E90E650D2A8CB881002A71B6 /* SelectDateCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateCoordinator.swift; sourceTree = "<group>"; };
 		E90E650F2A8CB89C002A71B6 /* SelectDateViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateViewController.swift; sourceTree = "<group>"; };
 		E90E65112A8CB8CC002A71B6 /* SelectDateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectDateViewModel.swift; sourceTree = "<group>"; };
+		E90E65132A8DDF79002A71B6 /* SpotifyUserProfileDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyUserProfileDTO.swift; sourceTree = "<group>"; };
+		E90E651B2A8DEE23002A71B6 /* SignInCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInCoordinator.swift; sourceTree = "<group>"; };
+		E90E651D2A8DEE65002A71B6 /* SignInViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewController.swift; sourceTree = "<group>"; };
+		E90E651F2A8DEE6F002A71B6 /* SignInViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInViewModel.swift; sourceTree = "<group>"; };
+		E90E65212A8DF569002A71B6 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		E90E65232A8DF7B3002A71B6 /* FireBaseNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FireBaseNetworkService.swift; sourceTree = "<group>"; };
+		E90E65252A8DF975002A71B6 /* DTOProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DTOProtocol.swift; sourceTree = "<group>"; };
+		E90E65272A8DF9F4002A71B6 /* UserDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDTO.swift; sourceTree = "<group>"; };
+		E90E652D2A8E22C9002A71B6 /* SignUpCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpCoordinator.swift; sourceTree = "<group>"; };
+		E90E652F2A8E22D7002A71B6 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		E90E65312A8E22E4002A71B6 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
 		F48083693CF0EB1227383675 /* Pods-MeloPlace.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeloPlace.release.xcconfig"; path = "Target Support Files/Pods-MeloPlace/Pods-MeloPlace.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -242,16 +264,17 @@
 		E90E64362A80F3F4002A71B6 /* MeloPlace */ = {
 			isa = PBXGroup;
 			children = (
-				E90E64F72A8B5557002A71B6 /* Service */,
-				E90E64BB2A84F35D002A71B6 /* InfraStructure */,
-				E90E64B32A84CABE002A71B6 /* Util */,
-				E90E64A22A820F3C002A71B6 /* Domain */,
 				E90E64672A80F6BF002A71B6 /* Application */,
+				E90E64B32A84CABE002A71B6 /* Util */,
+				E90E64BB2A84F35D002A71B6 /* InfraStructure */,
+				E90E64F72A8B5557002A71B6 /* Service */,
+				E90E64A22A820F3C002A71B6 /* Domain */,
 				E90E646C2A80F76C002A71B6 /* Presentation */,
 				E90E643D2A80F3F4002A71B6 /* Main.storyboard */,
 				E90E64402A80F3F6002A71B6 /* Assets.xcassets */,
 				E90E64422A80F3F6002A71B6 /* LaunchScreen.storyboard */,
 				E90E64452A80F3F6002A71B6 /* Info.plist */,
+				E90E65212A8DF569002A71B6 /* GoogleService-Info.plist */,
 				E90E64B82A84EE74002A71B6 /* MeloPlace-Bridging-Header.h */,
 			);
 			path = MeloPlace;
@@ -290,11 +313,12 @@
 		E90E646C2A80F76C002A71B6 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				E90E65152A8DEDCF002A71B6 /* Sign */,
 				E90E65092A8CB826002A71B6 /* Date */,
 				E90E64E82A8B460B002A71B6 /* Music */,
 				E90E64C42A876A8C002A71B6 /* Location */,
-				E90E64C32A876A26002A71B6 /* Tab */,
 				E90E64A62A823750002A71B6 /* AddMeloPlace */,
+				E90E64C32A876A26002A71B6 /* Tab */,
 				E90E64852A80F9D6002A71B6 /* Common */,
 			);
 			path = Presentation;
@@ -542,6 +566,7 @@
 				E90E64BC2A84F37E002A71B6 /* Spotify.swift */,
 				E90E64BE2A84F578002A71B6 /* SpotifyViewController.swift */,
 				E90E64DB2A87806D002A71B6 /* LocationManager.swift */,
+				E90E65232A8DF7B3002A71B6 /* FireBaseNetworkService.swift */,
 			);
 			path = InfraStructure;
 			sourceTree = "<group>";
@@ -700,6 +725,9 @@
 			isa = PBXGroup;
 			children = (
 				E90E64FE2A8B74D6002A71B6 /* SpotifySearchDTO.swift */,
+				E90E65132A8DDF79002A71B6 /* SpotifyUserProfileDTO.swift */,
+				E90E65252A8DF975002A71B6 /* DTOProtocol.swift */,
+				E90E65272A8DF9F4002A71B6 /* UserDTO.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -759,6 +787,83 @@
 				E90E65112A8CB8CC002A71B6 /* SelectDateViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E90E65152A8DEDCF002A71B6 /* Sign */ = {
+			isa = PBXGroup;
+			children = (
+				E90E65292A8E2292002A71B6 /* SignUp */,
+				E90E65162A8DEDD5002A71B6 /* SignIn */,
+			);
+			path = Sign;
+			sourceTree = "<group>";
+		};
+		E90E65162A8DEDD5002A71B6 /* SignIn */ = {
+			isa = PBXGroup;
+			children = (
+				E90E65192A8DEDFF002A71B6 /* SignInViewModel */,
+				E90E65182A8DEDEF002A71B6 /* SignInViewController */,
+				E90E65172A8DEDDD002A71B6 /* SignInCoordinator */,
+			);
+			path = SignIn;
+			sourceTree = "<group>";
+		};
+		E90E65172A8DEDDD002A71B6 /* SignInCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				E90E651B2A8DEE23002A71B6 /* SignInCoordinator.swift */,
+			);
+			path = SignInCoordinator;
+			sourceTree = "<group>";
+		};
+		E90E65182A8DEDEF002A71B6 /* SignInViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E90E651D2A8DEE65002A71B6 /* SignInViewController.swift */,
+			);
+			path = SignInViewController;
+			sourceTree = "<group>";
+		};
+		E90E65192A8DEDFF002A71B6 /* SignInViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E90E651F2A8DEE6F002A71B6 /* SignInViewModel.swift */,
+			);
+			path = SignInViewModel;
+			sourceTree = "<group>";
+		};
+		E90E65292A8E2292002A71B6 /* SignUp */ = {
+			isa = PBXGroup;
+			children = (
+				E90E652C2A8E22AC002A71B6 /* SignUpViewModel */,
+				E90E652B2A8E22A2002A71B6 /* SignUpViewController */,
+				E90E652A2A8E2299002A71B6 /* SignUpCoordinator */,
+			);
+			path = SignUp;
+			sourceTree = "<group>";
+		};
+		E90E652A2A8E2299002A71B6 /* SignUpCoordinator */ = {
+			isa = PBXGroup;
+			children = (
+				E90E652D2A8E22C9002A71B6 /* SignUpCoordinator.swift */,
+			);
+			path = SignUpCoordinator;
+			sourceTree = "<group>";
+		};
+		E90E652B2A8E22A2002A71B6 /* SignUpViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E90E652F2A8E22D7002A71B6 /* SignUpViewController.swift */,
+			);
+			path = SignUpViewController;
+			sourceTree = "<group>";
+		};
+		E90E652C2A8E22AC002A71B6 /* SignUpViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E90E65312A8E22E4002A71B6 /* SignUpViewModel.swift */,
+			);
+			path = SignUpViewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -878,6 +983,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E90E64442A80F3F6002A71B6 /* LaunchScreen.storyboard in Resources */,
+				E90E65222A8DF569002A71B6 /* GoogleService-Info.plist in Resources */,
 				E90E64412A80F3F6002A71B6 /* Assets.xcassets in Resources */,
 				E90E643F2A80F3F4002A71B6 /* Main.storyboard in Resources */,
 			);
@@ -1020,11 +1126,15 @@
 				E90E64D12A8773DF002A71B6 /* MapView.swift in Sources */,
 				E90E64CB2A876E40002A71B6 /* MeloLocationViewModel.swift in Sources */,
 				E90E64F02A8B4734002A71B6 /* MusicListViewController.swift in Sources */,
+				E90E65322A8E22E4002A71B6 /* SignUpViewModel.swift in Sources */,
 				E90E649A2A80FAE4002A71B6 /* BrowseViewController.swift in Sources */,
 				E90E64B22A824BDF002A71B6 /* AddMeloPlaceView.swift in Sources */,
 				E90E64B52A84CAD5002A71B6 /* Extension.swift in Sources */,
+				E90E65302A8E22D7002A71B6 /* SignUpViewController.swift in Sources */,
+				E90E652E2A8E22C9002A71B6 /* SignUpCoordinator.swift in Sources */,
 				E90E64E02A878228002A71B6 /* Address.swift in Sources */,
 				E90E64F22A8B47D0002A71B6 /* MusicListViewModel.swift in Sources */,
+				E90E65282A8DF9F4002A71B6 /* UserDTO.swift in Sources */,
 				E90E64E22A87864C002A71B6 /* Array+.swift in Sources */,
 				E90E64FB2A8B5587002A71B6 /* SpotifyService.swift in Sources */,
 				E90E647E2A80F99C002A71B6 /* MainCoordinator.swift in Sources */,
@@ -1032,10 +1142,13 @@
 				E90E64F42A8B4FE6002A71B6 /* MusicListCollectionCell.swift in Sources */,
 				E90E64C92A876AD7002A71B6 /* MeloLocationViewController.swift in Sources */,
 				E90E64A12A810D3E002A71B6 /* MainCell.swift in Sources */,
+				E90E65242A8DF7B3002A71B6 /* FireBaseNetworkService.swift in Sources */,
 				E90E648C2A80FA8C002A71B6 /* SettingCoordinator.swift in Sources */,
 				E90E64F62A8B51F5002A71B6 /* Music.swift in Sources */,
 				E90E65102A8CB89C002A71B6 /* SelectDateViewController.swift in Sources */,
+				E90E651E2A8DEE65002A71B6 /* SignInViewController.swift in Sources */,
 				E90E64CD2A876E6B002A71B6 /* MeloLocationCoordinator.swift in Sources */,
+				E90E651C2A8DEE23002A71B6 /* SignInCoordinator.swift in Sources */,
 				E90E64D32A877901002A71B6 /* ThemeButton.swift in Sources */,
 				E90E64E42A878797002A71B6 /* CLLocationManager+RX.swift in Sources */,
 				E90E649C2A80FAED002A71B6 /* BrowseViewModel.swift in Sources */,
@@ -1044,7 +1157,10 @@
 				E90E64EE2A8B4688002A71B6 /* MusicListCoordinator.swift in Sources */,
 				E90E64BF2A84F578002A71B6 /* SpotifyViewController.swift in Sources */,
 				E90E64382A80F3F4002A71B6 /* AppDelegate.swift in Sources */,
+				E90E65142A8DDF79002A71B6 /* SpotifyUserProfileDTO.swift in Sources */,
 				E90E646B2A80F710002A71B6 /* DIContainer.swift in Sources */,
+				E90E65202A8DEE6F002A71B6 /* SignInViewModel.swift in Sources */,
+				E90E65262A8DF975002A71B6 /* DTOProtocol.swift in Sources */,
 				E90E64922A80FAA9002A71B6 /* MapCoordinator.swift in Sources */,
 				E90E64692A80F6F8002A71B6 /* CoordinatorProtocol.swift in Sources */,
 				E90E643A2A80F3F4002A71B6 /* SceneDelegate.swift in Sources */,

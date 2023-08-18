@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>1073935324858-m5rkh0agcgqe92un5vf2jqbathgsn5bu.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.1073935324858-m5rkh0agcgqe92un5vf2jqbathgsn5bu</string>
+	<key>API_KEY</key>
+	<string>AIzaSyBoTb0mybGQiSAr1nUORdbrhkoj7oqTd9E</string>
+	<key>GCM_SENDER_ID</key>
+	<string>1073935324858</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>yummyHawaiianPizzaKim.MeloPlace</string>
+	<key>PROJECT_ID</key>
+	<string>meloplace-f8a8a</string>
+	<key>STORAGE_BUCKET</key>
+	<string>meloplace-f8a8a.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:1073935324858:ios:1cdbef3046395ecab69483</string>
+</dict>
+</plist>

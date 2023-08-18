@@ -15,7 +15,7 @@ struct SpotifySearchDTO: Codable {
 // MARK: - Tracks
 struct Tracks: Codable {
     var href: String
-    var items: [Item]
+    var items: [SpotifySearchItem]
     var limit: Int
     var next: String
     var offset: Int
@@ -24,14 +24,14 @@ struct Tracks: Codable {
 }
 
 // MARK: - Item
-struct Item: Codable {
-    var album: Album
-    var artists: [Artist]
+struct SpotifySearchItem: Codable {
+    var album: SpotifySearchAlbum
+    var artists: [SpotifySearchArtist]
     var availableMarkets: [String]
     var discNumber, durationMS: Int
     var explicit: Bool
-    var externalIDS: ExternalIDS
-    var externalUrls: ExternalUrls
+    var externalIDS: SpotifySearchExternalIDS
+    var externalUrls: SpotifySearchExternalUrls
     var href: String
     var id: String
     var isLocal: Bool
@@ -59,14 +59,14 @@ struct Item: Codable {
 }
 
 // MARK: - Album
-struct Album: Codable {
+struct SpotifySearchAlbum: Codable {
     var albumType: String
-    var artists: [Artist]
+    var artists: [SpotifySearchArtist]
     var availableMarkets: [String]
-    var externalUrls: ExternalUrls
+    var externalUrls: SpotifySearchExternalUrls
     var href: String
     var id: String
-    var images: [Image]
+    var images: [SpotifySearchImage]
     var name, releaseDate, releaseDatePrecision: String
     var totalTracks: Int
     var type, uri: String
@@ -85,8 +85,8 @@ struct Album: Codable {
 }
 
 // MARK: - Artist
-struct Artist: Codable {
-    var externalUrls: ExternalUrls
+struct SpotifySearchArtist: Codable {
+    var externalUrls: SpotifySearchExternalUrls
     var href: String
     var id, name, type, uri: String
 
@@ -97,19 +97,19 @@ struct Artist: Codable {
 }
 
 // MARK: - ExternalUrls
-struct ExternalUrls: Codable {
+struct SpotifySearchExternalUrls: Codable {
     var spotify: String
 }
 
 // MARK: - Image
-struct Image: Codable {
+struct SpotifySearchImage: Codable {
     var height: Int
     var url: String
     var width: Int
 }
 
 // MARK: - ExternalIDS
-struct ExternalIDS: Codable {
+struct SpotifySearchExternalIDS: Codable {
     var isrc: String
 }
 
