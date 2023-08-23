@@ -54,15 +54,19 @@ struct UserDTO: DTOProtocol {
 
 extension UserDTO {
     func toDomain() -> User {
-        return User(id: self.id,
-                    spotifyID: self.spotifyID,
-                    name: self.name,
-                    email: self.email,
-                    password: self.password,
-                    imageURL: self.imageURL,
-                    imageWidth: self.imageWidth,
-                    imageHeight: self.imageHeight
-        )
+        print("Inside toDomain function")
+        let user = User(id: self.id,
+                        spotifyID: self.spotifyID,
+                        name: self.name,
+                        email: self.email,
+                        password: self.password,
+                        imageURL: self.imageURL,
+                        imageWidth: self.imageWidth,
+                        imageHeight: self.imageHeight
+            )
+        
+        print("todomain: \(user)")
+        return user
     }
 }
 

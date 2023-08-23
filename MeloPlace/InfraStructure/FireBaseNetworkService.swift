@@ -10,6 +10,7 @@ import FirebaseCore
 import FirebaseAuth
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+import FirebaseStorage
 import RxSwift
 import RxRelay
 
@@ -34,6 +35,7 @@ enum UserCase {
 enum StoragePath {
     case profileImages
     case backgroundImages
+    case meloPlaceImages
     case another(_ path: String)
 
     var path: String {
@@ -42,6 +44,8 @@ enum StoragePath {
             return "profileImages"
         case .backgroundImages:
             return "backgroundImages"
+        case .meloPlaceImages:
+            return "meloPlaceImages"
         case .another(let path):
             return path
         }
@@ -82,11 +86,13 @@ class FireBaseNetworkService: FireBaseNetworkServiceProtocol {
     static let shared = FireBaseNetworkService()
     var db: Firestore
     var auth: Auth
+    private var storage: Storage
     private(set) var uid: BehaviorRelay<String?> = BehaviorRelay<String?>(value: nil)
     
     init() {
         self.db = Firestore.firestore()
         self.auth = Auth.auth()
+        self.storage = Storage.storage()
         self.uid.accept(auth.currentUser?.uid)
     }
     
@@ -103,6 +109,7 @@ extension FireBaseNetworkService {
                     }
                     
                     self.uid.accept(self.auth.currentUser?.uid)
+                    print("currentuser uid: \(self.auth.currentUser?.uid)")
                     single(.success(true))
                 }
             } catch let error {
@@ -211,9 +218,12 @@ extension FireBaseNetworkService {
                 let ref = try self.documentReference(userCase: userCase)
                 switch access {
                 case .user:
-                    try ref.setData(from: dto)
+                    try ref
+                        .setData(from: dto)
                 case .meloPlace:
-                    break
+                    try ref.collection(access.path)
+                        .document("\(dto.id)")
+                        .setData(from: dto)
                 }
                 single(.success(dto))
             } catch let error {
@@ -234,15 +244,15 @@ extension FireBaseNetworkService {
                     ref.getDocument(as: type) { result in
                         switch result {
                         case .success(let user):
+                            print("onNext \(user)")
+                            print("read user success")
                             obserser.onNext(user)
-                            //                            print("onNext \(user)")
-                            //                            print("read user success")
                         case .failure(let error):
+                            print("onError \(error)")
+                            print("read user error")
                             obserser.onError(error)
-                            //                            print("onError \(error)")
-                            //                            print("read user error")
                         }
-                        obserser.onCompleted()
+//                        obserser.onCompleted()
                         
                     }
                 case .meloPlace:
@@ -252,9 +262,74 @@ extension FireBaseNetworkService {
             } catch let error {
                 obserser.onError(error)
             }
-            obserser.onCompleted()
+//            obserser.onCompleted()
             
             return Disposables.create()
         }
     }
+}
+
+extension FireBaseNetworkService {
+    /// uploadDataStorage
+        /// - Parameters:
+        ///   - data: Image Data
+        ///   - path: profileImages / backgroundImages / another(_ path: String)
+        /// - Returns: success -> File Name, failure -> error
+        func uploadDataStorage(data: Data, path: StoragePath) -> Single<String> {
+            return Single<String>.create { [weak self] single in
+                do {
+                    guard let self = self else { throw NetworkServiceError.noNetworkService }
+                    guard let uid = self.uid.value else { throw NetworkServiceError.noAuthError }
+                    let fileName = "\(path.path)/\(uid)-\(UUID())"
+                    let StorageReference = self.storage.reference().child("\(fileName)")
+                    
+                    let metaData = StorageMetadata()
+                    metaData.contentType = "image/jpeg"
+                    
+                    StorageReference.putData(data, metadata: metaData) { metaData, error in
+                        if let error = error {
+                            single(.failure(error))
+                            return
+                        }
+                        StorageReference.downloadURL { (url, error) in
+                            guard let downloadUrl = url else {
+                                single(.failure(NetworkServiceError.noUrlError))
+                                return
+                            }
+                            single(.success(downloadUrl.absoluteString))
+                        }
+                    }
+                } catch let error {
+                    single(.failure(error))
+                }
+                
+                return Disposables.create()
+            }
+        }
+        
+        /// downloadDataStorage
+        /// - Parameter fileName: File Name
+        /// - Returns: success -> Image Data, failure -> error
+        func downloadDataStorage(fileName: String) -> Single<Data> {
+            return Single<Data>.create { [weak self] single in
+                do {
+                    guard let self = self else { throw NetworkServiceError.noNetworkService }
+                    
+                    let storageReference = self.storage.reference().child(fileName)
+                    let megaByte = Int64(1 * 1024 * 1024)
+                    
+                    storageReference.getData(maxSize: megaByte) { data, error in
+                        guard let imageData = data else {
+                            single(.failure(NetworkServiceError.noDataError))
+                            return
+                        }
+                        single(.success(imageData))
+                    }
+                } catch let error {
+                    single(.failure(error))
+                }
+                
+                return Disposables.create()
+            }
+        }
 }

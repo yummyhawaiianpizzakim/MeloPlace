@@ -10,12 +10,14 @@ target 'MeloPlace' do
   pod 'RxSwift'
   pod 'RxCocoa'
   pod 'RxGesture'
+  pod 'RxKeyboard'
   pod 'Alamofire'
   pod 'Kingfisher'
   pod 'Swinject'
   pod 'FirebaseAuth'
   pod 'FirebaseFirestore'
   pod 'FirebaseFirestoreSwift'
+  pod 'FirebaseStorage'	
 
 
 
