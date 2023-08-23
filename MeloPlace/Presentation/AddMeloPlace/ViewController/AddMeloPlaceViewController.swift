@@ -33,7 +33,6 @@ class AddMeloPlaceViewController: UIViewController {
         return imagePicker
     }()
     
-    
     lazy var addMeloPlaceView = AddMeloPlaceView()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
@@ -61,7 +60,9 @@ class AddMeloPlaceViewController: UIViewController {
 private extension AddMeloPlaceViewController {
     func configureUI() {
         self.view.addSubview(self.scrollView)
+//        self.view.addSubview(self.doneButton)
         self.scrollView.addSubview(self.addMeloPlaceView)
+//        self.scrollView.addSubview(self.doneButton)
         
         self.scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -71,6 +72,8 @@ private extension AddMeloPlaceViewController {
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
         }
+        
+        
     }
     
     func bindUI() {
@@ -97,8 +100,9 @@ private extension AddMeloPlaceViewController {
         let date = self.date.asObservable()
             
         let input = AddMeloPlaceViewModel.Input(
-            imageData: imageData,
-            date: date,
+            viewDidLoad: Observable.just(()),
+            meloPlaceTitle: self.addMeloPlaceView.titleTextField.rx.text.orEmpty.asObservable(),
+            meloPlaceContent: self.addMeloPlaceView.contentTextView.rx.text.orEmpty.asObservable(),
             didTapPlaceButton: self.addMeloPlaceView.placeButton.rx.tapGesture()
                 .when(.recognized)
                 .map({ _ in  })
@@ -110,7 +114,8 @@ private extension AddMeloPlaceViewController {
             didTapDateButton: self.addMeloPlaceView.dateButton.rx.tapGesture()
                 .when(.recognized)
                 .map({ _ in })
-                .asObservable()
+                .asObservable(),
+            didTapDoneButton: self.addMeloPlaceView.doneButton.rx.tap.asObservable()
         )
         
         let output = self.viewModel?.transform(input: input)
@@ -134,6 +139,13 @@ private extension AddMeloPlaceViewController {
             .drive(with: self, onNext: { owner, music in
                 guard let music = music else { return }
                 owner.addMeloPlaceView.musicButton.setText(music.name)
+            })
+            .disposed(by: self.disposeBag)
+        
+        output?.isEnableDoneButton
+            .asDriver()
+            .drive(with: self, onNext: { owner, isEnable in
+                owner.addMeloPlaceView.doneButton.isEnabled = isEnable
             })
             .disposed(by: self.disposeBag)
     }
@@ -161,7 +173,7 @@ extension AddMeloPlaceViewController: PHPickerViewControllerDelegate {
                 self.addMeloPlaceView.imageView.image = image
             }
             
-//            self.viewModel?.addImage(data: data)
+            self.viewModel?.addImage(data: data)
             self.pickedImage.accept(data)
         }
         

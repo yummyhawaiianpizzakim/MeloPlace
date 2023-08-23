@@ -32,18 +32,6 @@ class AddMeloPlaceView: UIView {
         return imageView
     }()
     
-//    private var editIconView: UIImageView = {
-//        let imageView = UIImageView()
-//        imageView.image = UIImage(systemName: "camera.fill")
-//        imageView.backgroundColor = .lightGray
-//        imageView.contentMode = .scaleAspectFill
-//        imageView.frame.size = CGSize(width: 20.0, height: 20.0)
-//        let cornerRadius = imageView.frame.size.width / 2
-//        imageView.layer.cornerRadius = cornerRadius
-//        imageView.clipsToBounds = true
-//        return imageView
-//    }()
-    
     lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.text = "멜로플레이스"
@@ -115,6 +103,8 @@ class AddMeloPlaceView: UIView {
         return textView
     }()
     
+    lazy var doneButton = ThemeButton(title: "선택 완료")
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.configureUI()
@@ -135,7 +125,8 @@ private extension AddMeloPlaceView {
          self.musicLabel, self.musicButton,
          self.placeLabel, self.placeButton,
          self.DateLabel, self.dateButton,
-         self.contentLabel, self.contentTextView
+         self.contentLabel, self.contentTextView,
+         self.doneButton
         ].forEach { view in
             self.inputStackView.addArrangedSubview(view)
         }
@@ -151,34 +142,24 @@ private extension AddMeloPlaceView {
             make.width.height.equalTo(200)
         }
         
-//        self.editIconView.snp.makeConstraints { make in
-//            make.bottom.equalTo(self.imageView.snp.bottom).offset(-10)
-//            make.right.equalTo(self.imageView.snp.right).offset(-10)
-//            make.width.height.equalTo(20)
-//        }
-        
         self.titleTextField.snp.makeConstraints { make in
             make.height.equalTo(30)
         }
-//        self.musicButton.snp.makeConstraints { make in
-//            make.height.equalTo(30)
-//        }
-//        self.placeButton.snp.makeConstraints { make in
-//            make.height.equalTo(30)
-//        }
-//
-//        self.dateButton.snp.makeConstraints { make in
-//            make.height.equalTo(30)
-//            make.horizontalEdges.equalToSuperview()
-//            make.width.equalToSuperview()
-//        }
-        
+
         self.contentTextView.snp.makeConstraints { make in
             make.height.equalTo(100)
         }
+        
+        self.doneButton.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.bottom.equalToSuperview().offset(-20)
+            make.height.equalTo(40)
+        }
+        
         [self.titleLabel, self.musicLabel, self.placeLabel, self.DateLabel, self.contentLabel].forEach { label in self.inputStackView.setCustomSpacing(10, after: label) }
         
-        [self.titleTextField, self.musicButton, self.placeButton, self.dateButton, self.contentTextView].forEach { view in self.inputStackView.setCustomSpacing(8, after: view) }
+        [self.titleTextField, self.musicButton, self.placeButton, self.dateButton, self.contentTextView, self.doneButton].forEach { view in self.inputStackView.setCustomSpacing(8, after: view) }
     }
     
     func bindUI() {
@@ -217,17 +198,10 @@ class SelectButton: UIView {
         backgroundColor = .blue
 
         layer.borderColor = CGColor(gray: 10, alpha: 1)
-//        layer.borderWidth = FrameResource.commonBorderWidth
-//        layer.cornerRadius = FrameResource.commonCornerRadius
-
-//        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tapGestureEvent(_:))))
         addSubViews()
         makeConstraints()
     }
 
-//    @objc private func tapGestureEvent(_ sender: UITapGestureRecognizer) {
-//        eventHandler?()
-//    }
     
     func setText(_ text: String) {
         label.text = text
