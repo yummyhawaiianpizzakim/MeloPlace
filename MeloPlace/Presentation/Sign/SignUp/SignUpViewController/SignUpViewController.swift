@@ -11,17 +11,31 @@ import SnapKit
 import RxSwift
 import RxRelay
 import RxCocoa
-
+import RxKeyboard
 
 class SignUpViewController: UIViewController {
     var viewModel: SignUpViewModel?
     let disposeBag = DisposeBag()
     
-    lazy var textStackView: UIStackView = {
-        let view = UIStackView()
-        view.axis = .vertical
+    lazy var scrollView: UIScrollView = {
+        let view = UIScrollView()
+        view.showsVerticalScrollIndicator = false
+        view.bounces = true
         return view
     }()
+    
+    lazy var contentView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    lazy var marginView = UIView()
+    
+//    lazy var textStackView: UIStackView = {
+//        let view = UIStackView()
+//        view.axis = .vertical
+//        return view
+//    }()
     
     lazy var emailTextLabel: UILabel = {
         let label = UILabel()
@@ -77,6 +91,8 @@ class SignUpViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureUI()
+        self.hideKeyboardWhenTappedAround()
+        self.bindUI()
         self.bindViewModel()
     }
 }
@@ -84,43 +100,77 @@ class SignUpViewController: UIViewController {
 private extension SignUpViewController {
     func configureUI() {
         self.view.backgroundColor = .white
-        self.view.addSubview(self.textStackView)
+        self.view.addSubview(self.scrollView)
+        self.scrollView.addSubview(self.contentView)
+        
+//        self.view.addSubview(self.textStackView)
         self.view.addSubview(self.doneButton)
         
+//        [self.textStackView].forEach {
+//            self.contentView.addSubview($0)
+//        }
+        
         [self.emailTextLabel, self.emailTextField,
-         self.passwordTextLabel, self.passwordTextField
+         self.passwordTextLabel, self.passwordTextField,
+         self.marginView
         ].forEach {
-            self.textStackView.addArrangedSubview($0)
+//            self.textStackView.addArrangedSubview($0)
+            self.contentView.addSubview($0)
         }
         
-        self.textStackView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
+        self.scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        self.contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        
+        self.emailTextLabel.snp.makeConstraints { make in
+//            make.top.equalToSuperview().offset(100)
+            make.top.equalToSuperview().inset(150)
+            make.leading.equalToSuperview().inset(20)
+            make.trailing.equalToSuperview().inset(20)
         }
         
         self.emailTextField.snp.makeConstraints { make in
+            make.top.equalTo(self.emailTextLabel.snp.bottom).offset(10)
+            make.leading.equalToSuperview().inset(20)
+            make.trailing.equalToSuperview().inset(20)
             make.height.equalTo(40)
+        }
+        
+        self.passwordTextLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.emailTextField.snp.bottom).offset(15)
+            make.leading.equalToSuperview().inset(20)
+            make.trailing.equalToSuperview().inset(20)
         }
         
         self.passwordTextField.snp.makeConstraints { make in
+            make.top.equalTo(self.passwordTextLabel.snp.bottom).offset(10)
+            make.leading.equalToSuperview().inset(20)
+            make.trailing.equalToSuperview().inset(20)
             make.height.equalTo(40)
         }
-        [self.emailTextLabel, self.passwordTextLabel].forEach {
-            self.textStackView.setCustomSpacing(15, after: $0)
-        }
         
-        [self.emailTextField, self.passwordTextField].forEach {
-            self.textStackView.setCustomSpacing(10, after: $0)
+        //이거 없으니까 텍스트 필드가 클릭이 안됨;;
+        self.marginView.snp.makeConstraints { make in
+            make.top.equalTo(self.passwordTextField.snp.bottom)
+            make.leading.trailing.bottom.equalToSuperview()
         }
         
         self.doneButton.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
+//            make.top.equalTo(self.marginView.snp.bottom)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview().offset(-40)
             make.height.equalTo(50)
         }
+        
+    }
+    
+    func bindUI() {
         
     }
     
@@ -138,7 +188,36 @@ private extension SignUpViewController {
             .drive(with: self, onNext: { owner, profile in
                 guard let profile = profile else { return }
                 owner.emailTextField.text = profile.email
+                owner.emailTextField.becomeFirstResponder()
             })
             .disposed(by: self.disposeBag)
+        
+        output?.isDonButotnEnable
+            .asDriver()
+            .drive(with: self, onNext: { owner, isEnable in
+                owner.doneButton.isEnabled = isEnable ? true : false
+            })
+            .disposed(by: self.disposeBag)
+        
+        RxKeyboard.instance.visibleHeight
+            .skip(1)
+            .drive(onNext: { [weak self] keyboardVisibleHeight in
+                guard let self else { return }
+//                self.updateContentViewLayout(height: keyboardVisibleHeight)
+                self.scrollView.contentInset.bottom = keyboardVisibleHeight
+            })
+            .disposed(by: disposeBag)
+            
+    }
+    
+    func updateContentViewLayout(height: CGFloat) {
+        let height = height == 0 ? 40 : height
+        UIView.animate(withDuration: 1) { [weak self] in
+            guard let self else { return }
+            self.contentView.snp.remakeConstraints {
+                $0.leading.trailing.equalTo(self.view.safeAreaLayoutGuide)
+                $0.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-height)
+            }
+        }
     }
 }
