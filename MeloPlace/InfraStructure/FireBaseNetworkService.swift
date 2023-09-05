@@ -109,7 +109,7 @@ extension FireBaseNetworkService {
                     }
                     
                     self.uid.accept(self.auth.currentUser?.uid)
-                    print("currentuser uid: \(self.auth.currentUser?.uid)")
+//                    print("currentuser uid: \(self.auth.currentUser?.uid)")
                     single(.success(true))
                 }
             } catch let error {
@@ -244,19 +244,33 @@ extension FireBaseNetworkService {
                     ref.getDocument(as: type) { result in
                         switch result {
                         case .success(let user):
-                            print("onNext \(user)")
-                            print("read user success")
+//                            print("onNext \(user)")
+//                            print("read user success")
                             obserser.onNext(user)
                         case .failure(let error):
-                            print("onError \(error)")
-                            print("read user error")
+//                            print("onError \(error)")
+//                            print("read user error")
                             obserser.onError(error)
                         }
-//                        obserser.onCompleted()
+                        obserser.onCompleted()
                         
                     }
                 case .meloPlace:
-                    break
+                    ref.collection(access.path).getDocuments { snapshot, error in
+                        guard let snapshot = snapshot else { return }
+                        for document in snapshot.documents {
+                            do {
+                                let data = try document.data(as: type)
+//                                print(data)
+                                obserser.onNext(data)
+                                
+                            } catch let error {
+                                obserser.onError(error)
+                            }
+                        }
+                        obserser.onCompleted()
+                    }
+//                    obserser.onCompleted()
                 }
                 
             } catch let error {
