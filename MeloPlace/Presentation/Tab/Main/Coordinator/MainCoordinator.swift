@@ -33,7 +33,7 @@ class MainCoordinator: CoordinatorProtocol {
         
         vm.setActions(
             actions: MainViewModelActions(
-                showAddMeloPlaceView: showAddMeloPlaceView
+                showAddMeloPlaceView: self.showAddMeloPlaceView, showMeloPlaceDetailView: self.showMeloPlaceDetailView
             )
         )
         
@@ -46,6 +46,16 @@ class MainCoordinator: CoordinatorProtocol {
         addMeloPlaceCoordinator.finishDelegate = self
         self?.childCoordinators.append(addMeloPlaceCoordinator)
         addMeloPlaceCoordinator.start()
+    }
+    
+    lazy var showMeloPlaceDetailView: (_ meloPlace: MeloPlace) -> Void = { [weak self] meloPlace in
+        guard let navigation = self?.navigation else { return }
+        let meloPlaceDetailCoordinator = MeloPlaceDetailCoordinator(navigation: navigation)
+        
+        meloPlaceDetailCoordinator.meloPlace.accept(meloPlace)
+        meloPlaceDetailCoordinator.finishDelegate = self
+        self?.childCoordinators.append(meloPlaceDetailCoordinator)
+        meloPlaceDetailCoordinator.start()
     }
 }
 

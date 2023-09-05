@@ -47,6 +47,7 @@ class SpotifyService: NSObject {
     let token = BehaviorRelay<String>(value: "")
     let isToken = PublishSubject<Bool>()
     let isSession = PublishSubject<Bool>()
+    let isPaused = PublishRelay<Bool>()
 
     // MARK: - Spotify Authorization & Configuration
     var responseCode: String? {
@@ -60,7 +61,7 @@ class SpotifyService: NSObject {
                 DispatchQueue.main.async {
                     self.appRemote.connectionParameters.accessToken = accessToken
                     if !accessToken.isEmpty {
-                        print("accesstoken: \(accessToken)")
+//                        print("accesstoken: \(accessToken)")
                         self.token.accept(accessToken)
                         self.isToken.onNext(true)
                     } else {
@@ -105,7 +106,15 @@ class SpotifyService: NSObject {
         return manager
     }()
 
-    private var lastPlayerState: SPTAppRemotePlayerState?
+    var lastPlayerState: SPTAppRemotePlayerState?
+    
+    func didTapPauseOrPlay() {
+        if let lastPlayerState = lastPlayerState, lastPlayerState.isPaused {
+            appRemote.playerAPI?.resume(nil)
+        } else {
+            appRemote.playerAPI?.pause(nil)
+        }
+    }
 
 }
 
@@ -137,7 +146,24 @@ extension SpotifyService: SPTAppRemoteDelegate {
 extension SpotifyService: SPTAppRemotePlayerStateDelegate {
     func playerStateDidChange(_ playerState: SPTAppRemotePlayerState) {
         debugPrint("Spotify Track name: %@", playerState.track.name)
-//        update(playerState: playerState)
+        update(playerState: playerState)
+    }
+    
+    func update(playerState: SPTAppRemotePlayerState) {
+//        if lastPlayerState?.track.uri != playerState.track.uri {
+//            fetchArtwork(for: playerState.track)
+//        }
+        lastPlayerState = playerState
+//        trackLabel.text = playerState.track.name
+//
+//        let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large)
+        if playerState.isPaused {
+            self.isPaused.accept(true)
+//            playPauseButton.setImage(UIImage(systemName: "play.circle.fill", withConfiguration: configuration), for: .normal)
+        } else {
+            self.isPaused.accept(false)
+//            playPauseButton.setImage(UIImage(systemName: "pause.circle.fill", withConfiguration: configuration), for: .normal)
+        }
     }
 }
 
@@ -163,10 +189,6 @@ extension SpotifyService: SPTSessionManagerDelegate {
         self.isSession.onNext(true)
     }
 }
-
-//extension SpotifyService: sptstream {
-//
-//}
 
 // MARK: - Networking
 extension SpotifyService {
@@ -202,7 +224,7 @@ extension SpotifyService {
                       return completion(nil, error)
                   }
             let responseObject = try? JSONSerialization.jsonObject(with: data) as? [String: Any]
-            print("Access Token Dictionary=", responseObject ?? "")
+//            print("Access Token Dictionary=", responseObject ?? "")
             completion(responseObject, nil)
         }
         task.resume()
@@ -223,7 +245,7 @@ extension SpotifyService {
             if let error = error {
                 print("Error getting player state:" + error.localizedDescription)
             } else if let playerState = playerState as? SPTAppRemotePlayerState {
-//                self?.update(playerState: playerState)
+                self?.update(playerState: playerState)
             }
         })
         
@@ -257,7 +279,7 @@ extension SpotifyService {
         let headers: HTTPHeaders = ["Accept":"application/json",
                                     "Content-Type":"application/json",
                                     "Authorization":"Bearer \(token)"]
-        print("token: \(token)")
+//        print("token: \(token)")
 //        print("token: \(token)")
         let parameters = [
             "q": query,
@@ -294,7 +316,7 @@ extension SpotifyService {
         let url = "https://api.spotify.com/v1/me"
         let token = self.token.value
         let headers: HTTPHeaders = ["Authorization":"Bearer \(token)"]
-        print("token: \(token)")
+//        print("token: \(token)")
         return Observable.create { observer in
             AF.request(url,
                        method: .get,
@@ -316,25 +338,5 @@ extension SpotifyService {
         }
 
     }
-    
-//    func fetchSpotifyUserProfile(accessToken: String) {
-//        let url = URL(string: "https://api.spotify.com/v1/me")!
-//        var request = URLRequest(url: url)
-//        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
-//
-//        URLSession.shared.dataTask(with: request) { data, response, error in
-//            guard let data = data else { return }
-//
-//            do {
-//                if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String:Any] {
-//                    if let userId = json["id"] as? String {
-//                        print("User ID is \(userId)")
-//                    }
-//                }
-//            } catch let error {
-//                print(error.localizedDescription)
-//            }
-//        }.resume()
-//    }
     
 }

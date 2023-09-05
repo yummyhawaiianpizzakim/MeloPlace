@@ -53,7 +53,7 @@ class SignInViewModel {
                     owner.spotifyService.fetchSpotifyUserProfile()
                         .map { dto in dto.toDomain() }
                         .subscribe {[weak self] userProfile in
-                            print("userProfile: \(userProfile)")
+//                            print("userProfile: \(userProfile)")
                             self?.fetchUserInfor(profile: userProfile)
                             self?.userProfile.accept(userProfile)
                         }
