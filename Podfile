@@ -18,6 +18,8 @@ target 'MeloPlace' do
   pod 'FirebaseFirestore'
   pod 'FirebaseFirestoreSwift'
   pod 'FirebaseStorage'	
+  pod 'FloatingPanel'
+
 
 
 
