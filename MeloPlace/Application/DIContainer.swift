@@ -44,6 +44,9 @@ class DIContainer {
         self.registerSelectDateViewModel()
         self.registerSignInViewModel()
         self.registerSignUpViewModel()
+        self.registerMeloPlaceDetailViewModel()
+        self.registerMapMeloPlaceListViewModel()
+        self.registerSearchViewModel()
     }
 }
 
@@ -141,6 +144,27 @@ private extension DIContainer {
     func registerSignUpViewModel() {
         self.container.register(SignUpViewModel.self) { resolver in
             return SignUpViewModel()
+        }
+        .inObjectScope(.graph)
+    }
+    
+    func registerMeloPlaceDetailViewModel() {
+        self.container.register(MeloPlaceDetailViewModel.self) { resolver in
+            return MeloPlaceDetailViewModel()
+        }
+        .inObjectScope(.graph)
+    }
+    
+    func registerMapMeloPlaceListViewModel() {
+        self.container.register(MapMeloPlaceListViewModel.self) { resolver in
+            return MapMeloPlaceListViewModel()
+        }
+        .inObjectScope(.graph)
+    }
+    
+    func registerSearchViewModel() {
+        self.container.register(SearchViewModel.self) { resolver in
+            return SearchViewModel()
         }
         .inObjectScope(.graph)
     }
