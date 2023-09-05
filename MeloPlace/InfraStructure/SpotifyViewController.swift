@@ -116,9 +116,6 @@ class SpotifyViewController: UIViewController {
     @objc func didTapPauseOrPlay(_ button: UIButton) {
         if let lastPlayerState = lastPlayerState, lastPlayerState.isPaused {
             appRemote.playerAPI?.resume(nil)
-            let dto = self.searchMusic(query: "bts", type: "track")
-//            let dto = self.service.searchMusic(query: "bts", type: "track")
-            print(dto.values)
         } else {
             appRemote.playerAPI?.pause(nil)
         }
@@ -335,20 +332,7 @@ extension SpotifyViewController {
     func searchMusic(query: String, type: String) -> Observable<SpotifySearchDTO> {
         let baseURLString = "https://api.spotify.com/v1"
         let searchRequestURLString = "/search"
-//            let headers: HTTPHeaders = [
-//                "Authorization": "Bearer \(self.accessToken)"
-//            ]
-//            print(self.responseCode)
         var accessTokenString = ""
-//            self.fetchAccessToken { (dictionary, error) in
-//                if let error = error {
-//                    print("Fetching token request error \(error)")
-//                    return
-//                }
-//                let accessToken = dictionary!["access_token"] as! String
-//                accessTokenString = accessToken
-//            }
-        
         let headers: HTTPHeaders = ["Accept":"application/json",
                                     "Content-Type":"application/json",
                                     "Authorization":"Bearer \(self.aaa)"]
