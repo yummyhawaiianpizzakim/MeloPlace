@@ -31,23 +31,34 @@ class MapCoordinator: CoordinatorProtocol {
         
         let vc = MapViewController(viewModel: vm)
         
-//        vm.setActions(
-//            actions: PhotoListViewModelActions(
-//                showPhotoDetail: self.showPhotoDetail
-//            )
-//        )
+        vm.setActions(
+            actions: MapViewModelActions(
+                showMapMeloPlaceListView:
+                    self.showMapMeloPlaceListView,
+                showSearchView:
+                    self.showSearchView
+            )
+        )
         
         self.navigation.pushViewController(vc, animated: true)
     }
     
-//    lazy var showPhotoDetail: (_ IndexPath: IndexPath) -> Void = { [weak self] indexPath in
-//        let container = DIContainer.shared.container
-//        guard let vm = container.resolve(PhotoDetailViewModel.self) else { return }
-//        vm.indexpath = indexPath
-//        let vc = PhotoDetailViewController(viewModel: vm)
-////        self?.navigation.present(vc, animated: true)
-//        self?.navigation.pushViewController(vc, animated: true)
-//    }
+    lazy var showMapMeloPlaceListView: (_ meloPlaces: [MeloPlace]) -> Void = { [weak self] meloPlaces in
+        guard let self = self else { return }
+        let coordinator = MapMeloPlaceListCoordinator(navigation: self.navigation)
+        coordinator.meloPlaces.accept(meloPlaces)
+        self.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
+    }
+    
+    lazy var showSearchView: (_ sender: MapViewModel) -> Void = { [weak self] viewModel in
+        guard let self = self else { return }
+        let coordinator = SearchCoordinator(navigation: self.navigation, mapViewModel: viewModel)
+        self.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
+    }
 }
 
 extension MapCoordinator: CoordinatorFinishDelegate {

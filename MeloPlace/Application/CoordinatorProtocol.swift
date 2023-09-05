@@ -11,8 +11,8 @@ enum CoordinatorType {
     case app
     case tab
     case main, map, browse, setting
-    case addMelo
-    case location, musicList, selectDate
+    case addMelo, detail, mapMeloPlaceList
+    case location, musicList, selectDate, search
     case signIn, signUp
 }
 

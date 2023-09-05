@@ -36,19 +36,20 @@ class MapView: MKMapView {
     }
 
     private func configure() {
-        mapType = .standard
-        showsUserLocation = true
-        setUserTrackingMode(.follow, animated: true)
+        self.mapType = .standard
+        self.showsUserLocation = true
+        self.showsCompass = false
+        self.setUserTrackingMode(.follow, animated: true)
     }
 
     private func addSubViews() {
-        addSubview(currentLocationButton)
+        addSubview(self.currentLocationButton)
     }
 
     private func makeConstraints() {
-        currentLocationButton.snp.makeConstraints {
-            $0.leading.equalToSuperview().offset(20.0)
-            $0.bottom.equalToSuperview().offset(-50.0)
+        self.currentLocationButton.snp.makeConstraints {
+            $0.trailing.equalToSuperview().offset(-20.0)
+            $0.top.equalToSuperview().offset(50.0)
             $0.width.height.equalTo(50.0)
         }
     }
