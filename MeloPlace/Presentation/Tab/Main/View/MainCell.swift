@@ -8,6 +8,7 @@
 import Foundation
 import SnapKit
 import UIKit
+import Kingfisher
 
 final class MainCell: UICollectionViewCell {
     static var id: String {
@@ -43,6 +44,26 @@ final class MainCell: UICollectionViewCell {
         label.textAlignment = .center
         return label
     }()
+    
+    lazy var addressLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 20.0)
+        label.textColor = .gray
+        label.numberOfLines = 3
+        label.textAlignment = .center
+        return label
+    }()
+    
+    lazy var musicLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 20.0)
+        label.textColor = .gray
+        label.numberOfLines = 3
+        label.textAlignment = .center
+        return label
+    }()
+    
+//    lazy var playPauseButton = UIButton(type: .system)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -62,15 +83,20 @@ final class MainCell: UICollectionViewCell {
     }
 
     func addSubviews() {
-        [self.imageView, self.titleLabel, self.descriptionLabel].forEach {
+        [self.addressLabel, self.imageView, self.titleLabel, self.descriptionLabel, self.musicLabel].forEach {
             self.contentView.addSubview($0)
         }
     }
 
     func makeConstraints() {
+        self.addressLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(20)
+            make.centerX.equalToSuperview()
+        }
+        
         self.imageView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalToSuperview()
+            $0.top.equalTo(self.addressLabel.snp.bottom).offset(20)
             $0.width.equalTo(216.0)
             $0.height.equalTo(216.0)
         }
@@ -84,22 +110,36 @@ final class MainCell: UICollectionViewCell {
             $0.top.equalTo(self.titleLabel.snp.bottom).offset(10.0)
             $0.centerX.equalToSuperview()
         }
+        
+        self.musicLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.descriptionLabel.snp.bottom).offset(10)
+            make.centerX.equalToSuperview()
+        }
+        
+//        self.playPauseButton.snp.makeConstraints { make in
+//            make.top.equalTo(self.musicLabel.snp.bottom).offset(10)
+//            make.centerX.equalToSuperview()
+//        }
     }
 
     func configureCell(item: MeloPlace) {
-//        uuid = capsuleCellModel.uuid
-
-//        thumbnailImageView.imageView.kr.setImage(
-//            with: capsuleCellModel.thumbnailImageURL,
-//            placeholder: .empty,
-//            scale: FrameResource.openableImageScale
-//        )
-//
-//
-//        titleLabel.text = capsuleCellModel.type.title
-//        descriptionLabel.text = capsuleCellModel.description
+        guard let imageURLString = item.images.first else { return }
         self.titleLabel.text = item.title
         self.descriptionLabel.text = item.description
+        self.addressLabel.text = item.simpleAddress
+        self.musicLabel.text = item.musicURI
+        self.setImage(imageURLString: imageURLString)
 
     }
+}
+
+extension MainCell {
+    private func setImage(imageURLString: String) {
+        guard let url = URL(string: imageURLString) else { return }
+        let maxProfileImageSize = CGSize(width: 100, height: 100)
+        let downsamplingProcessor = DownsamplingImageProcessor(size: maxProfileImageSize)
+        self.imageView.kf.setImage(with: url, placeholder: .none, options: [.processor(downsamplingProcessor)])
+    }
+    
+    
 }
