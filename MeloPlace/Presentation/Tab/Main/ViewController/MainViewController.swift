@@ -11,10 +11,12 @@ import SnapKit
 import RxSwift
 import RxRelay
 import RxCocoa
+import SpotifyiOS
 
 
 class MainViewController: UIViewController {
     var viewModel: MainViewModel?
+    var service = SpotifyService.shared
     let disposeBag = DisposeBag()
     
     typealias DataSource = UICollectionViewDiffableDataSource<Section, MeloPlace>
@@ -22,10 +24,8 @@ class MainViewController: UIViewController {
     
     var dataSource: DataSource?
     
-//    var centerIndex: CGFloat {
-//        return self.mainCollectionView.contentOffset.x / (216.0 * 0.75 + 10)
-//       }
-//
+    let indexPathCount = BehaviorRelay<Int>(value: 0)
+    
     lazy var testLabel: UILabel = {
         let label = UILabel()
         label.text = "aaa"
@@ -44,11 +44,10 @@ class MainViewController: UIViewController {
     }()
     
     lazy var mainCollectionView: UICollectionView = {
-        let layout = ZoomAndSnapFlowLayout()
+        let layout = HSCycleGalleryViewLayout()
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
         collectionView.collectionViewLayout = layout
         collectionView.contentInsetAdjustmentBehavior = .always
-        
         collectionView.register(MainCell.self, forCellWithReuseIdentifier: MainCell.id)
         collectionView.backgroundColor = .none
         collectionView.showsHorizontalScrollIndicator = false
@@ -57,6 +56,19 @@ class MainViewController: UIViewController {
         return collectionView
     }()
     
+    lazy var playPauseButton: UIButton = {
+        let button = UIButton()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large)
+        button.setImage(UIImage(systemName: "play.circle.fill", withConfiguration: configuration), for: .normal)
+        return button
+    }()
+    
+    lazy var nextButton: UIButton = {
+        let button = UIButton()
+        let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large)
+        button.setImage(UIImage(systemName: "chevron.right.to.line", withConfiguration: configuration), for: .normal)
+        return button
+    }()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
@@ -73,32 +85,59 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.view.backgroundColor = .green
         self.configureUI()
         self.setDataSource()
+        self.bindUI()
         self.bindViewModel()
     }
 }
 
 private extension MainViewController {
     func configureUI() {
-        [self.mainCollectionView, self.addButton].forEach {
+        [self.mainCollectionView, self.addButton, self.playPauseButton, self.nextButton].forEach {
             self.view.addSubview($0)
         }
         
         self.mainCollectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+//            make.edges.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview()
         }
         self.addButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-10)
             make.right.equalToSuperview().offset(-10)
             make.width.height.equalTo(50.0)
         }
+        
+        self.playPauseButton.snp.makeConstraints { make in
+            make.top.equalTo(self.mainCollectionView.snp.bottom).offset(10)
+            make.bottom.equalToSuperview()
+            make.centerX.equalToSuperview()
+            make.height.width.equalTo(50)
+        }
+        
+        self.nextButton.snp.makeConstraints { make in
+            make.top.equalTo(self.playPauseButton.snp.top)
+            make.bottom.equalToSuperview()
+            make.leading.equalTo(self.playPauseButton.snp.trailing).offset(20)
+            make.height.width.equalTo(50)
+        }
+    }
+    
+    func bindUI() {
+//        self.nextButton.rx.tap.asObservable()
+//            .subscribe { [weak self] _ in
+//                self?.scrollToNextCell()
+//            }
+//            .disposed(by: self.disposeBag)
     }
     
     func bindViewModel() {
         let input = MainViewModel.Input(
-            didTapAddButton: self.addButton.rx.tap.asObservable()
+            viewWillAppear: self.rx.viewWillAppear.map({ _ in () }),
+            didSelectItem: self.mainCollectionView.rx.itemSelected.asObservable(),
+            didTapAddButton:  self.addButton.rx.tap.asObservable(),
+            didTapPlayPauseButton: self.playPauseButton.rx.tap.asObservable()
         )
         
         let output = self.viewModel?.transform(input: input)
@@ -106,12 +145,34 @@ private extension MainViewController {
         output?.dataSource
             .asDriver(onErrorJustReturn: [])
             .map({[weak self] models in
-                self!.generateSnapshot(models: models)
+                self?.indexPathCount.accept(models.count)
+                
+                return self!.generateSnapshot(models: models)
             })
             .drive(onNext: {[weak self] snapshot in
                 self!.dataSource?.apply(snapshot)
             })
             .disposed(by: self.disposeBag)
+        
+        output?.isPaused
+            .asDriver()
+            .drive(with: self,onNext: { owner, isPaused in
+                let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large)
+                if isPaused {
+                    self.playPauseButton.setImage(UIImage(systemName: "play.circle.fill", withConfiguration: configuration), for: .normal)
+                } else {
+                    self.playPauseButton.setImage(UIImage(systemName: "pause.circle.fill", withConfiguration: configuration), for: .normal)
+                }
+            })
+            .disposed(by: self.disposeBag)
+        
+//        output?.music
+//            .asDriver(onErrorJustReturn: nil)
+//            .drive(onNext: {[weak self] music in
+//                guard let music = music else { return }
+//                self?.service.playMusic(uri: music.URI)
+//            })
+//            .disposed(by: self.disposeBag)
         
     }
     
@@ -121,6 +182,13 @@ private extension MainViewController {
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCell.id, for: indexPath) as? MainCell else { return UICollectionViewCell() }
             cell.configureCell(item: itemIdentifier)
+            self.viewModel?.playMusic(indexPath: indexPath)
+            
+            self.nextButton.rx.tap.asObservable()
+                .subscribe { _ in
+                    self.scrollToNextCell(indexPath: indexPath)
+                }
+                .disposed(by: self.disposeBag)
             
             return cell
         })
@@ -138,10 +206,18 @@ private extension MainViewController {
         return snapshot
     }
     
-//    func getIndexRange(index: Int) -> ClosedRange<CGFloat> {
-//        let index = CGFloat(index)
-//        return (index - 0.1)...(index + 0.1)
-//    }
+}
+
+extension MainViewController {
+    func scrollToNextCell(indexPath: IndexPath) {
+        let nextIndexPath = IndexPath(item: indexPath.item + 1, section: indexPath.section)
+        
+        DispatchQueue.main.async {
+            self.mainCollectionView.scrollToItem(at: nextIndexPath, at: .centeredHorizontally, animated: true)
+        }
+        
+    }
+    
 }
 
 extension MainViewController {

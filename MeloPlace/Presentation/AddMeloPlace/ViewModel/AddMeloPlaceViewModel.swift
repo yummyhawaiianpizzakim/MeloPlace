@@ -110,32 +110,64 @@ class AddMeloPlaceViewModel {
             )
         }
         
+//        input.didTapDoneButton
+//            .withLatestFrom(self.pickedImage)
+//            .map { [weak self] data in
+//                guard let self = self else { return }
+//                self.fireBaseService.uploadDataStorage(data: data, path: .meloPlaceImages)
+//                    .subscribe(onSuccess: { url in
+//                        self.pickedImageURL.accept(url)
+//                    }, onFailure: { error in
+//
+//                    })
+//                    .disposed(by: disposeBag)
+//            }
+//            .withLatestFrom(meloPlace)
+//            .withUnretained(self)
+//            .subscribe(onNext: { owner, meloPlace in
+//                owner.addMeloPlace(meloPlace: meloPlace)
+//                    .subscribe(onSuccess: { isSuccess in
+//                        print("isSuccess: \(isSuccess)")
+//                        if isSuccess {
+//                            owner.actions?.closeAddMeloPlaceView()
+//                        }
+//                    }, onFailure: { error in
+//                        print(error)
+//                    })
+//                    .disposed(by: owner.disposeBag)
+//            })
+//            .disposed(by: self.disposeBag)
+        
         input.didTapDoneButton
             .withLatestFrom(self.pickedImage)
-            .map { [weak self] data in
-                guard let self = self else { return }
-                self.fireBaseService.uploadDataStorage(data: data, path: .meloPlaceImages)
-                    .subscribe(onSuccess: { url in
+            .flatMapLatest { [weak self] data -> Observable<String> in
+                guard let self = self else { return .empty() }
+                return self.fireBaseService.uploadDataStorage(data: data, path: .meloPlaceImages)
+                    .asObservable()
+                    .observe(on: MainScheduler.instance) // UI 작업을 위해 메인 스레드에서 실행되도록 설정합니다.
+                    .do(onNext: { url in
                         self.pickedImageURL.accept(url)
-                    }, onFailure: { error in
-                        
-                    })
-                    .disposed(by: disposeBag)
-            }
-            .withLatestFrom(meloPlace)
-            .withUnretained(self)
-            .subscribe(onNext: { owner, meloPlace in
-                owner.addMeloPlace(meloPlace: meloPlace)
-                    .subscribe(onSuccess: { isSuccess in
-                        if isSuccess {
-                            owner.actions?.closeAddMeloPlaceView()
-                        }
-                    }, onFailure: { error in
+                    }, onError: { error in
                         print(error)
                     })
-                    .disposed(by: owner.disposeBag)
+            }
+            .withLatestFrom(meloPlace)
+            .flatMapLatest { [weak self] meloPlace -> Observable<Bool> in
+                guard let self = self else { return .empty() }
+                return self.addMeloPlace(meloPlace: meloPlace)
+                    .asObservable()
+            }
+            .subscribe(onNext: { [weak self] isSuccess in
+                guard let self = self else { return }
+                print("isSuccess: \(isSuccess)")
+                if isSuccess {
+                    self.actions?.closeAddMeloPlaceView()
+                }
+            }, onError: { error in
+                print(error)
             })
             .disposed(by: self.disposeBag)
+
         
         self.selectedAddress
             .bind(to: output.selectedAddress)
@@ -181,9 +213,9 @@ extension AddMeloPlaceViewModel {
             guard let self = self else { return Disposables.create() }
             self.fireBaseService.read(type: UserDTO.self, userCase: .currentUser, access: .user)
                 .subscribe { UserDTO in
-                    print("usrdototototo: \(UserDTO)")
+//                    print("usrdototototo: \(UserDTO)")
                     let user = UserDTO.toDomain()
-                    print("tqtqtqtqt: \(user)")
+//                    print("tqtqtqtqt: \(user)")
                     single(.success(user))
                 } onError: { error in
                     print("tqtqtqtqt: \(error)")
@@ -203,7 +235,7 @@ extension AddMeloPlaceViewModel {
             let meloPlaceDTO = meloPlace.toDTO()
             self.fireBaseService.create(dto: meloPlaceDTO.self, userCase: .currentUser, access: .meloPlace)
                 .subscribe(onSuccess: { dto in
-                    print("meloDTO: \(dto)")
+//                    print("meloDTO: \(dto)")
                     single(.success(true))
                 }, onFailure: { error in
                     print("meloDTO: \(error)")

@@ -39,7 +39,8 @@ class AddMeloPlaceCoordinator: CoordinatorProtocol {
             actions: AddMeloPlaceViewModelActions(
                 showMeloLocationView: self.showMeloLocationView,
                 showMusicListView: self.showMusicListView,
-                showSelectDateView: self.showSelectDateView, closeAddMeloPlaceView: self.closeAddMeloPlaceView
+                showSelectDateView: self.showSelectDateView,
+                closeAddMeloPlaceView: self.closeAddMeloPlaceView
             )
         )
         
@@ -68,8 +69,8 @@ class AddMeloPlaceCoordinator: CoordinatorProtocol {
     }
     
     lazy var closeAddMeloPlaceView: () -> Void = { [weak self] in
-        self?.finish()
         self?.navigation.popViewController(animated: true)
+        self?.finish()
     }
     
 }
