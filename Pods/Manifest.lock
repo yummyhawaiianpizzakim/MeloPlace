@@ -643,6 +643,7 @@ PODS:
     - FirebaseCore (~> 10.0)
     - FirebaseCoreExtension (~> 10.0)
     - GTMSessionFetcher/Core (< 4.0, >= 2.1)
+  - FloatingPanel (2.7.0)
   - GoogleUtilities/AppDelegateSwizzler (7.10.0):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
@@ -745,6 +746,7 @@ DEPENDENCIES:
   - FirebaseFirestore
   - FirebaseFirestoreSwift
   - FirebaseStorage
+  - FloatingPanel
   - Kingfisher
   - RxCocoa
   - RxGesture
@@ -768,6 +770,7 @@ SPEC REPOS:
     - FirebaseFirestoreSwift
     - FirebaseSharedSwift
     - FirebaseStorage
+    - FloatingPanel
     - GoogleUtilities
     - "gRPC-C++"
     - gRPC-Core
@@ -799,6 +802,7 @@ SPEC CHECKSUMS:
   FirebaseFirestoreSwift: 49eb0d2035947834c2618d35a0328c676d793de2
   FirebaseSharedSwift: c707c543624c3fa6622af2180fa41192084c3914
   FirebaseStorage: 1d7ca8c8953fc61ccacaa7c612696b5402968a0d
+  FloatingPanel: c88e3fd981b7a74121ff48746fb14d496f5fd553
   GoogleUtilities: bad72cb363809015b1f7f19beb1f1cd23c589f95
   "gRPC-C++": 9675f953ace2b3de7c506039d77be1f2e77a8db2
   gRPC-Core: 943e491cb0d45598b0b0eb9e910c88080369290b
@@ -816,6 +820,6 @@ SPEC CHECKSUMS:
   SnapKit: e01d52ebb8ddbc333eefe2132acf85c8227d9c25
   Swinject: 893c9a543000ac2f10ee4cbaf0933c6992c935d5
 
-PODFILE CHECKSUM: d1dea49a37d8bc3923e3d3449b573125523b2383
+PODFILE CHECKSUM: ba174e9c51a9606544caaa071599955ea4c975ba
 
 COCOAPODS: 1.12.1

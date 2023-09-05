@@ -7,13 +7,23 @@
 
 import CoreLocation
 import Foundation
+import MapKit
 import RxSwift
+import RxRelay
 
-final class LocationManager {
+final class LocationManager: NSObject {
     static let shared = LocationManager()
+    let disposeBag = DisposeBag()
+    
     static let openableRange = 100.0
+    private var searchCompleter = MKLocalSearchCompleter()
+    
+    var results = BehaviorRelay<[Space]>(value: [])
 
-    private init() {}
+    override init() {
+        super.init()
+        searchCompleter.delegate = self
+    }
 
     let core: CLLocationManager = {
         let manager = CLLocationManager()
@@ -116,5 +126,56 @@ final class LocationManager {
             completion(true)
             return
         }
+    }
+    
+    func setSearchText(with searchText: String) {
+        self.searchCompleter.queryFragment = searchText
+    }
+    
+    private func fetchSelectedLocationInfo(with selectedResult: MKLocalSearchCompletion) -> Single<Space?> {
+        
+        return Single.create { single in
+            let searchRequest = MKLocalSearch.Request(completion: selectedResult)
+            let search = MKLocalSearch(request: searchRequest)
+            search.start { response, error in
+                guard error == nil else {
+                    return single(.success(nil))
+                }
+                
+                guard let placeMark = response?.mapItems[0].placemark else {
+                    return single(.success(nil))
+                }
+                
+                let coordinate = placeMark.coordinate
+                return single(
+                    .success(
+                        Space(
+                            name: selectedResult.title,
+                            address: selectedResult.subtitle,
+                            lat: coordinate.latitude,
+                            lng: coordinate.longitude
+                        )))
+            }
+            return Disposables.create()
+        }
+    }
+    
+}
+
+extension LocationManager: MKLocalSearchCompleterDelegate {
+    func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
+        Observable.zip(completer.results.compactMap {
+            self.fetchSelectedLocationInfo(with: $0).asObservable()
+        })
+        .map { locations -> [Space] in
+            let filtered = locations.filter { $0 != nil }
+            return filtered.compactMap { $0 }
+        }
+        .bind(to: results)
+        .disposed(by: self.disposeBag)
+    }
+    
+    func completer(_ completer: MKLocalSearchCompleter, didFailWithError error: Error) {
+        print(error)
     }
 }
