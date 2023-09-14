@@ -76,7 +76,8 @@ enum Access {
 protocol FireBaseNetworkServiceProtocol {
     func signIn(email: String, password: String) -> Single<Bool>
     func signOut() -> Single<Bool>
-    func signUp(email: String, password: String, spotifyID: String, userDTO: UserDTO) -> Single<Bool>
+//    func signUp(email: String, password: String, spotifyID: String, userDTO: UserDTO) -> Single<Bool>
+    func signUp(userDTO: UserDTO) -> Single<Bool>
     func fetchUserInforWithSpotifyID(spotifyID: String) -> Observable<UserDTO?>
     func create<T: DTOProtocol>(dto: T, userCase: UserCase, access: Access) -> Single<T>
     func read<T: DTOProtocol>(type: T.Type, userCase: UserCase, access: Access) -> Observable<T>
@@ -135,19 +136,19 @@ extension FireBaseNetworkService {
         
     }
     
-    func signUp(email: String, password: String, spotifyID: String, userDTO: UserDTO) -> Single<Bool> {
+    func signUp(userDTO: UserDTO) -> Single<Bool> {
         return Single<Bool>.create { [weak self] single in
             guard let self = self else {
                 single(.failure(NetworkServiceError.noNetworkService))
                 return Disposables.create()
             }
-            let email = email.trimmingCharacters(in: .whitespacesAndNewlines)
-            let password = password.trimmingCharacters(in: .whitespacesAndNewlines)
+            let email = userDTO.email.trimmingCharacters(in: .whitespacesAndNewlines)
+            let password = userDTO.password.trimmingCharacters(in: .whitespacesAndNewlines)
             self.auth.createUser(withEmail: email, password: password) { result, error in
                 do {
                     if let error = error { throw error }
                     guard let authResult = result else { throw NetworkServiceError.noAuthError }
-                    try self.createUser(uuid: authResult.user.uid, email: email, password: password, spotifyID: spotifyID, userDTO: userDTO)
+                    try self.createUser(uuid: authResult.user.uid, userDTO: userDTO)
                     self.uid.accept(self.auth.currentUser?.uid)
                     single(.success(true))
     //                print("net signUp")
@@ -162,8 +163,15 @@ extension FireBaseNetworkService {
 
     }
 
-    private func createUser(uuid: String, email: String, password: String, spotifyID: String, userDTO: UserDTO) throws {
-        let userDto = UserDTO(id: uuid, email: email, password: password, spotifyID: spotifyID, userDTO: userDTO)
+    private func createUser(uuid: String, userDTO: UserDTO) throws {
+        let userDto = UserDTO(id: uuid,
+                              spotifyID: userDTO.spotifyID,
+                              name: userDTO.name,
+                              email: userDTO.email,
+                              password: userDTO.password,
+                              imageURL: userDTO.imageURL,
+                              imageWidth: userDTO.imageWidth,
+                              imageHeight: userDTO.imageHeight)
         try db.collection(UserCase.currentUser.path).document(uuid)
             .setData(from: userDto)
     }

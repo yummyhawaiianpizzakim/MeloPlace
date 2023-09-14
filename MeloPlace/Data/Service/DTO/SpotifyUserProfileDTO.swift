@@ -61,9 +61,9 @@ extension SpotifyUserProfileDTO {
             id: self.id,
             name: self.displayName,
             email: self.email,
-            imageURL: self.images.first?.url ?? "",
-            imageWidth: self.images.first?.width ?? 0,
-            imageHeight: self.images.first?.height ?? 0
+            imageURL: self.images.last?.url ?? "",
+            imageWidth: self.images.last?.width ?? 0,
+            imageHeight: self.images.last?.height ?? 0
         )
     }
 }
