@@ -11,6 +11,7 @@ import RxRelay
 
 struct MapViewModelActions {
     let showMapMeloPlaceListView: (_ meloPlaces: [MeloPlace]) -> Void
+    let showMeloPlaceDetailView: (_ meloPlaces: [MeloPlace], _ indexPath: IndexPath) -> Void
     let showSearchView: (_ sender: MapViewModel) -> Void
 }
 
@@ -23,10 +24,12 @@ class MapViewModel {
     
     let searchedSpace = PublishRelay<Space>()
     weak var coordinate: BehaviorRelay<GeoPoint?>?
+    let meloPlaces = BehaviorRelay<[MeloPlace]>(value: [])
     
     struct Input {
         var viewWillAppear: Observable<Void>
         var didTapSearchBar: Observable<Void>
+        var didTapListCell: Observable<IndexPath>
     }
     
     struct Output {
@@ -48,12 +51,11 @@ class MapViewModel {
                         return dto.toDomain()
                     }
                     .toArray()
-                    .subscribe { meloPlaces in
+                    .subscribe { [weak self] meloPlaces in
 //                        print(meloPlaces)
                         let annotations = owner.updateAnnotations(meloPlaces: meloPlaces)
                         
-//                        owner.actions?.showMapMeloPlaceListView(meloPlaces)
-                        output.meloPlaces.accept(meloPlaces)
+                        self?.meloPlaces.accept(meloPlaces)
                         output.annotations.accept(annotations)
                     } onFailure: { error in
                         print(error)
@@ -67,6 +69,18 @@ class MapViewModel {
             .subscribe { owner, _ in
                 owner.actions?.showSearchView(owner)
             }
+            .disposed(by: self.disposeBag)
+        
+        input.didTapListCell
+            .withUnretained(self)
+            .subscribe { owner, indexPath in
+                let meloPlaces = owner.meloPlaces.value
+                owner.actions?.showMeloPlaceDetailView(meloPlaces, indexPath)
+            }
+            .disposed(by: self.disposeBag)
+        
+        self.meloPlaces
+            .bind(to: output.meloPlaces)
             .disposed(by: self.disposeBag)
         
         self.searchedSpace

@@ -35,6 +35,7 @@ class MapCoordinator: CoordinatorProtocol {
             actions: MapViewModelActions(
                 showMapMeloPlaceListView:
                     self.showMapMeloPlaceListView,
+                showMeloPlaceDetailView: self.showMeloPlaceDetailView,
                 showSearchView:
                     self.showSearchView
             )
@@ -55,6 +56,18 @@ class MapCoordinator: CoordinatorProtocol {
     lazy var showSearchView: (_ sender: MapViewModel) -> Void = { [weak self] viewModel in
         guard let self = self else { return }
         let coordinator = SearchCoordinator(navigation: self.navigation, mapViewModel: viewModel)
+        self.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
+    }
+    
+    lazy var showMeloPlaceDetailView: (_ meloPlaces: [MeloPlace], _ indexPath: IndexPath) -> Void = { [weak self] meloPlaces, indexPath in
+        guard let self = self else { return }
+        let coordinator = MeloPlaceDetailCoordinator(navigation: self.navigation)
+//        coordinator.meloPlace.accept(meloPlace)
+        coordinator.meloPlaces.accept(meloPlaces)
+//        coordinator.indexPath.accept(indexPath)
+        coordinator.indexPath = indexPath
         self.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
         coordinator.start()

@@ -98,9 +98,6 @@ private extension MapViewController {
         self.floatingPanelController.show()
         self.contentView.view.backgroundColor = .white
         self.contentView.loadViewIfNeeded()
-//        if #available(iOS 13.0, *) {
-//            self.floatingPanelController.overrideUserInterfaceStyle = .light
-//        }
 
     }
     
@@ -120,7 +117,7 @@ private extension MapViewController {
         }
         
         self.searchBar.snp.makeConstraints { make in
-            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(5)
+            make.top.equalToSuperview().offset(20)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.height.equalTo(30)
@@ -129,6 +126,8 @@ private extension MapViewController {
     }
     
     func bindUI() {
+        self.goToCurrentLocation()
+        
         self.locationManager.rx.didChangeAuthorization
             .asObservable()
             .withUnretained(self)
@@ -163,7 +162,8 @@ private extension MapViewController {
             didTapSearchBar: self.searchBar.rx.tapGesture()
                     .when(.recognized)
                     .map({ _ in })
-                    .asObservable()
+                    .asObservable(),
+            didTapListCell: self.contentView.meloPlaceCollectionView.rx.itemSelected.asObservable()
         )
         
         
