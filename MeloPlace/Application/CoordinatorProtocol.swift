@@ -10,7 +10,7 @@ import Foundation
 enum CoordinatorType {
     case app
     case tab
-    case main, map, browse, setting
+    case main, map, browse, userProfile
     case addMelo, detail, mapMeloPlaceList
     case location, musicList, selectDate, search
     case signIn, signUp

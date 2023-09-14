@@ -28,16 +28,20 @@ class DIContainer {
     }
     
     func registerRepository() {
+        self.registerUserRepository()
+        self.registerMeloPlaceRepository()
     }
     
     func registerUseCase() {
+        self.registerFetchUserUseCase()
+        self.registerFetchMeloPlaceUseCase()
     }
     
     func registerViewModel() {
         self.registerMainViewModel()
         self.registerMapViewModel()
         self.registerBrowseViewModel()
-        self.registerSettingViewModel()
+        self.registerUserProfileViewModel()
         self.registerAddMeloPlaceViewModel()
         self.registerMeloLocationViewModel()
         self.registerMusicListViewModel()
@@ -64,11 +68,43 @@ private extension DIContainer {
 }
 
 private extension DIContainer {
+    func registerUserRepository() {
+        self.container.register(UserRepositoryProtocol.self) { resolver in
+            let fireBaseService = FireBaseNetworkService.shared
+            
+            return UserRepository(fireBaseService: fireBaseService)
+        }
+        .inObjectScope(.container)
+    }
     
+    func registerMeloPlaceRepository() {
+        self.container.register(MeloPlaceRepositoryProtocol.self) { resolver in
+            let fireBaseService = FireBaseNetworkService.shared
+            
+            return MeloPlaceRepository(fireBaseService: fireBaseService)
+        }
+        .inObjectScope(.container)
+    }
 }
 
 private extension DIContainer {
+    func registerFetchUserUseCase() {
+        self.container.register(FetchUserUseCaseProtocol.self) { resolver in
+            let userRepository = resolver.resolve(UserRepositoryProtocol.self)
+            
+            return FetchUserUseCase(userRepository: userRepository!)
+        }
+        .inObjectScope(.container)
+    }
     
+    func registerFetchMeloPlaceUseCase() {
+        self.container.register(FetchMeloPlaceUseCaseProtocol.self) { resolver in
+            let meloPlaceRepository = resolver.resolve(MeloPlaceRepositoryProtocol.self)
+            
+            return FetchMeloPlaceUseCase(meloPlaceRepository: meloPlaceRepository!)
+        }
+        .inObjectScope(.container)
+    }
 }
 
 private extension DIContainer {
@@ -96,10 +132,12 @@ private extension DIContainer {
         .inObjectScope(.graph)
     }
     
-    func registerSettingViewModel() {
-        self.container.register(SettingViewModel.self) { resolver in
+    func registerUserProfileViewModel() {
+        self.container.register(UserProfileViewModel.self) { resolver in
+            let fetchUserUseCase = resolver.resolve(FetchUserUseCaseProtocol.self)
+            let fetchMeloPlaceUseCase = resolver.resolve(FetchMeloPlaceUseCaseProtocol.self)
             
-            return SettingViewModel()
+            return UserProfileViewModel(fetchUserUseCase: fetchUserUseCase!, fetchMeloPlaceUseCase: fetchMeloPlaceUseCase!)
         }
         .inObjectScope(.graph)
     }

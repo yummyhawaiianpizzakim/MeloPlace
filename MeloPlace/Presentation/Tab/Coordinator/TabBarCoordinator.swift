@@ -104,10 +104,10 @@ extension TabBarCoordinator {
             self.childCoordinators.append(browseCoordinator)
             browseCoordinator.start()
         case .setting:
-            let settingCoordinator = SettingCoordinator(navigation: navigation)
-            settingCoordinator.finishDelegate = self
-            self.childCoordinators.append(settingCoordinator)
-            settingCoordinator.start()
+            let userProfileCoordinator = UserProfileCoordinator(navigation: navigation)
+            userProfileCoordinator.finishDelegate = self
+            self.childCoordinators.append(userProfileCoordinator)
+            userProfileCoordinator.start()
         }
         
         return navigation
