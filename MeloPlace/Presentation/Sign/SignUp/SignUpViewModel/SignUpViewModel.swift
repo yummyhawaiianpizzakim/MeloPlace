@@ -56,16 +56,27 @@ class SignUpViewModel {
             .subscribe { [weak self] email, pw in
                 guard let self = self, let profile = self.profile.value else { return }
                 
-                self.fireBaseService.signUp(email: email, password: pw, spotifyID: profile.id, userDTO: UserDTO())
-                    .subscribe(onSuccess: { isSuccess in
-                        if isSuccess {
-                            self.actions?.closeSignUpView()
-                        } else {
-                            print("SIGN UP FAIL")
-                        }
-                    }, onFailure: { error in
-                        print(error)
-                    }).disposed(by: self.disposeBag)
+                self.fireBaseService.signUp(
+                    userDTO: UserDTO(
+                        id: "",
+                        spotifyID: profile.id,
+                        name: profile.name,
+                        email: email,
+                        password: pw,
+                        imageURL: profile.imageURL,
+                        imageWidth: profile.imageWidth,
+                        imageHeight: profile.imageHeight
+                    )
+                )
+                .subscribe(onSuccess: { isSuccess in
+                    if isSuccess {
+                        self.actions?.closeSignUpView()
+                    } else {
+                        print("SIGN UP FAIL")
+                    }
+                }, onFailure: { error in
+                    print(error)
+                }).disposed(by: self.disposeBag)
             }
             .disposed(by: self.disposeBag)
         

@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import FloatingPanel
 import RxSwift
 import RxRelay
 
@@ -34,7 +35,7 @@ class MapMeloPlaceListCoordinator: CoordinatorProtocol {
     private func showMapMeloPlaceListViewFlow() {
         let container = DIContainer.shared.container
         guard let vm = container.resolve(MapMeloPlaceListViewModel.self) else { return }
-        
+        let floatingPanelController = FloatingPanelController()
         let vc = MapMeloPlaceListViewController(viewModel: vm)
         self.meloPlaces
             .bind(to: vm.meloPlaces)
@@ -45,12 +46,16 @@ class MapMeloPlaceListCoordinator: CoordinatorProtocol {
 //                showPhotoDetail: self.showPhotoDetail
 //            )
 //        )
-        vc.sheetPresentationController?.detents = [.medium(), .large()]
-        vc.modalPresentationStyle = .pageSheet
-        vc.sheetPresentationController?.prefersGrabberVisible = true
-        self.navigation.modalPresentationStyle = .formSheet
-        self.navigation.present(vc, animated: true)
         
+        floatingPanelController.set(contentViewController: vc)
+//        floatingPanelController.addPanel(toParent: self.navigation)
+        floatingPanelController.track(scrollView: vc.meloPlaceCollectionView)
+        floatingPanelController.changePanelStyle()
+        floatingPanelController.layout = CustomFloatingPanelLayout()
+//        floatingPanelController.show()
+        vc.view.backgroundColor = .white
+        vc.loadViewIfNeeded()
+        self.navigation.present(floatingPanelController, animated: true)
 //        self.navigation.pushViewController(vc, animated: true)
     }
     

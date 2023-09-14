@@ -32,7 +32,7 @@ final class MeloLocationViewController: UIViewController {
     }
     
     override func loadView() {
-        self.view = mainView
+        self.view = self.mainView
     }
     
     override func viewDidLoad() {
