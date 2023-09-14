@@ -12,6 +12,13 @@ struct MeloPlaceDTO: DTOProtocol {
     var userId: String
     
     var musicURI: String
+    var musicName: String
+    var musicDuration: Int
+    var musicArtist: String
+    var musicAlbum: String
+    var musicImageURL: String
+    var musicImgaeWidth: Int
+    var musicImgaeHeight: Int
     
     var images: [String]
     var title: String
@@ -27,17 +34,25 @@ struct MeloPlaceDTO: DTOProtocol {
 
 extension MeloPlaceDTO {
     func toDomain() -> MeloPlace {
-        return MeloPlace(id: self.id,
-                         userId: self.userId,
-                         musicURI: self.musicURI,
-                         images: self.images,
-                         title: self.title,
-                         description: self.description,
-                         address: self.address,
-                         simpleAddress: self.simpleAddress,
-                         latitude: self.latitude,
-                         longitude: self.longitude,
-                         memoryDate: self.memoryDate
+        return MeloPlace(
+            id: self.id,
+            userId: self.userId,
+            musicURI: self.musicURI,
+            musicName: self.musicName,
+            musicDuration: self.musicDuration,
+            musicArtist: self.musicArtist,
+            musicAlbum: self.musicAlbum,
+            musicImageURL: self.musicImageURL,
+            musicImgaeWidth: self.musicImgaeWidth,
+            musicImgaeHeight: self.musicImgaeHeight,
+            images: self.images,
+            title: self.title,
+            description: self.description,
+            address: self.address,
+            simpleAddress: self.simpleAddress,
+            latitude: self.latitude,
+            longitude: self.longitude,
+            memoryDate: self.memoryDate
         )
     }
 }

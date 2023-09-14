@@ -39,17 +39,17 @@ struct UserDTO: DTOProtocol {
         self.imageHeight = 0
     }
     
-    init(id: String, email: String, password: String, spotifyID: String,  userDTO: UserDTO) {
-        self.id = id
-        self.spotifyID = spotifyID
-        self.name = userDTO.name
-        self.email = email
-        self.password = password
-        self.imageURL = userDTO.imageURL
-        self.imageWidth = userDTO.imageWidth
-        self.imageHeight = userDTO.imageHeight
-    }
-    
+//    init(userDTO: UserDTO) {
+//        self.id = ""
+//        self.spotifyID = userDTO.spotifyID
+//        self.name = userDTO.name
+//        self.email = userDTO.email
+//        self.password = userDTO.password
+//        self.imageURL = userDTO.imageURL
+//        self.imageWidth = userDTO.imageWidth
+//        self.imageHeight = userDTO.imageHeight
+//    }
+//    
 }
 
 extension UserDTO {
@@ -67,38 +67,5 @@ extension UserDTO {
         
 //        print("todomain: \(user)")
         return user
-    }
-}
-
-struct User {
-    var id: String
-    var spotifyID: String
-    var name: String
-    var email: String
-    var password: String
-    var imageURL: String
-    var imageWidth: Int
-    var imageHeight: Int
-    
-    init(id: String, spotifyID: String, name: String, email: String, password: String, imageURL: String, imageWidth: Int, imageHeight: Int) {
-        self.id = id
-        self.spotifyID = spotifyID
-        self.name = name
-        self.email = email
-        self.password = password
-        self.imageURL = imageURL
-        self.imageWidth = imageWidth
-        self.imageHeight = imageHeight
-    }
-    
-    init() {
-        self.id = ""
-        self.spotifyID = ""
-        self.name = ""
-        self.email = ""
-        self.password = ""
-        self.imageURL = ""
-        self.imageWidth = 0
-        self.imageHeight = 0
     }
 }
