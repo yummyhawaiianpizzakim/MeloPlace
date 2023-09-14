@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 import RxSwift
 import RxGesture
 import RxCocoa
@@ -42,4 +43,22 @@ extension UIViewController {
     @objc private func dismissKeyboard() {
         view.endEditing(true)
     }
+}
+
+extension UIView {
+    var appOffset: CGFloat {
+        return UIScreen.main.bounds.width / 50
+    }
+    
+    func setGradient(startColor: UIColor, endColor: UIColor, startPoint: CGPoint, endPoint: CGPoint) {
+        let gradient = CAGradientLayer()
+        gradient.colors = [startColor.cgColor, endColor.cgColor]
+        gradient.locations = [0.0, 1.0]
+        gradient.startPoint = startPoint
+        gradient.endPoint = endPoint
+        gradient.frame = bounds
+        layer.insertSublayer(gradient, at: 0)
+    }
+    
+    
 }

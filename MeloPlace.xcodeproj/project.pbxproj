@@ -24,9 +24,9 @@
 		E90E64842A80F9C8002A71B6 /* MainViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64832A80F9C8002A71B6 /* MainViewModel.swift */; };
 		E90E64882A80F9EB002A71B6 /* TabBarCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64872A80F9EB002A71B6 /* TabBarCoordinator.swift */; };
 		E90E648A2A80F9FC002A71B6 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64892A80F9FC002A71B6 /* AppCoordinator.swift */; };
-		E90E648C2A80FA8C002A71B6 /* SettingCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E648B2A80FA8C002A71B6 /* SettingCoordinator.swift */; };
-		E90E648E2A80FA96002A71B6 /* SettingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E648D2A80FA96002A71B6 /* SettingViewController.swift */; };
-		E90E64902A80FAA0002A71B6 /* SettingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E648F2A80FAA0002A71B6 /* SettingViewModel.swift */; };
+		E90E648C2A80FA8C002A71B6 /* UserProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E648B2A80FA8C002A71B6 /* UserProfileCoordinator.swift */; };
+		E90E648E2A80FA96002A71B6 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E648D2A80FA96002A71B6 /* UserProfileViewController.swift */; };
+		E90E64902A80FAA0002A71B6 /* UserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E648F2A80FAA0002A71B6 /* UserProfileViewModel.swift */; };
 		E90E64922A80FAA9002A71B6 /* MapCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64912A80FAA9002A71B6 /* MapCoordinator.swift */; };
 		E90E64942A80FAB3002A71B6 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64932A80FAB3002A71B6 /* MapViewController.swift */; };
 		E90E64962A80FABB002A71B6 /* MapViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64952A80FABB002A71B6 /* MapViewModel.swift */; };
@@ -97,6 +97,21 @@
 		E90E65602AA5CF3A002A71B6 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E655F2AA5CF3A002A71B6 /* Space.swift */; };
 		E90E65632AA5D20E002A71B6 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65622AA5D20E002A71B6 /* SearchView.swift */; };
 		E90E65652AA5D70C002A71B6 /* SearchTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65642AA5D70C002A71B6 /* SearchTableCell.swift */; };
+		E90E65672AA996DF002A71B6 /* SwiftUIPreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65662AA996DF002A71B6 /* SwiftUIPreView.swift */; };
+		E90E656A2AAAEFBC002A71B6 /* UserProfileCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65692AAAEFBC002A71B6 /* UserProfileCollectionCell.swift */; };
+		E90E656C2AAAF1CC002A71B6 /* UserProfileSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E656B2AAAF1CC002A71B6 /* UserProfileSection.swift */; };
+		E90E656E2AAAF259002A71B6 /* UserProfileLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E656D2AAAF259002A71B6 /* UserProfileLayout.swift */; };
+		E90E65702AAAF3DE002A71B6 /* UserContentCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E656F2AAAF3DE002A71B6 /* UserContentCollectionCell.swift */; };
+		E90E65722AAAF8AA002A71B6 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65712AAAF8AA002A71B6 /* User.swift */; };
+		E90E65772AAB01CB002A71B6 /* FetchUserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65762AAB01CB002A71B6 /* FetchUserUseCase.swift */; };
+		E90E657C2AAB03EC002A71B6 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E657B2AAB03EC002A71B6 /* UserRepository.swift */; };
+		E90E657E2AAB09F0002A71B6 /* MeloPlaceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E657D2AAB09F0002A71B6 /* MeloPlaceRepository.swift */; };
+		E90E65802AAB0B89002A71B6 /* FetchMeloPlaceUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E657F2AAB0B89002A71B6 /* FetchMeloPlaceUseCase.swift */; };
+		E90E65822AAB127E002A71B6 /* FilterCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65812AAB127E002A71B6 /* FilterCollectionView.swift */; };
+		E90E65842AAB12AD002A71B6 /* FilterCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65832AAB12AD002A71B6 /* FilterCollectionCell.swift */; };
+		E90E65872AAC68B3002A71B6 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65862AAC68B3002A71B6 /* PlayerView.swift */; };
+		E90E65892AACA08C002A71B6 /* MeloPlaceDetailCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65882AACA08C002A71B6 /* MeloPlaceDetailCollectionCell.swift */; };
+		E90E658B2AADCB78002A71B6 /* MeloPlaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E658A2AADCB78002A71B6 /* MeloPlaceDetailView.swift */; };
 		F5799F688EC91F2B993C799E /* Pods_MeloPlaceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74DFAEE2E1A6B5551A2A2277 /* Pods_MeloPlaceTests.framework */; };
 		FA5C3C5E8A3EA8B36C6D1BCA /* Pods_MeloPlace_MeloPlaceUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FED2394756A4B4F983B47D3 /* Pods_MeloPlace_MeloPlaceUITests.framework */; };
 /* End PBXBuildFile section */
@@ -147,9 +162,9 @@
 		E90E64832A80F9C8002A71B6 /* MainViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewModel.swift; sourceTree = "<group>"; };
 		E90E64872A80F9EB002A71B6 /* TabBarCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarCoordinator.swift; sourceTree = "<group>"; };
 		E90E64892A80F9FC002A71B6 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
-		E90E648B2A80FA8C002A71B6 /* SettingCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingCoordinator.swift; sourceTree = "<group>"; };
-		E90E648D2A80FA96002A71B6 /* SettingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewController.swift; sourceTree = "<group>"; };
-		E90E648F2A80FAA0002A71B6 /* SettingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel.swift; sourceTree = "<group>"; };
+		E90E648B2A80FA8C002A71B6 /* UserProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileCoordinator.swift; sourceTree = "<group>"; };
+		E90E648D2A80FA96002A71B6 /* UserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		E90E648F2A80FAA0002A71B6 /* UserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileViewModel.swift; sourceTree = "<group>"; };
 		E90E64912A80FAA9002A71B6 /* MapCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapCoordinator.swift; sourceTree = "<group>"; };
 		E90E64932A80FAB3002A71B6 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		E90E64952A80FABB002A71B6 /* MapViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModel.swift; sourceTree = "<group>"; };
@@ -220,6 +235,21 @@
 		E90E655F2AA5CF3A002A71B6 /* Space.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
 		E90E65622AA5D20E002A71B6 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		E90E65642AA5D70C002A71B6 /* SearchTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableCell.swift; sourceTree = "<group>"; };
+		E90E65662AA996DF002A71B6 /* SwiftUIPreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIPreView.swift; sourceTree = "<group>"; };
+		E90E65692AAAEFBC002A71B6 /* UserProfileCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileCollectionCell.swift; sourceTree = "<group>"; };
+		E90E656B2AAAF1CC002A71B6 /* UserProfileSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileSection.swift; sourceTree = "<group>"; };
+		E90E656D2AAAF259002A71B6 /* UserProfileLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileLayout.swift; sourceTree = "<group>"; };
+		E90E656F2AAAF3DE002A71B6 /* UserContentCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserContentCollectionCell.swift; sourceTree = "<group>"; };
+		E90E65712AAAF8AA002A71B6 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		E90E65762AAB01CB002A71B6 /* FetchUserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchUserUseCase.swift; sourceTree = "<group>"; };
+		E90E657B2AAB03EC002A71B6 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
+		E90E657D2AAB09F0002A71B6 /* MeloPlaceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloPlaceRepository.swift; sourceTree = "<group>"; };
+		E90E657F2AAB0B89002A71B6 /* FetchMeloPlaceUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMeloPlaceUseCase.swift; sourceTree = "<group>"; };
+		E90E65812AAB127E002A71B6 /* FilterCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCollectionView.swift; sourceTree = "<group>"; };
+		E90E65832AAB12AD002A71B6 /* FilterCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterCollectionCell.swift; sourceTree = "<group>"; };
+		E90E65862AAC68B3002A71B6 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
+		E90E65882AACA08C002A71B6 /* MeloPlaceDetailCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloPlaceDetailCollectionCell.swift; sourceTree = "<group>"; };
+		E90E658A2AADCB78002A71B6 /* MeloPlaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloPlaceDetailView.swift; sourceTree = "<group>"; };
 		F48083693CF0EB1227383675 /* Pods-MeloPlace.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeloPlace.release.xcconfig"; path = "Target Support Files/Pods-MeloPlace/Pods-MeloPlace.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -374,14 +404,15 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		E90E646E2A80F7E6002A71B6 /* Setting */ = {
+		E90E646E2A80F7E6002A71B6 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
+				E90E65682AAAEF89002A71B6 /* View */,
 				E90E64762A80F92A002A71B6 /* ViewModel */,
 				E90E64752A80F922002A71B6 /* ViewController */,
 				E90E64742A80F91D002A71B6 /* Coordinator */,
 			);
-			path = Setting;
+			path = UserProfile;
 			sourceTree = "<group>";
 		};
 		E90E646F2A80F7ED002A71B6 /* Map */ = {
@@ -431,7 +462,7 @@
 		E90E64742A80F91D002A71B6 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
-				E90E648B2A80FA8C002A71B6 /* SettingCoordinator.swift */,
+				E90E648B2A80FA8C002A71B6 /* UserProfileCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -439,7 +470,7 @@
 		E90E64752A80F922002A71B6 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				E90E648D2A80FA96002A71B6 /* SettingViewController.swift */,
+				E90E648D2A80FA96002A71B6 /* UserProfileViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -447,7 +478,7 @@
 		E90E64762A80F92A002A71B6 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				E90E648F2A80FAA0002A71B6 /* SettingViewModel.swift */,
+				E90E648F2A80FAA0002A71B6 /* UserProfileViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -529,6 +560,7 @@
 		E90E64A22A820F3C002A71B6 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
+				E90E65732AAB017F002A71B6 /* UseCase */,
 				E90E64A32A820F44002A71B6 /* Model */,
 			);
 			path = Domain;
@@ -542,6 +574,9 @@
 				E90E64DF2A878228002A71B6 /* Address.swift */,
 				E90E64F52A8B51F5002A71B6 /* Music.swift */,
 				E90E655F2AA5CF3A002A71B6 /* Space.swift */,
+				E90E656B2AAAF1CC002A71B6 /* UserProfileSection.swift */,
+				E90E656D2AAAF259002A71B6 /* UserProfileLayout.swift */,
+				E90E65712AAAF8AA002A71B6 /* User.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -598,6 +633,7 @@
 				E90E64E52A8787D0002A71B6 /* MKMapView+RX.swift */,
 				E90E65352A9665B1002A71B6 /* ViewController+Rx.swift */,
 				E90E65432A989E87002A71B6 /* UIImage+.swift */,
+				E90E65662AA996DF002A71B6 /* SwiftUIPreView.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -619,7 +655,7 @@
 				E90E64862A80F9DB002A71B6 /* Coordinator */,
 				E90E64702A80F8FF002A71B6 /* Browse */,
 				E90E646F2A80F7ED002A71B6 /* Map */,
-				E90E646E2A80F7E6002A71B6 /* Setting */,
+				E90E646E2A80F7E6002A71B6 /* UserProfile */,
 				E90E646D2A80F7D3002A71B6 /* Main */,
 			);
 			path = Tab;
@@ -732,6 +768,7 @@
 		E90E64F72A8B5557002A71B6 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				E90E65782AAB0377002A71B6 /* Repository */,
 				E90E64F82A8B5562002A71B6 /* Service */,
 			);
 			path = Data;
@@ -914,6 +951,7 @@
 		E90E65372A987651002A71B6 /* MeloPlaceDetail */ = {
 			isa = PBXGroup;
 			children = (
+				E90E65852AAC6898002A71B6 /* View */,
 				E90E653A2A987674002A71B6 /* ViewModel */,
 				E90E65392A98766E002A71B6 /* ViewController */,
 				E90E65382A987668002A71B6 /* Coordinator */,
@@ -1028,6 +1066,77 @@
 			children = (
 				E90E65622AA5D20E002A71B6 /* SearchView.swift */,
 				E90E65642AA5D70C002A71B6 /* SearchTableCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E90E65682AAAEF89002A71B6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E90E65692AAAEFBC002A71B6 /* UserProfileCollectionCell.swift */,
+				E90E656F2AAAF3DE002A71B6 /* UserContentCollectionCell.swift */,
+				E90E65812AAB127E002A71B6 /* FilterCollectionView.swift */,
+				E90E65832AAB12AD002A71B6 /* FilterCollectionCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E90E65732AAB017F002A71B6 /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				E90E65752AAB01A3002A71B6 /* MeloPlace */,
+				E90E65742AAB018D002A71B6 /* User */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		E90E65742AAB018D002A71B6 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				E90E65762AAB01CB002A71B6 /* FetchUserUseCase.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		E90E65752AAB01A3002A71B6 /* MeloPlace */ = {
+			isa = PBXGroup;
+			children = (
+				E90E657F2AAB0B89002A71B6 /* FetchMeloPlaceUseCase.swift */,
+			);
+			path = MeloPlace;
+			sourceTree = "<group>";
+		};
+		E90E65782AAB0377002A71B6 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				E90E657A2AAB03D6002A71B6 /* MeloPlace */,
+				E90E65792AAB03CE002A71B6 /* User */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		E90E65792AAB03CE002A71B6 /* User */ = {
+			isa = PBXGroup;
+			children = (
+				E90E657B2AAB03EC002A71B6 /* UserRepository.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		E90E657A2AAB03D6002A71B6 /* MeloPlace */ = {
+			isa = PBXGroup;
+			children = (
+				E90E657D2AAB09F0002A71B6 /* MeloPlaceRepository.swift */,
+			);
+			path = MeloPlace;
+			sourceTree = "<group>";
+		};
+		E90E65852AAC6898002A71B6 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E90E65862AAC68B3002A71B6 /* PlayerView.swift */,
+				E90E65882AACA08C002A71B6 /* MeloPlaceDetailCollectionCell.swift */,
+				E90E658A2AADCB78002A71B6 /* MeloPlaceDetailView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1287,39 +1396,51 @@
 				E90E64BD2A84F37E002A71B6 /* Spotify.swift in Sources */,
 				E90E64AE2A823812002A71B6 /* AddMeloPlaceViewController.swift in Sources */,
 				E90E64A52A820FB5002A71B6 /* MeloPlace.swift in Sources */,
+				E90E65722AAAF8AA002A71B6 /* User.swift in Sources */,
 				E90E65122A8CB8CC002A71B6 /* SelectDateViewModel.swift in Sources */,
 				E90E65342A94A9B6002A71B6 /* MeloPlaceDTO.swift in Sources */,
+				E90E65872AAC68B3002A71B6 /* PlayerView.swift in Sources */,
+				E90E65772AAB01CB002A71B6 /* FetchUserUseCase.swift in Sources */,
 				E90E64982A80FAD9002A71B6 /* BrowseCoordinator.swift in Sources */,
 				E90E65512AA09D10002A71B6 /* MapMeloPlaceListCollectionCell.swift in Sources */,
+				E90E65842AAB12AD002A71B6 /* FilterCollectionCell.swift in Sources */,
 				E90E648A2A80F9FC002A71B6 /* AppCoordinator.swift in Sources */,
-				E90E64902A80FAA0002A71B6 /* SettingViewModel.swift in Sources */,
+				E90E64902A80FAA0002A71B6 /* UserProfileViewModel.swift in Sources */,
 				E90E643C2A80F3F4002A71B6 /* ViewController.swift in Sources */,
 				E90E64D12A8773DF002A71B6 /* MapView.swift in Sources */,
 				E90E64CB2A876E40002A71B6 /* MeloLocationViewModel.swift in Sources */,
 				E90E64F02A8B4734002A71B6 /* MusicListViewController.swift in Sources */,
 				E90E655E2AA5C125002A71B6 /* SearchViewModel.swift in Sources */,
 				E90E65322A8E22E4002A71B6 /* SignUpViewModel.swift in Sources */,
+				E90E657C2AAB03EC002A71B6 /* UserRepository.swift in Sources */,
 				E90E649A2A80FAE4002A71B6 /* BrowseViewController.swift in Sources */,
+				E90E657E2AAB09F0002A71B6 /* MeloPlaceRepository.swift in Sources */,
+				E90E656A2AAAEFBC002A71B6 /* UserProfileCollectionCell.swift in Sources */,
+				E90E65822AAB127E002A71B6 /* FilterCollectionView.swift in Sources */,
 				E90E64B22A824BDF002A71B6 /* AddMeloPlaceView.swift in Sources */,
 				E90E654C2AA09766002A71B6 /* MapMeloPlaceListViewController.swift in Sources */,
 				E90E64B52A84CAD5002A71B6 /* Extension.swift in Sources */,
+				E90E65672AA996DF002A71B6 /* SwiftUIPreView.swift in Sources */,
 				E90E653C2A9876A4002A71B6 /* MeloPlaceDetailCoordinator.swift in Sources */,
 				E90E65302A8E22D7002A71B6 /* SignUpViewController.swift in Sources */,
 				E90E652E2A8E22C9002A71B6 /* SignUpCoordinator.swift in Sources */,
 				E90E64E02A878228002A71B6 /* Address.swift in Sources */,
 				E90E64F22A8B47D0002A71B6 /* MusicListViewModel.swift in Sources */,
 				E90E65282A8DF9F4002A71B6 /* UserDTO.swift in Sources */,
+				E90E656C2AAAF1CC002A71B6 /* UserProfileSection.swift in Sources */,
 				E90E64E22A87864C002A71B6 /* Array+.swift in Sources */,
 				E90E65602AA5CF3A002A71B6 /* Space.swift in Sources */,
 				E90E64FB2A8B5587002A71B6 /* SpotifyService.swift in Sources */,
 				E90E647E2A80F99C002A71B6 /* MainCoordinator.swift in Sources */,
 				E90E64FF2A8B74D6002A71B6 /* SpotifySearchDTO.swift in Sources */,
 				E90E64F42A8B4FE6002A71B6 /* MusicListCollectionCell.swift in Sources */,
+				E90E65802AAB0B89002A71B6 /* FetchMeloPlaceUseCase.swift in Sources */,
 				E90E64C92A876AD7002A71B6 /* MeloLocationViewController.swift in Sources */,
 				E90E64A12A810D3E002A71B6 /* MainCell.swift in Sources */,
 				E90E65242A8DF7B3002A71B6 /* FireBaseNetworkService.swift in Sources */,
-				E90E648C2A80FA8C002A71B6 /* SettingCoordinator.swift in Sources */,
+				E90E648C2A80FA8C002A71B6 /* UserProfileCoordinator.swift in Sources */,
 				E90E64F62A8B51F5002A71B6 /* Music.swift in Sources */,
+				E90E658B2AADCB78002A71B6 /* MeloPlaceDetailView.swift in Sources */,
 				E90E65102A8CB89C002A71B6 /* SelectDateViewController.swift in Sources */,
 				E90E651E2A8DEE65002A71B6 /* SignInViewController.swift in Sources */,
 				E90E64CD2A876E6B002A71B6 /* MeloLocationCoordinator.swift in Sources */,
@@ -1328,6 +1449,7 @@
 				E90E64E42A878797002A71B6 /* CLLocationManager+RX.swift in Sources */,
 				E90E649C2A80FAED002A71B6 /* BrowseViewModel.swift in Sources */,
 				E90E64962A80FABB002A71B6 /* MapViewModel.swift in Sources */,
+				E90E65702AAAF3DE002A71B6 /* UserContentCollectionCell.swift in Sources */,
 				E90E64AC2A8237AD002A71B6 /* AddMeloPlaceCoordinator.swift in Sources */,
 				E90E64EE2A8B4688002A71B6 /* MusicListCoordinator.swift in Sources */,
 				E90E64BF2A84F578002A71B6 /* SpotifyViewController.swift in Sources */,
@@ -1354,7 +1476,9 @@
 				E90E64942A80FAB3002A71B6 /* MapViewController.swift in Sources */,
 				E90E65402A9876BB002A71B6 /* MeloPlaceDetailViewModel.swift in Sources */,
 				E90E65652AA5D70C002A71B6 /* SearchTableCell.swift in Sources */,
-				E90E648E2A80FA96002A71B6 /* SettingViewController.swift in Sources */,
+				E90E648E2A80FA96002A71B6 /* UserProfileViewController.swift in Sources */,
+				E90E65892AACA08C002A71B6 /* MeloPlaceDetailCollectionCell.swift in Sources */,
+				E90E656E2AAAF259002A71B6 /* UserProfileLayout.swift in Sources */,
 				E90E65362A9665B1002A71B6 /* ViewController+Rx.swift in Sources */,
 				E90E64E62A8787D0002A71B6 /* MKMapView+RX.swift in Sources */,
 				E90E64DC2A87806D002A71B6 /* LocationManager.swift in Sources */,

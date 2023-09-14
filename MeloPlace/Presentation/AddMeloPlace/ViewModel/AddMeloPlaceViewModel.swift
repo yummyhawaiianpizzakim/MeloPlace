@@ -96,9 +96,17 @@ class AddMeloPlaceViewModel {
             self.selectedGeoPoint, self.selectedDate,
             self.pickedImageURL, self.userInfo
         ).map { (title, content, music, address, geoPoint, date, imageURL, user) in
+            
             MeloPlace(id: UUID().uuidString,
                       userId: user.id,
                       musicURI: music.URI,
+                      musicName: music.name,
+                      musicDuration: music.duration,
+                      musicArtist: music.artist,
+                      musicAlbum: music.album,
+                      musicImageURL: music.imageURL,
+                      musicImgaeWidth: music.imageWidth,
+                      musicImgaeHeight: music.imageHeightL,
                       images: [imageURL],
                       title: title,
                       description: content,
