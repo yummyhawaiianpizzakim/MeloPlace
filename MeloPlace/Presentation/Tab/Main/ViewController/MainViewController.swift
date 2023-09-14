@@ -23,8 +23,9 @@ class MainViewController: UIViewController {
     typealias Snapshot = NSDiffableDataSourceSnapshot<Section, MeloPlace>
     
     var dataSource: DataSource?
-    
-    let indexPathCount = BehaviorRelay<Int>(value: 0)
+    var currentIndex = BehaviorRelay<Int>(value: 0)
+//    var itemCount: Int?
+    let indexPathCount = BehaviorRelay<Int>(value: 1)
     
     lazy var testLabel: UILabel = {
         let label = UILabel()
@@ -44,9 +45,9 @@ class MainViewController: UIViewController {
     }()
     
     lazy var mainCollectionView: UICollectionView = {
-        let layout = HSCycleGalleryViewLayout()
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
-        collectionView.collectionViewLayout = layout
+//        let layout = HSCycleGalleryViewLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.configureLayout())
+//        collectionView.collectionViewLayout = layout
         collectionView.contentInsetAdjustmentBehavior = .always
         collectionView.register(MainCell.self, forCellWithReuseIdentifier: MainCell.id)
         collectionView.backgroundColor = .none
@@ -101,7 +102,7 @@ private extension MainViewController {
         self.mainCollectionView.snp.makeConstraints { make in
 //            make.edges.equalToSuperview()
             make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(20)
         }
         self.addButton.snp.makeConstraints { make in
             make.bottom.equalToSuperview().offset(-10)
@@ -130,6 +131,7 @@ private extension MainViewController {
 //                self?.scrollToNextCell()
 //            }
 //            .disposed(by: self.disposeBag)
+        
     }
     
     func bindViewModel() {
@@ -146,7 +148,7 @@ private extension MainViewController {
             .asDriver(onErrorJustReturn: [])
             .map({[weak self] models in
                 self?.indexPathCount.accept(models.count)
-                
+                self?.bindPlayingMusic()
                 return self!.generateSnapshot(models: models)
             })
             .drive(onNext: {[weak self] snapshot in
@@ -176,19 +178,103 @@ private extension MainViewController {
         
     }
     
+    func bindPlayingMusic() {
+        guard let meloPlaces = self.viewModel?.meloPlaces.asDriver() else { return }
+        Driver.combineLatest(
+            self.currentIndex.asDriver()
+                .debounce(.seconds(1))
+                .distinctUntilChanged(),
+            meloPlaces
+        )
+        .drive(onNext: { [weak self] index, meloPlaces in
+            guard let self = self else { return }
+            if !meloPlaces.isEmpty && meloPlaces.count > index {
+                print("bbbb: \(index)")
+                var musicURI = meloPlaces[index].musicURI
+                self.viewModel?.playMusic(uri: musicURI)
+            }
+        })
+        .disposed(by: self.disposeBag)
+    }
+    
+}
+
+private extension MainViewController {
+    func configureLayout() -> UICollectionViewLayout {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(250), heightDimension: .absolute(400))
+        
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(250), heightDimension: .absolute(400))
+        
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .groupPagingCentered
+        section.visibleItemsInvalidationHandler = { [weak self] visibleItems, offset, environment in
+            guard let self = self else { return }
+            let cellItems = visibleItems.filter {
+                  $0.representedElementKind != UICollectionView.elementKindSectionHeader
+                }
+            let containerWidth = environment.container.contentSize.width
+            
+            var minDistanceFromCenter: CGFloat = .greatestFiniteMagnitude
+            var centerItemIndex: Int?
+//            let centerItemIndex = BehaviorRelay<Int>(value: 0)
+            
+            cellItems.forEach { item in
+                let itemCenterRelativeToOffset = item.frame.midX - offset.x
+                
+                // 셀이 컬렉션 뷰의 중앙에서 얼마나 떨어져 있는지
+                let distanceFromCenter = abs(itemCenterRelativeToOffset - containerWidth / 2.0)
+                
+                // 셀이 커지고 작아질 때의 최대 스케일, 최소 스케일
+                let minScale: CGFloat = 0.7
+                let maxScale: CGFloat = 1.0
+                let scale = max(maxScale - (distanceFromCenter / containerWidth), minScale)
+                
+                item.transform = CGAffineTransform(scaleX: scale, y: scale)
+                
+                if distanceFromCenter < minDistanceFromCenter {
+                    minDistanceFromCenter = distanceFromCenter
+//                    Driver.just(item.indexPath.item)
+//                        .debounce(.seconds(1))
+//                        .distinctUntilChanged()
+//                        .drive { index in
+//                            centerItemIndex = index
+//                        }
+//                        .disposed(by: self.disposeBag)
+//
+                    centerItemIndex = item.indexPath.item
+                }
+                
+                if self.currentIndex.value != centerItemIndex {
+                    self.currentIndex.accept(centerItemIndex ?? 0)
+                }
+//                print("The index of the centered item is: \(centerItemIndex ?? -1)")
+
+            }
+            
+        }
+
+        let layout = UICollectionViewCompositionalLayout(section: section)
+        
+        return layout
+    }
+    
     func setDataSource() {
         self.dataSource = UICollectionViewDiffableDataSource<Section, MeloPlace>(collectionView: self.mainCollectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
             guard let self = self else { return UICollectionViewCell() }
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCell.id, for: indexPath) as? MainCell else { return UICollectionViewCell() }
             cell.configureCell(item: itemIdentifier)
-            self.viewModel?.playMusic(indexPath: indexPath)
+//            self.viewModel?.playMusic(indexPath: indexPath)
             
-            self.nextButton.rx.tap.asObservable()
-                .subscribe { _ in
-                    self.scrollToNextCell(indexPath: indexPath)
-                }
-                .disposed(by: self.disposeBag)
+//            self.nextButton.rx.tap.asObservable()
+//                .subscribe { _ in
+//                    self.scrollToNextCell(indexPath: indexPath)
+//                }
+//                .disposed(by: self.disposeBag)
             
             return cell
         })

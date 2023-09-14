@@ -127,7 +127,7 @@ final class MainCell: UICollectionViewCell {
         self.titleLabel.text = item.title
         self.descriptionLabel.text = item.description
         self.addressLabel.text = item.simpleAddress
-        self.musicLabel.text = item.musicURI
+        self.musicLabel.text = item.musicName
         self.setImage(imageURLString: imageURLString)
 
     }

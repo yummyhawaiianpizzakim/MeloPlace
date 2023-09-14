@@ -48,14 +48,16 @@ class MainCoordinator: CoordinatorProtocol {
         addMeloPlaceCoordinator.start()
     }
     
-    lazy var showMeloPlaceDetailView: (_ meloPlace: MeloPlace) -> Void = { [weak self] meloPlace in
-        guard let navigation = self?.navigation else { return }
-        let meloPlaceDetailCoordinator = MeloPlaceDetailCoordinator(navigation: navigation)
-        
-        meloPlaceDetailCoordinator.meloPlace.accept(meloPlace)
-        meloPlaceDetailCoordinator.finishDelegate = self
-        self?.childCoordinators.append(meloPlaceDetailCoordinator)
-        meloPlaceDetailCoordinator.start()
+    lazy var showMeloPlaceDetailView: (_ meloPlaces: [MeloPlace], _ indexPath: IndexPath) -> Void = { [weak self] meloPlaces, indexPath in
+        guard let self = self else { return }
+        let coordinator = MeloPlaceDetailCoordinator(navigation: self.navigation)
+//        coordinator.meloPlace.accept(meloPlace)
+        coordinator.meloPlaces.accept(meloPlaces)
+//        coordinator.indexPath.accept(indexPath)
+        coordinator.indexPath = indexPath
+        self.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
     }
 }
 

@@ -12,7 +12,7 @@ import RxRelay
 
 struct MainViewModelActions {
     let showAddMeloPlaceView: () -> Void
-    let showMeloPlaceDetailView: (_ meloPlace: MeloPlace) -> Void
+    let showMeloPlaceDetailView: (_ meloPlaces: [MeloPlace], _ indexPath: IndexPath) -> Void
 }
 
 class MainViewModel {
@@ -22,35 +22,6 @@ class MainViewModel {
     
     var actions: MainViewModelActions?
     let meloPlaces = BehaviorRelay<[MeloPlace]>(value: [])
-    
-    let mock = BehaviorRelay<[MeloPlace]>(
-        value:
-            [MeloPlace(id: UUID().uuidString,
-                       userId: "",
-                       musicURI: "",
-                       images: [""],
-                       title: "asdasd",
-                       description: "zxczxc",
-                       address: "asdqwe",
-                       simpleAddress: "asdasf",
-                       latitude: 10.0000,
-                       longitude: 10.0000,
-                       memoryDate: Date()
-                      ),
-             MeloPlace(id: UUID().uuidString,
-                       userId: "",
-                       musicURI: "",
-                       images: [""],
-                       title: "asdasaad",
-                       description: "zxczvvxc",
-                       address: "asdddqwe",
-                       simpleAddress: "asdaaasf",
-                       latitude: 10.0000,
-                       longitude: 10.0000,
-                       memoryDate: Date()
-                      )
-            ]
-    )
     
     func setActions(actions: MainViewModelActions) {
         self.actions = actions
@@ -81,9 +52,9 @@ class MainViewModel {
         
         input.didSelectItem
             .withUnretained(self)
-            .subscribe { owner, index in
-                let meloPlace = owner.meloPlaces.value[index.row]
-                owner.actions?.showMeloPlaceDetailView(meloPlace)
+            .subscribe { owner, indexPath in
+                let meloPlaces = owner.meloPlaces.value
+                owner.actions?.showMeloPlaceDetailView(meloPlaces, indexPath)
             }
             .disposed(by: self.disposeBag)
         
@@ -117,45 +88,37 @@ class MainViewModel {
 }
 
 extension MainViewModel {
-    func fetchMeloPlace() {
-        var array: [MeloPlace] = []
-        self.fireBaseService.read(type: MeloPlaceDTO.self, userCase: .currentUser, access: .meloPlace)
-            .map({ dto in
-                let melo = dto.toDomain()
-                array.append(melo)
-            })
-            .subscribe { _ in
-                self.meloPlaces.accept(array)
-            }
-            .disposed(by: self.disposeBag)
-     
-    }
-    
-    func playMusic(indexPath: IndexPath) {
-        let int = indexPath.row
-        var musicURI = self.meloPlaces.value[int].musicURI
-        self.spotifyService.playMusic(uri: musicURI)
-    }
-    
-//    func fetchMeloPlace1() -> Single<[MeloPlace]> {
-//        return self.fireBaseService.read(type: MeloPlaceDTO.self, userCase: .currentUser, access: .meloPlace)
-//               .map { dto in
-//                   dto.toDomain()
-//               }
-//               .scan([], accumulator: { (accumulator: [MeloPlace], current: MeloPlace) -> [MeloPlace] in
-//                   return accumulator + [current]
-//               })
-//               .takeLast(1)
-//               .asSingle()
-//    }
-
-    
-//    func fetchMeloPlace() -> Single<[MeloPlace]> {
-//        return self.fireBaseService.read(type: MeloPlaceDTO.self, userCase: .currentUser, access: .meloPlace)
-//            .map { dto in
-//                dto.toDomain()
+//    func fetchMeloPlace() {
+//        var array: [MeloPlace] = []
+//        self.fireBaseService.read(type: MeloPlaceDTO.self, userCase: .currentUser, access: .meloPlace)
+//            .map({ dto in
+//                let melo = dto.toDomain()
+//                array.append(melo)
+//            })
+//            .subscribe { _ in
+//                self.meloPlaces.accept(array)
 //            }
-//            .toArray()
-//            .catchAndReturn([])
+//            .disposed(by: self.disposeBag)
+//     
 //    }
+    
+    func fetchMeloPlace() {
+        self.fireBaseService.read(type: MeloPlaceDTO.self, userCase: .currentUser, access: .meloPlace)
+            .map { dto in
+                dto.toDomain()
+            }
+            .toArray()
+            .catchAndReturn([])
+            .subscribe(onSuccess: { meloPlaces in
+                self.meloPlaces.accept(meloPlaces)
+            }, onFailure: { error in
+                print(error)
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    func playMusic(uri: String) {
+        self.spotifyService.playMusic(uri: uri)
+    }
+    
 }

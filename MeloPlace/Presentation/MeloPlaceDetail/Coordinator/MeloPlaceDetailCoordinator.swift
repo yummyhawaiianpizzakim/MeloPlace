@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import RxSwift
 import RxRelay
 
 class MeloPlaceDetailCoordinator: CoordinatorProtocol {
@@ -18,7 +19,13 @@ class MeloPlaceDetailCoordinator: CoordinatorProtocol {
     
     var navigation: UINavigationController
     
-    let meloPlace = BehaviorRelay<MeloPlace?>(value: nil)
+    let disposeBag = DisposeBag()
+    
+    let meloPlaces = BehaviorRelay<[MeloPlace]>(value: [])
+    
+//    let indexPath = PublishRelay<IndexPath>()
+//    let indexPath = BehaviorRelay<IndexPath>(value: [0, 0])
+    var indexPath: IndexPath?
     
     init(navigation : UINavigationController) {
         self.navigation = navigation
@@ -30,10 +37,18 @@ class MeloPlaceDetailCoordinator: CoordinatorProtocol {
     
     private func showMeloPlaceDetailViewFlow() {
         let container = DIContainer.shared.container
-        guard let vm = container.resolve(MeloPlaceDetailViewModel.self),
-        let meloPlace = self.meloPlace.value else { return }
+        guard let vm = container.resolve(MeloPlaceDetailViewModel.self)
+        else { return }
         
-        vm.meloPlace.accept(meloPlace)
+        self.meloPlaces
+            .bind(to: vm.meloPlaces)
+            .disposed(by: self.disposeBag)
+        
+//        self.indexPath
+//            .bind(to: vm.indexPath)
+//            .disposed(by: self.disposeBag)
+        vm.indexPath = self.indexPath
+        
         let vc = MeloPlaceDetailViewController(viewModel: vm)
         
 //        vm.setActions(
@@ -41,8 +56,10 @@ class MeloPlaceDetailCoordinator: CoordinatorProtocol {
 //                showPhotoDetail: self.showPhotoDetail
 //            )
 //        )
+//        vc.modalPresentationStyle = .fullScreen
+        self.navigation.present(vc, animated: true)
+//        self.navigation.pushViewController(vc, animated: true)
         
-        self.navigation.pushViewController(vc, animated: true)
     }
     
 //    lazy var showPhotoDetail: (_ IndexPath: IndexPath) -> Void = { [weak self] indexPath in
