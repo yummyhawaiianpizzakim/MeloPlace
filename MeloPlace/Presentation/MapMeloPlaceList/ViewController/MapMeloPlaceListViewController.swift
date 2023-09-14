@@ -22,9 +22,11 @@ class MapMeloPlaceListViewController: UIViewController {
     
     var dataSource: DataSource?
     
-    lazy var listView: UIView = {
-        let view = UIView()
-        return view
+    lazy var locationLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 30)
+        label.textColor = .white
+        return label
     }()
     
     lazy var meloPlaceCollectionView: UICollectionView = {
@@ -60,13 +62,26 @@ private extension MapMeloPlaceListViewController {
             self.view.addSubview($0)
         }
         
+//        self.locationLabel.snp.makeConstraints { make in
+//            make.top.equalToSuperview().offset(30)
+//            make.leading.equalToSuperview().offset(10)
+//            make.trailing.equalToSuperview().offset(-10)
+//            make.height.equalTo(30)
+//        }
+        
         self.meloPlaceCollectionView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
+//            make.top.equalTo(self.locationLabel.snp.bottom).offset(10)
+//            make.leading.equalToSuperview().offset(10)
+//            make.trailing.equalToSuperview().offset(-10)
+//            make.bottom.equalToSuperview().offset(-10)
         }
     }
     
     func bindViewModel() {
-        let input = MapMeloPlaceListViewModel.Input()
+        let input = MapMeloPlaceListViewModel.Input(
+            didTapCell: self.meloPlaceCollectionView.rx.itemSelected.asObservable()
+        )
         let output = self.viewModel?.transform(input: input)
         
 //        output?.dataSource

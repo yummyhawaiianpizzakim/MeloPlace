@@ -12,7 +12,7 @@ import RxRelay
 import SpotifyiOS
 
 class SpotifyService: NSObject {
-    let spotify = Spotify()
+//    static let spotify = Spotify()
     static let shared = SpotifyService()
     
     let accessTokenKey = "access-token-key"
@@ -81,15 +81,15 @@ class SpotifyService: NSObject {
         return appRemote
     }()
 
-    lazy var accessToken = UserDefaults.standard.string(forKey: self.spotify.accessTokenKey) {
+    lazy var accessToken = UserDefaults.standard.string(forKey: self.accessTokenKey) {
         didSet {
             let defaults = UserDefaults.standard
-            defaults.set(accessToken, forKey: self.spotify.accessTokenKey)
+            defaults.set(accessToken, forKey: self.accessTokenKey)
         }
     }
 
     lazy var configuration: SPTConfiguration = {
-        let configuration = SPTConfiguration(clientID: self.spotify.spotifyClientId, redirectURL: self.spotify.redirectUri)
+        let configuration = SPTConfiguration(clientID: self.spotifyClientId, redirectURL: self.redirectUri)
         // Set the playURI to a non-nil value so that Spotify plays music after authenticating
         // otherwise another app switch will be required
         configuration.playURI = ""
@@ -197,18 +197,18 @@ extension SpotifyService {
         let url = URL(string: "https://accounts.spotify.com/api/token")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
-        let spotifyAuthKey = "Basic \((self.spotify.spotifyClientId + ":" + self.spotify.spotifyClientSecretKey).data(using: .utf8)!.base64EncodedString())"
+        let spotifyAuthKey = "Basic \((self.spotifyClientId + ":" + self.spotifyClientSecretKey).data(using: .utf8)!.base64EncodedString())"
         request.allHTTPHeaderFields = ["Authorization": spotifyAuthKey,
                                        "Content-Type": "application/x-www-form-urlencoded"]
 
         var requestBodyComponents = URLComponents()
-        let scopeAsString = self.spotify.stringScopes.joined(separator: " ")
+        let scopeAsString = self.stringScopes.joined(separator: " ")
 
         requestBodyComponents.queryItems = [
-            URLQueryItem(name: "client_id", value: self.spotify.spotifyClientId),
+            URLQueryItem(name: "client_id", value: self.spotifyClientId),
             URLQueryItem(name: "grant_type", value: "authorization_code"),
             URLQueryItem(name: "code", value: responseCode!),
-            URLQueryItem(name: "redirect_uri", value: self.spotify.redirectUri.absoluteString),
+            URLQueryItem(name: "redirect_uri", value: self.redirectUri.absoluteString),
             URLQueryItem(name: "code_verifier", value: ""), // not currently used
             URLQueryItem(name: "scope", value: scopeAsString),
         ]
@@ -256,7 +256,7 @@ extension SpotifyService {
     
     func tryConnect() {
         guard let sessionManager = sessionManager else { return }
-        sessionManager.initiateSession(with: self.spotify.scopes, options: .clientOnly)
+        sessionManager.initiateSession(with: self.scopes, options: .clientOnly)
     }
     
     func playMusic(uri: String) {

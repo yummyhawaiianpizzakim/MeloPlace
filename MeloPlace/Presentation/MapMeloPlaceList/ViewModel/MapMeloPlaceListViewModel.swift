@@ -15,7 +15,7 @@ class MapMeloPlaceListViewModel {
     let meloPlaces = BehaviorRelay<[MeloPlace]>(value: [])
     
     struct Input {
-        
+        var didTapCell: Observable<IndexPath>
     }
     
     struct Output {

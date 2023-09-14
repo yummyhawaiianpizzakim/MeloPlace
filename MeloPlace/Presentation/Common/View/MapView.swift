@@ -49,7 +49,7 @@ class MapView: MKMapView {
     private func makeConstraints() {
         self.currentLocationButton.snp.makeConstraints {
             $0.trailing.equalToSuperview().offset(-20.0)
-            $0.top.equalToSuperview().offset(50.0)
+            $0.top.equalToSuperview().offset(70.0)
             $0.width.height.equalTo(50.0)
         }
     }
