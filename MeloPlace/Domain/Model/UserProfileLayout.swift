@@ -9,8 +9,8 @@ import Foundation
 import UIKit
 
 enum UserProfileLayout: Int, CaseIterable {
-    case likes = 0
-    case collections
+    case contents = 0
+    case likes
     
     var appOffset: CGFloat {
             return UIScreen.main.bounds.width / 50
@@ -18,34 +18,20 @@ enum UserProfileLayout: Int, CaseIterable {
 
     func createLayout(index: Int) -> NSCollectionLayoutSection {
         switch self {
+        case .contents:
+            return index == 0 ? self.generateProfileLayout() : self.generateLikesLayout()
         case .likes:
             return index == 0 ? self.generateProfileLayout() : self.generateLikesLayout()
-        case .collections:
-            return index == 0 ? self.generateProfileLayout() : self.generateTestLayout()
         }
     }
     
     private func generateProfileLayout() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(appOffset * 26))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(appOffset * 32))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(appOffset * 26))
-//        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .estimated(appOffset * 32))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         let section = NSCollectionLayoutSection(group: group)
-//        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
-
-        return section
-    }
-    
-    
-    private func generateTestLayout() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(1), heightDimension: .absolute(1))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(1), heightDimension: .absolute(1))
-        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
-        let section = NSCollectionLayoutSection(group: group)
-//        section.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
-
+        
         return section
     }
     

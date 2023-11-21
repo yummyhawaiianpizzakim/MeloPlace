@@ -11,44 +11,91 @@ import SnapKit
 import Kingfisher
 import RxSwift
 
-protocol UserProfileCollectionCellDelegate: AnyObject {
-    func didTapSignInButton(sender: UserProfileCollectionCell)
-}
-
 class UserProfileCollectionCell: UICollectionViewCell {
     static var identifier: String {
         return "UserProfileCollectionCell"
     }
     
-    weak var delegate: UserProfileCollectionCellDelegate?
     let disposeBag = DisposeBag()
     
     lazy var profileImageView: UIImageView = {
         let view = UIImageView(frame: .zero)
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFill
-//        let cornerRadius = view.frame.height / 2
-//        view.layer.cornerRadius = cornerRadius
-        
+        let cornerRadius = appOffset * 10 / 2
+        view.layer.cornerRadius = cornerRadius
+        view.layer.borderWidth = 1.5
+        view.layer.borderColor = UIColor.themeColor300?.cgColor
+        view.tintColor = .black
         return view
     }()
     
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = "name"
-        label.textColor = .white
+        label.textColor = .black
         label.font = .systemFont(ofSize: appOffset * 2)
         label.textAlignment = .center
         return label
     }()
     
-//    private lazy var signInButton: UIButton = {
-//        let button = UIButton()
-//        button.setTitle("Sign In", for: .normal)
-//        button.setTitleColor(.white, for: .normal)
-//        button.titleLabel?.font = .systemFont(ofSize: 12)
-//        return button
-//    }()
+    lazy var contentsCountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "0"
+        label.textColor = .black
+        label.font = .systemFont(ofSize: appOffset * 3)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    lazy var contentsLabel: UILabel = {
+        let label = UILabel()
+        label.text = "게시물"
+        label.textColor = .black
+        label.font = .systemFont(ofSize: appOffset * 2)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    lazy var followerCountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "0"
+        label.textColor = .black
+        label.font = .systemFont(ofSize: appOffset * 3)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    lazy var followerLabel: UILabel = {
+        let label = UILabel()
+        label.text = "팔로워"
+        label.textColor = .black
+        label.font = .systemFont(ofSize: appOffset * 2)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    lazy var followingCountLabel: UILabel = {
+        let label = UILabel()
+        label.text = "0"
+        label.textColor = .black
+        label.font = .systemFont(ofSize: appOffset * 3)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    lazy var followingLabel: UILabel = {
+        let label = UILabel()
+        label.text = "팔로잉"
+        label.textColor = .black
+        label.font = .systemFont(ofSize: appOffset * 2)
+        label.textAlignment = .center
+        return label
+    }()
+    
+    lazy var editProfileButton = ThemeButton(title: "프로필 수정")
+    
+    lazy var searchUserButton = ThemeButton(title: "친구 찾기")
     
     lazy var filterView: UICollectionView = {
         let view = FilterCollectionView(filterMode: .userPage)
@@ -58,7 +105,6 @@ class UserProfileCollectionCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.configureUI()
-        self.bindCell()
     }
     
     required init?(coder: NSCoder) {
@@ -69,73 +115,107 @@ class UserProfileCollectionCell: UICollectionViewCell {
 
 extension UserProfileCollectionCell {
     private func configureUI() {
-        self.contentView.addSubview(self.profileImageView)
+        [self.profileImageView, self.nameLabel,
+         self.contentsCountLabel, self.contentsLabel,
+         self.followerLabel, self.followerCountLabel,
+         self.followingLabel, self.followingCountLabel,
+         self.filterView,
+         self.editProfileButton,
+         self.searchUserButton]
+            .forEach { self.contentView.addSubview($0) }
+        
         self.profileImageView.snp.makeConstraints { make in
-            make.width.height.equalTo(appOffset * 8)
-//            make.leading.equalToSuperview().inset(appOffset * 2)
-            make.top.equalToSuperview().inset(appOffset * 3)
-            make.centerX.equalToSuperview()
+            make.width.height.equalTo(appOffset * 10)
+            make.top.equalToSuperview().offset(appOffset * 4)
+            make.leading.equalToSuperview().offset(appOffset * 4)
         }
         
-        self.contentView.addSubview(self.nameLabel)
+        self.contentsCountLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.profileImageView.snp.top).offset(appOffset * 2)
+            make.trailing.equalTo(self.followerCountLabel.snp.leading).offset( -(appOffset * 4) )
+            make.width.equalTo(appOffset * 6)
+        }
+        
+        self.contentsLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.contentsCountLabel.snp.bottom).offset(appOffset)
+            make.trailing.equalTo(self.contentsCountLabel)
+            make.width.equalTo(self.contentsCountLabel)
+        }
+        
+        self.followerCountLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.profileImageView.snp.top).offset(appOffset * 2)
+            make.trailing.equalTo(self.followingCountLabel.snp.leading).offset( -(appOffset * 4) )
+            make.width.equalTo(appOffset * 6)
+        }
+        
+        self.followerLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.followerCountLabel.snp.bottom).offset(appOffset)
+            make.trailing.equalTo(self.followerCountLabel)
+            make.width.equalTo(self.followerCountLabel)
+        }
+        
+        self.followingCountLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.profileImageView.snp.top).offset(appOffset * 2)
+            make.trailing.equalToSuperview().offset( -(appOffset * 4) )
+            make.width.equalTo(appOffset * 6)
+        }
+        
+        self.followingLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.followingCountLabel.snp.bottom).offset(appOffset)
+            make.trailing.equalTo(self.followingCountLabel)
+            make.width.equalTo(self.followingCountLabel)
+        }
+        
         self.nameLabel.snp.makeConstraints { make in
-//            make.left.right.equalToSuperview().offset(appOffset * 2)
-            make.centerX.equalToSuperview()
-            make.height.equalTo(8)
-            make.top.equalTo(self.profileImageView.snp.bottom).offset(appOffset / 2)
+            make.top.equalTo(self.profileImageView.snp.bottom).offset(appOffset)
+            make.leading.equalTo(self.profileImageView.snp.leading)
+            make.height.equalTo(appOffset * 2)
         }
         
-//        self.contentView.addSubview(self.signInButton)
-//        self.signInButton.snp.makeConstraints { make in
-//            make.centerX.equalToSuperview()
-//            make.top.equalTo(self.nameLabel.snp.bottom).offset(appOffset)
-//            make.width.equalTo(appOffset * 8)
-//            make.height.equalTo(appOffset * 3)
-//        }
+        self.editProfileButton.snp.makeConstraints { make in
+            make.top.equalTo(self.nameLabel.snp.bottom).offset(appOffset)
+            make.leading.equalToSuperview().offset(appOffset * 4)
+            make.height.equalTo(appOffset * 4)
+            make.width.equalTo(appOffset * 20)
+        }
         
-        self.contentView.addSubview(self.filterView)
+        self.searchUserButton.snp.makeConstraints { make in
+            make.top.equalTo(self.nameLabel.snp.bottom).offset(appOffset)
+            make.trailing.equalToSuperview().offset(-(appOffset * 4))
+            make.height.equalTo(appOffset * 4)
+            make.width.equalTo(appOffset * 20)
+        }
+        
         self.filterView.snp.makeConstraints { make in
             make.left.right.equalToSuperview()
-//            make.top.equalTo(self.signInButton.snp.bottom).offset(appOffset)
-            make.top.equalTo(self.nameLabel.snp.bottom).offset(appOffset)
+            make.top.equalTo(self.searchUserButton.snp.bottom).offset(appOffset)
             make.height.equalTo(appOffset * 6)
         }
         
-//        self.contentView.addSubview(self.filterView)
-//        self.filterView.snp.makeConstraints { make in
-//            make.left.right.equalToSuperview()
-//            make.top.equalTo(self.nameLabel.snp.bottom).offset(appOffset)
-//            make.height.equalTo(appOffset * 6)
-//        }
-        
     }
     
-    private func bindCell() {
-//        self.signInButton.rx.tap
-//            .throttle(.seconds(1), scheduler: MainScheduler.instance)
-//            .bind { [weak self] _ in
-//                guard let self = self else { return }
-//                self.delegate?.didTapSignInButton(sender: self)
-//            }
-//            .disposed(by: self.disposeBag)
-        
-    }
-    
-    func configureCell(user: User) {
+    func configureCell(user: User, meloPlaceCount: Int) {
+        let following = user.following.filter { $0 != "" }
+        let follower = user.follower.filter { $0 != "" }
         self.nameLabel.text = user.name
+        self.contentsCountLabel.text = "\(meloPlaceCount)"
+        self.followingCountLabel.text = "\(following.count)"
+        self.followerCountLabel.text = "\(follower.count)"
         self.setImage(at: user.imageURL)
     }
     
     private func setImage(at profileImageURL: String) {
-//        let url = try? profileImageURL.asURL()
         let url = URL(string: profileImageURL)
-        let maxProfileImageSize = CGSize(width: 80, height: 80)
-        let downsamplingProcessor = DownsamplingImageProcessor(size: maxProfileImageSize)
-//        let url = URL(string: profileImageURL!)
-        self.profileImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "person"), options: [.processor(downsamplingProcessor)] )
+        let size = appOffset * 10
+        let maxProfileImageSize = CGSize(width: size, height: size)
+//        let downsamplingProcessor = DownsamplingImageProcessor(size: maxProfileImageSize)
+        let placeholderImage = UIImage(systemName: "person")?.withTintColor(.black, renderingMode: .alwaysTemplate)
+//            .processor(downsamplingProcessor)
+        self.profileImageView.kf.setImage(with: url, placeholder: placeholderImage, options: [] )
     }
     
 }
+
 
 //#if canImport(SwiftUI) && DEBUG
 //import SwiftUI

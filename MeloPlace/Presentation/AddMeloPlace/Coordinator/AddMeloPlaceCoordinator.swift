@@ -38,31 +38,47 @@ class AddMeloPlaceCoordinator: CoordinatorProtocol {
         vm.setActions(
             actions: AddMeloPlaceViewModelActions(
                 showMeloLocationView: self.showMeloLocationView,
+                showSearchView: self.showSearchView,
                 showMusicListView: self.showMusicListView,
                 showSelectDateView: self.showSelectDateView,
+                showSearchUserView: self.showSearchUserView,
                 closeAddMeloPlaceView: self.closeAddMeloPlaceView
             )
         )
-        
+        self.navigation.isNavigationBarHidden = true
         self.navigation.pushViewController(vc, animated: true)
     }
     
-    lazy var showMeloLocationView: (_ addViewModel: AddMeloPlaceViewModel) -> Void = { [weak self] addViewModel in
-        let coordinator = MeloLocationCoordinator(navigation: self!.navigation, addViewModel: addViewModel)
+    lazy var showMeloLocationView: () -> Void = { [weak self] in
+        let coordinator = MeloLocationCoordinator(navigation: self!.navigation)
         self?.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
         coordinator.start()
     }
     
-    lazy var showMusicListView: (_ addViewModel: AddMeloPlaceViewModel) -> Void = { [weak self] addViewModel in
-        let coordinator = MusicListCoordinator(navigation: self!.navigation, addViewModel: addViewModel)
+    lazy var showSearchView: () -> Void = { [weak self] in
+        let coordinator = SearchCoordinator(navigation: self!.navigation)
         self?.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
         coordinator.start()
     }
     
-    lazy var showSelectDateView: (_ addViewModel: AddMeloPlaceViewModel) -> Void = { [weak self] addViewModel in
-        let coordinator = SelectDateCoordinator(navigation: self!.navigation, addViewModel: addViewModel)
+    lazy var showMusicListView: () -> Void = { [weak self] in
+        let coordinator = MusicListCoordinator(navigation: self!.navigation)
+        self?.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
+    }
+    
+    lazy var showSelectDateView: () -> Void = { [weak self] in
+        let coordinator = SelectDateCoordinator(navigation: self!.navigation)
+        self?.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
+    }
+    
+    lazy var showSearchUserView: () -> Void = { [weak self] in
+        let coordinator = SearchUserCoordinator(navigation: self!.navigation)
         self?.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
         coordinator.start()

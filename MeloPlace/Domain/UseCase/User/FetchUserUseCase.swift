@@ -9,10 +9,13 @@ import Foundation
 import RxSwift
 
 protocol FetchUserUseCaseProtocol: AnyObject {
-    func fetch() -> Observable<User>
+    func fetch(userID: String?) -> Observable<User>
+    func fetch(userNickName: String) -> Observable<[User]>
+    func fetchFollowersAndFollowingsUser(followers: [String], followings: [String]) -> Observable<([User], [User])>
 }
 
 class FetchUserUseCase: FetchUserUseCaseProtocol {
+    
     var userRepository: UserRepositoryProtocol
     let disposeBag = DisposeBag()
     
@@ -20,8 +23,30 @@ class FetchUserUseCase: FetchUserUseCaseProtocol {
         self.userRepository = userRepository
     }
     
-    func fetch() -> Observable<User> {
-        return self.userRepository.fetchUserInfo()
+    func fetch(userID: String?) -> Observable<User> {
+        guard let userID else {
+            return self.userRepository.fetchUserInfo() }
+        
+        return self.userRepository.fetchUserInfo(userID: userID)
     }
     
+    func fetch(userNickName: String) -> Observable<[User]> {
+        self.userRepository.fetchUserInfo()
+            .flatMap { user in
+                let currentUserName = user.name
+                return self.userRepository.fetchUsersInfor(query: userNickName, currentUserName: currentUserName)
+            }
+    }
+    
+    func fetchFollowersAndFollowingsUser(followers: [String], followings: [String]) -> Observable<([User], [User])> {
+        self.userRepository.fetchFollowerUser(followers: followers)
+            .withUnretained(self)
+            .flatMap { owner, followers -> Observable<([User], [User])> in
+                owner.userRepository
+                    .fetchFollowingUser(followings: followings)
+                    .map { following in
+                        (followers, following)
+                    }
+            }
+    }
 }

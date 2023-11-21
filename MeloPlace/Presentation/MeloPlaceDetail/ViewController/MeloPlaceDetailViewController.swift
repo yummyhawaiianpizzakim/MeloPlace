@@ -11,8 +11,8 @@ import SnapKit
 import RxSwift
 import RxRelay
 import RxCocoa
+import RxGesture
 import Kingfisher
-
 
 class MeloPlaceDetailViewController: UIViewController {
     var viewModel: MeloPlaceDetailViewModel?
@@ -44,18 +44,23 @@ class MeloPlaceDetailViewController: UIViewController {
         self.viewModel = viewModel
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureUI()
-        self.configureAtributes()
+        self.configureAttributes()
         self.setDataSource()
         self.bindViewModel()
         self.currentIndexPathDidLoad()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        self.navigationController?.isNavigationBarHidden = false
     }
     
     override func viewDidLayoutSubviews() {
@@ -78,26 +83,25 @@ private extension MeloPlaceDetailViewController {
         }
     }
     
-    func configureAtributes() {
+    func configureAttributes() {
 //        self.mainView.imageCollectionView.delegate = self
     }
     
     func bindViewModel() {
+        
         let input = MeloPlaceDetailViewModel.Input(
-            viewDidLoad: self.rx.viewDidLoad.asObservable(),
-            didTapPlayPauseButton: self.mainView.playerView.playPauseButton.rx.tap.asObservable(),
-            didTapPlayBackButton: self.mainView.playerView.playBackButton.rx.tap.asObservable(),
-            didTapPlayNextButton: self.mainView.playerView.playNextButton.rx.tap.asObservable()
+            didTapPlayPauseButton: self.mainView.playPauseButton.rx.tap.asObservable(),
+            didTapCommentsView: self.mainView.commentsLabel.rx.tapGesture().when(.recognized).withLatestFrom(self.mainView.currentIndex).asObservable(),
+            didTapBackButton: self.mainView.backButton.rx.tap.asObservable()
+//            didTapPlayNextButton: self.mainView.playerView.playNextButton.rx.tap.asObservable()
         )
         let output = self.viewModel?.transform(input: input)
         
         output?.dataSource
-            .subscribe(onNext: { [weak self] (meloPlaces: [MeloPlace], indexPath: IndexPath) in
+            .drive(onNext: { [weak self] (meloPlaces: [MeloPlace], indexPath: IndexPath) in
                 guard let self = self else { return }
-//                self.mainView.currentIndex = indexPath.row
                 self.mainView.currentIndex.accept(indexPath.row)
                 self.setSnapshot(models: meloPlaces)
-                print("cuurrntPath::: \(indexPath)")
                 self.bindMeloPlace(meloPlaces: meloPlaces)
 
             })
@@ -106,37 +110,50 @@ private extension MeloPlaceDetailViewController {
         output?.isPaused
             .asDriver()
             .drive(with: self,onNext: { owner, isPaused in
-                let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large)
-                if isPaused {
-                    self.mainView.playerView.playPauseButton.setImage(UIImage(systemName: "play.circle.fill", withConfiguration: configuration), for: .normal)
-                } else {
-                    self.mainView.playerView.playPauseButton.setImage(UIImage(systemName: "pause.circle.fill", withConfiguration: configuration), for: .normal)
-                }
+                self.mainView.isPlayPauseButtonPaused = isPaused
             })
+            .disposed(by: self.disposeBag)
+        
+        self.rx.viewDidLayoutSubviews
+            .withLatestFrom(self.mainView.currentIndex)
+            .bind { [weak self] index in
+                guard
+                      let meloPlace = self?.viewModel?.meloPlaces.value[index]
+                else { return }
+                
+                self?.mainView.setImage(imageURLString: meloPlace.musicURI)
+//                self?.currentIndexPathDidLoad()
+            }
             .disposed(by: self.disposeBag)
     }
     
     func didLayoutSubviewsAtributes() {
-        self.mainView.gradientBackground.frame = self.mainView.imageBackgroundView.bounds
-        self.mainView.imageBackgroundView.layer.addSublayer(self.mainView.gradientBackground)
-        self.mainView.imageBackgroundView.layer.insertSublayer(self.mainView.gradientBackground, at: 0)
+//        self.mainView.gradientBackground.frame = self.mainView.backgroundView.bounds
+//        self.mainView.backgroundView.layer.addSublayer(self.mainView.gradientBackground)
+//        self.mainView.backgroundView.layer.insertSublayer(self.mainView.gradientBackground, at: 0)
 //        let blurEffect = UIBlurEffect(style: .light)
 //        let blurEffectView = UIVisualEffectView(effect: blurEffect)
 //        let bounds = self.mainView.imageBackgroundView.bounds
 //        blurEffectView.frame =  bounds
 ////        blurEffectView.tag = 129
 //        self.mainView.imageBackgroundView.addSubview(blurEffectView)
+        
     }
     
 }
 
 extension MeloPlaceDetailViewController {
     func setDataSource() {
-        self.dataSource = UICollectionViewDiffableDataSource(collectionView: self.mainView.imageCollectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
+        self.dataSource = UICollectionViewDiffableDataSource(collectionView: self.mainView.imageCollectionView, cellProvider: {  collectionView, indexPath, itemIdentifier in
             
-            guard let self = self, let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeloPlaceDetailCollectionCell.id, for: indexPath) as? MeloPlaceDetailCollectionCell else { return UICollectionViewCell() }
+            guard
+//                let self = self,
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MeloPlaceDetailCollectionCell.id, for: indexPath) as? MeloPlaceDetailCollectionCell
+            else { return UICollectionViewCell() }
+            
             cell.configureCell(item: itemIdentifier)
             cell.backgroundColor = .systemBackground
+            
             return cell
         })
         
@@ -152,30 +169,18 @@ extension MeloPlaceDetailViewController {
     func bindMeloPlace(meloPlaces: [MeloPlace]) {
         self.mainView.currentIndex
             .asDriver()
-            .debounce(.seconds(1))
+            .debounce(.milliseconds(100))
             .distinctUntilChanged()
             .drive { [weak self] index in
                 guard let self = self else { return }
-                let meloPlace = meloPlaces[index]
-                print("bbbb: \(index)")
-                var imageURLString = meloPlace.images.first
-                self.mainView.dateLabel.text = meloPlace.memoryDate.toString()
-                self.mainView.placeLabel.text = meloPlace.simpleAddress
-                self.mainView.titleLabel.text = meloPlace.title
-                self.mainView.contentLabel.text = meloPlace.description
-                self.mainView.playerView.musicLabel.text = meloPlace.musicName
-                self.mainView.playerView.artistLabel.text = meloPlace.musicArtist
-//                self.mainView.setImage(imageURLString: imageURLString!)
-                
                 self.playMusic(index: index, meloPlaces: meloPlaces)
-                
+                self.mainView.bindView(meloPlaces: meloPlaces, index: index)
             }
             .disposed(by: self.disposeBag)
         
     }
     
     func collectionViewScroll(currentIndex: Int) {
-        print(currentIndex)
         DispatchQueue.main.async {
             self.mainView.imageCollectionView.isPagingEnabled = false
             self.mainView.imageCollectionView.scrollToItem(at: IndexPath(row: currentIndex, section: 0), at: .left, animated: false)
@@ -187,12 +192,9 @@ extension MeloPlaceDetailViewController {
     func currentIndexPathDidLoad() {
         currentIndexTrigger
             .take(1)
-            .subscribe(onNext: { [weak self] _ in
-                guard let self = self
-//                      let index = self.mainView.currentIndex
-                else { return }
-                let index = self.mainView.currentIndex.value
-                self.collectionViewScroll(currentIndex: index)
+            .withLatestFrom(self.mainView.currentIndex)
+            .bind(onNext: { [weak self] index in
+                self?.collectionViewScroll(currentIndex: index)
             })
             .disposed(by: disposeBag)
     }
@@ -202,7 +204,6 @@ extension MeloPlaceDetailViewController {
 extension MeloPlaceDetailViewController {
     func playMusic(index: Int, meloPlaces: [MeloPlace]) {
         if !meloPlaces.isEmpty && meloPlaces.count > index {
-            print("bbbb: \(index)")
             let musicURI = meloPlaces[index].musicURI
             self.viewModel?.playMusic(uri: musicURI)
         }

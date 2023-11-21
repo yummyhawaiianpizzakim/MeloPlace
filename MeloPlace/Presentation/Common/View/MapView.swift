@@ -17,6 +17,7 @@ class MapView: MKMapView {
         button.tintColor = .lightGray
         button.layer.cornerRadius = 50.0 / 2
         button.clipsToBounds = true
+        button.layer.borderColor = UIColor.themeColor300?.cgColor
 
         return button
     }()

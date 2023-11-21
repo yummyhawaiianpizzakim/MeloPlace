@@ -9,14 +9,14 @@ import Foundation
 
 enum UserProfileSection: Int, Hashable {
     case profile = 0
-    case likes
-    case collections
+    case myContents
+    case tagedContents
     
     enum Item: Hashable {
 
         case profile(User)
-        case likes(MeloPlace?)
-        case collections(MeloPlace?)
+        case myContents(MeloPlace?)
+        case tagedContents(MeloPlace?)
         
     }
 }

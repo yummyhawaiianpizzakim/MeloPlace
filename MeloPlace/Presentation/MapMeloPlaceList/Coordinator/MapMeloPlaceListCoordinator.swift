@@ -33,13 +33,13 @@ class MapMeloPlaceListCoordinator: CoordinatorProtocol {
     }
     
     private func showMapMeloPlaceListViewFlow() {
-        let container = DIContainer.shared.container
-        guard let vm = container.resolve(MapMeloPlaceListViewModel.self) else { return }
-        let floatingPanelController = FloatingPanelController()
-        let vc = MapMeloPlaceListViewController(viewModel: vm)
-        self.meloPlaces
-            .bind(to: vm.meloPlaces)
-            .disposed(by: self.disposeBag)
+//        let container = DIContainer.shared.container
+//        guard let vm = container.resolve(MapMeloPlaceListViewModel.self) else { return }
+//        let floatingPanelController = FloatingPanelController()
+//        let vc = MapMeloPlaceListViewController(viewModel: vm)
+//        self.meloPlaces
+//            .bind(to: vm.meloPlaces)
+//            .disposed(by: self.disposeBag)
         
 //        vm.setActions(
 //            actions: PhotoListViewModelActions(
@@ -47,15 +47,14 @@ class MapMeloPlaceListCoordinator: CoordinatorProtocol {
 //            )
 //        )
         
-        floatingPanelController.set(contentViewController: vc)
+//        floatingPanelController.set(contentViewController: vc)
 //        floatingPanelController.addPanel(toParent: self.navigation)
-        floatingPanelController.track(scrollView: vc.meloPlaceCollectionView)
-        floatingPanelController.changePanelStyle()
-        floatingPanelController.layout = CustomFloatingPanelLayout()
-//        floatingPanelController.show()
-        vc.view.backgroundColor = .white
-        vc.loadViewIfNeeded()
-        self.navigation.present(floatingPanelController, animated: true)
+//        floatingPanelController.track(scrollView: vc.meloPlaceCollectionView)
+//        floatingPanelController.changePanelStyle()
+//        floatingPanelController.layout = CustomFloatingPanelLayout()
+//
+//        vc.loadViewIfNeeded()
+//        self.navigation.present(floatingPanelController, animated: true)
 //        self.navigation.pushViewController(vc, animated: true)
     }
     

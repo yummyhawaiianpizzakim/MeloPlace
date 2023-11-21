@@ -16,34 +16,34 @@ import RxGesture
 import MapKit
 import CoreLocation
 
+enum MapContentSection: Int, Hashable {
+    case my = 0
+    case following
+    
+    enum Item: Hashable {
+        case my(MeloPlace?)
+        case following(MeloPlace?)
+    }
+}
 
 class MapViewController: UIViewController {
     var viewModel: MapViewModel?
     let disposeBag = DisposeBag()
     
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, MeloPlace>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, MeloPlace>
-    
-    struct Settings {
-        static let openableRange: Double = LocationManager.openableRange
-        static let monitoringRange: Double = 1000
-        static let monitoringUpdateRange: Double = 850
-        static let locationUpdateRange: Double = 5
-    }
+    typealias DataSource = UICollectionViewDiffableDataSource<MapContentSection, MapContentSection.Item>
+    typealias Snapshot = NSDiffableDataSourceSnapshot<MapContentSection, MapContentSection.Item>
     
     var dataSource: DataSource?
-
-    private var smallOverlay: MKCircle?
-    private var bigOverlay: MKCircle?
     
     deinit {
         self.mainMapView.delegate = nil
     }
     
     lazy var mainMapView = MapView()
-    lazy var locationManager = LocationManager.shared.core
-    
+
     lazy var searchBar = SearchBarView()
+    
+    lazy var searchLocationButton = ThemeButton(title: "이지역 재검색")
     
     lazy var floatingPanelController = FloatingPanelController()
     
@@ -62,16 +62,6 @@ class MapViewController: UIViewController {
         self.viewModel = viewModel
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        self.locationManager.startUpdatingLocation()
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        self.locationManager.stopUpdatingLocation()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setDelegate()
@@ -81,6 +71,17 @@ class MapViewController: UIViewController {
         self.bindUI()
         self.bindViewModel()
     }
+    
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.configureNavigationBar()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+    }
+    
 }
 
 private extension MapViewController {
@@ -92,13 +93,22 @@ private extension MapViewController {
     func setFPC() {
         self.floatingPanelController.set(contentViewController: self.contentView)
         self.floatingPanelController.addPanel(toParent: self)
-        self.floatingPanelController.track(scrollView: self.contentView.meloPlaceCollectionView)
+        self.floatingPanelController.track(scrollView: self.contentView.scrollView)
         self.floatingPanelController.changePanelStyle()
         self.floatingPanelController.layout = CustomFloatingPanelLayout()
         self.floatingPanelController.show()
-        self.contentView.view.backgroundColor = .white
         self.contentView.loadViewIfNeeded()
-
+    }
+    
+    func configureNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        
+        appearance.configureWithTransparentBackground()
+        
+        self.navigationItem.titleView = searchBar
+        self.navigationItem.backButtonTitle = ""
+        self.navigationItem.standardAppearance = appearance
+        self.navigationItem.scrollEdgeAppearance = appearance
     }
     
     func configureUI() {
@@ -106,9 +116,7 @@ private extension MapViewController {
             self.view.addSubview($0)
         }
         
-        [self.searchBar].forEach {
-            self.mainMapView.addSubview($0)
-        }
+        self.mainMapView.addSubview(self.searchLocationButton)
         
         self.mainMapView.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -116,91 +124,103 @@ private extension MapViewController {
             make.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
         
-        self.searchBar.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.height.equalTo(30)
+        self.searchLocationButton.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(10)
+            make.centerX.equalToSuperview()
+            make.height.equalTo(40)
+            make.width.equalTo(100)
         }
         
     }
     
     func bindUI() {
-        self.goToCurrentLocation()
         
-        self.locationManager.rx.didChangeAuthorization
-            .asObservable()
-            .withUnretained(self)
-            .subscribe(onNext: { owner, status in
-                if LocationManager.shared.checkAuthorization(status: status) {
-                    owner.goToCurrentLocation()
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        self.locationManager.rx.didUpdateLocations
-            .asObservable()
-            .withUnretained(self)
-            .subscribe(onNext: { owner, _ in
-//                owner.markIfOpenable()
-            })
-            .disposed(by: disposeBag)
-        
-        self.locationManager.rx.willExitMonitoringRegion
-            .asObservable()
-            .withUnretained(self)
-            .subscribe(onNext: { owner, region in
-                owner.resetMonitoringRegion(from: region)
-            })
-            .disposed(by: disposeBag)
-            
     }
     
     func bindViewModel() {
-        let input = MapViewModel.Input(
-            viewWillAppear: self.rx.viewWillAppear.map({ _ in () }),
-            didTapSearchBar: self.searchBar.rx.tapGesture()
-                    .when(.recognized)
-                    .map({ _ in })
-                    .asObservable(),
-            didTapListCell: self.contentView.meloPlaceCollectionView.rx.itemSelected.asObservable()
-        )
+        let region = self.mainMapView.rx.regionDidChangeAnimated
+            .withUnretained(self)
+            .map({ owner, mapView in
+                let region = mapView.region
+                let generatedRegion = owner.generateToRegion(with: region)
+                print(generatedRegion)
+//                self?.viewModel?.region.accept(generatedRegion)
+                return generatedRegion
+            })
+            .share()
         
+        let didTapPointAnnotation = self.mainMapView.rx.calloutAccessoryControlTapped
+            .map { val in
+                let (_, annotationView, _) = val
+                guard
+                    let annotationView = annotationView.annotation as? PointAnnotation,
+                    let uuid = annotationView.uuid
+                else { return "" }
+                
+                return uuid
+            }
+        
+        let input = MapViewModel.Input(
+            viewWillAppear: self.rx.viewWillAppear
+                .map({ _ in })
+                .asObservable(),
+            viewWillDisappear: self.rx.viewWillDisappear
+                .map({ _ in })
+                .asObservable(),
+            region: region.skip(1),
+            didTapSearchBar: self.searchBar.rx.tapGesture()
+                .when(.recognized)
+                .map({ _ in })
+                .asObservable(),
+            didTapSearchLocationButton: self.searchLocationButton.rx.tapGesture()
+                .when(.recognized)
+                .throttle(.seconds(1), scheduler: MainScheduler.instance)
+                .map({ _ in })
+                .asObservable(),
+            didTapListCell: self.contentView.meloPlaceCollectionView.rx.itemSelected.asObservable(),
+            didTapPointAnnotation: didTapPointAnnotation,
+            mapMeloPlaceFilter: self.contentView.filterView.rx.itemSelected
+                .map { MapMeloPlaceFilter(index: $0.row) }.startWith(.my)
+                .share()
+        )
         
         let output = self.viewModel?.transform(input: input)
         
-        output?.annotations.asDriver()
+        output?.annotations
             .drive(onNext: {[weak self] annotations in
                 guard let self = self else { return }
                 self.removeAllAnnotations()
                 self.addInitialAnnotations(annotations: annotations)
-//                self.mainMapView.stopRotatingRefreshButton()
             })
             .disposed(by: self.disposeBag)
         
-        output?.meloPlaces.asDriver()
-            .drive(onNext: {[weak self] meloPlaces in
-                self?.setSnapshot(models: meloPlaces)
-            })
-            .disposed(by: self.disposeBag)
-        
-        output?.searchedKeyword.asDriver(onErrorJustReturn: "")
+        output?.searchedText
             .drive(onNext: { text in
-                self.searchBar.searchLabel.text = text
+                let replaceName = text.replaceString(where: "대한민국", of: "대한민국 ", with: "")
+                self.searchBar.searchLabel.text = replaceName
+                self.contentView.locationLabel.text = replaceName
             })
             .disposed(by: self.disposeBag)
         
-        output?.searchedGeoPoint.asDriver(onErrorJustReturn: nil)
+        output?.geoPoint
             .drive(onNext: {[weak self] geoPoint in
-                guard let self = self, let geoPoint = geoPoint
+                guard let self = self,
+                      let geoPoint = geoPoint
                 else { return }
-                let coordinate = CLLocationCoordinate2D(latitude: geoPoint.latitude, longitude: geoPoint.longitude)
-                let region = MKCoordinateRegion(center: coordinate, span: MKCoordinateSpan(latitudeDelta:0.01, longitudeDelta:0.01))
-
-                self.mainMapView.setRegion(region, animated: true)
+                
+                self.goToLocation(geoPoint: geoPoint)
             })
             .disposed(by: self.disposeBag)
         
+        output?.dataSources
+            .debug("mapDataSources")
+            .compactMap({ [weak self] dataSources in
+                self?.generateSnapshot(dataSources: dataSources)
+            })
+            .drive(onNext: { [weak self] snapshot in
+                self?.dataSource?.apply(snapshot, animatingDifferences: false)
+            })
+            .disposed(by: self.disposeBag)
     }
     
 }
@@ -210,11 +230,14 @@ extension MapViewController: MKMapViewDelegate {
         switch annotation {
         case is PointAnnotation:
             let annotationView = AnnotationView(annotation: annotation, reuseIdentifier: MKMapViewDefaultAnnotationViewReuseIdentifier)
+
             return annotationView
             
         case is MKUserLocation:
             let userLocationview = MKUserLocationView(annotation: annotation, reuseIdentifier: "userLocation")
             userLocationview.zPriority = .max
+            userLocationview.isEnabled = false
+            
             return userLocationview
             
         default:
@@ -222,16 +245,14 @@ extension MapViewController: MKMapViewDelegate {
         }
     }
     
-    private func goToCurrentLocation() {
-        guard let currentLocation = locationManager.location?.coordinate else {
-            return
-        }
+    private func goToLocation(geoPoint: GeoPoint) {
+        let coordinate = CLLocationCoordinate2D(latitude: geoPoint.latitude, longitude: geoPoint.longitude)
         
-        let span = MKCoordinateSpan(latitudeDelta: 0.02, longitudeDelta: 0.02)
-        let region = MKCoordinateRegion(center: currentLocation, span: span)
+        let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
+        let region = MKCoordinateRegion(center: coordinate, span: span)
         self.mainMapView.setRegion(region, animated: true)
         
-        self.resetMonitoringRegion(from: nil)
+//        self.resetMonitoringRegion(from: nil)
     }
     
     private func removeAllAnnotations() {
@@ -244,56 +265,57 @@ extension MapViewController: MKMapViewDelegate {
     private func addInitialAnnotations(annotations: [PointAnnotation]) {
         self.mainMapView.addAnnotations(annotations)
     }
-
-        // MARK: Region 업데이트 및 AnnotationsToMonitor 새로 계산
-
-    private func resetMonitoringRegion(from previousRegion: CLRegion?) {
-        guard let currentLocation = locationManager.location?.coordinate else {
-            return
-        }
+    
+    private func generateToRegion(with region: MKCoordinateRegion) -> Region {
+        let centerLocation: GeoPoint = .init(latitude: region.center.latitude, longitude: region.center.longitude)
+        let latitudeDelta: Double = region.span.latitudeDelta
+        let longitudeDelta: Double = region.span.longitudeDelta
         
-        if let previousRegion = previousRegion {
-            locationManager.stopMonitoring(for: previousRegion)
-        }
-        
-        let newRegion = CLCircularRegion(
-            center: currentLocation,
-            radius: Settings.monitoringUpdateRange,
-            identifier: "regionsToMonitor"
-        )
-        
-        newRegion.notifyOnExit = true
-        
-        locationManager.startMonitoring(for: newRegion)
-        
-        if let bigOverlay = bigOverlay {
-            self.mainMapView.removeOverlay(bigOverlay)
-        }
-        
-        let bigCircle = MKCircle(center: currentLocation, radius: Settings.monitoringRange)
-        self.mainMapView.addOverlay(bigCircle)
-        bigOverlay = bigCircle
+        return Region(center: centerLocation, spanLatitude: latitudeDelta, spanLongitude: longitudeDelta)
     }
     
 }
 
 private extension MapViewController {
     func setDataSource() {
-        self.dataSource = UICollectionViewDiffableDataSource(collectionView: self.contentView.meloPlaceCollectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
-            
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MapMeloPlaceListCollectionCell.id, for: indexPath) as? MapMeloPlaceListCollectionCell else { return UICollectionViewCell() }
-            cell.configureCell(item: itemIdentifier)
-            return cell
+        self.dataSource = UICollectionViewDiffableDataSource(collectionView: self.contentView.meloPlaceCollectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
+            guard let self else { return UICollectionViewCell() }
+            switch itemIdentifier {
+            case .my(let meloPlace):
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MapMeloPlaceListCollectionCell.id, for: indexPath) as? MapMeloPlaceListCollectionCell,
+                      let meloPlace
+                else { return UICollectionViewCell() }
+                cell.configureCell(item: meloPlace)
+                self.contentView.placeholderView.isHidden = true
+                
+                return cell
+            case .following(let meloPlace):
+                guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MapMeloPlaceListCollectionCell.id, for: indexPath) as? MapMeloPlaceListCollectionCell,
+                      let meloPlace
+                else { return UICollectionViewCell() }
+                cell.configureCell(item: meloPlace)
+                self.contentView.placeholderView.isHidden = true
+                
+                return cell
+            }
         })
-        
     }
     
-    func setSnapshot(models: [MeloPlace]) {
+    func generateSnapshot(dataSources: [MapDataSource]) -> Snapshot {
         var snapshot = Snapshot()
-        snapshot.appendSections([0])
-        snapshot.appendItems(models, toSection: 0)
-        self.dataSource?.apply(snapshot, animatingDifferences: false)
+        dataSources.forEach { [weak self] items in
+            items.forEach { section, values in
+                if !values.isEmpty {
+                    snapshot.appendSections([section])
+                    snapshot.appendItems(values, toSection: section)
+                } else {
+                    self?.contentView.placeholderView.isHidden = false
+                }
+            }
+        }
+        return snapshot
     }
+    
 }
 
 extension MapViewController: FloatingPanelControllerDelegate {
@@ -310,7 +332,6 @@ extension FloatingPanelController {
         shadow.radius = 2
         appearance.shadows = [shadow]
         appearance.cornerRadius = 15.0
-        appearance.backgroundColor = .clear
         appearance.borderColor = .clear
         appearance.borderWidth = 0
         
@@ -328,7 +349,7 @@ class CustomFloatingPanelLayout: FloatingPanelLayout{
             return [
                 .half: FloatingPanelLayoutAnchor(fractionalInset: 0.5, edge: .bottom, referenceGuide: .safeArea),
                 .full: FloatingPanelLayoutAnchor(absoluteInset: 16.0, edge: .top, referenceGuide: .safeArea),
-                .tip: FloatingPanelLayoutAnchor(absoluteInset: 30.0, edge: .bottom, referenceGuide: .safeArea)
+                .tip: FloatingPanelLayoutAnchor(absoluteInset: 50.0, edge: .bottom, referenceGuide: .safeArea)
             ]
         }
 }

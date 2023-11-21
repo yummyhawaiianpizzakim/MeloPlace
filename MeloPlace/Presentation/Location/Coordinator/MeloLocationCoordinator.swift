@@ -19,11 +19,13 @@ class MeloLocationCoordinator: CoordinatorProtocol {
     
     var viewController: MeloLocationViewController?
     
-    var addViewModel: AddMeloPlaceViewModel?
+//    var addViewModel: AddMeloPlaceViewModel?
     
-    init(navigation : UINavigationController, addViewModel: AddMeloPlaceViewModel) {
+    init(navigation : UINavigationController
+//         addViewModel: AddMeloPlaceViewModel
+    ) {
         self.navigation = navigation
-        self.addViewModel = addViewModel
+//        self.addViewModel = addViewModel
     }
     
     init() {
@@ -38,7 +40,7 @@ class MeloLocationCoordinator: CoordinatorProtocol {
         let container = DIContainer.shared.container
         guard let vm = container.resolve(MeloLocationViewModel.self) else { return }
         
-        vm.delegate = self.addViewModel
+//        vm.delegate = self.addViewModel
         let vc = MeloLocationViewController(viewModel: vm)
         
         vm.setActions(
@@ -52,8 +54,14 @@ class MeloLocationCoordinator: CoordinatorProtocol {
 //        self.navigation.pushViewController(vc, animated: true)
     }
     
-    lazy var closeMeloLocationView: () -> Void = { [weak self] in
-        self?.finish()
+    lazy var closeMeloLocationView: (_ space: Space?) -> Void = { [weak self] space in
+        guard let self else { return }
+        self.finish()
+        
+        if self.navigation.viewControllers.last is SearchViewController {
+            let vc = self.navigation.viewControllers.last as? SearchViewController
+            vc?.viewModel?.currentSpace.accept(space)
+        }
 //        self?.viewController?.dismiss(animated: true)
     }
     

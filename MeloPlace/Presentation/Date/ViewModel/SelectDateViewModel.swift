@@ -9,12 +9,13 @@ import Foundation
 import RxSwift
 import RxRelay
 
-protocol SelectDateViewModelDelegate {
-    func dateDidSelect(date: Date)
-}
+//protocol SelectDateViewModelDelegate {
+//    func dateDidSelect(date: Date)
+//}
 
 struct SelectDateViewModelActions {
     let closeSelectDateView: () -> Void
+    let closeSelectDateViewWith: (_ date: Date) -> Void
 }
 
 class SelectDateViewModel {
@@ -32,7 +33,7 @@ class SelectDateViewModel {
     let disposeBag = DisposeBag()
     
     var actions: SelectDateViewModelActions?
-    var delegate: SelectDateViewModelDelegate?
+//    var delegate: SelectDateViewModelDelegate?
     
     func setActions(actions: SelectDateViewModelActions) {
         self.actions = actions
@@ -52,8 +53,8 @@ class SelectDateViewModel {
         input.didTapDoneButton
             .withLatestFrom(input.selectedDate)
             .map({[weak self] date in
-                self?.delegate?.dateDidSelect(date: date)
-                self?.actions?.closeSelectDateView()
+//                self?.delegate?.dateDidSelect(date: date)
+                self?.actions?.closeSelectDateViewWith(date)
                 return true
             })
             .bind(to: output.isDone)

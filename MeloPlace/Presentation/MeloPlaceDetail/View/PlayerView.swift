@@ -8,56 +8,42 @@
 import Foundation
 import UIKit
 import SnapKit
+import RxRelay
+import RxSwift
+import RxCocoa
 
 class PlayerView: UIView {
+    let disposeBag = DisposeBag()
     
-    private lazy var durationSlider: UISlider = {
-        let slider = UISlider()
-        slider.maximumValue = 0
-        slider.maximumValue = 0
-//        slider.frame = CGRect(x: 0, y: view.height - 1, width: view.width, height: 1)
-        slider.setThumbImage(UIImage(systemName: "circle.fill"), for: .normal)
-        slider.tintColor = .tintColor
-        slider.thumbTintColor = .white
-//        slider.addTarget(self, action: #selector(onChangeSlider(_ :)), for: .valueChanged)
-        return slider
-    }()
+    var isEnableBackButton: Bool = false {
+        didSet {
+            self.bindBackButton(self.isEnableBackButton)
+        }
+    }
     
-    private lazy var sliderCurrentValueLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .lightGray
-        label.text = "00:00"
-        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-//        label.frame = CGRect(x: 31, y: 197 + view.width, width: 60, height: 35)
-        label.textAlignment = .left
-        label.layer.opacity = 0
-        return label
-    }()
-    
-    private lazy var sliderMaximumValueLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = .lightGray
-        label.text = "01:00"
-        label.font = UIFont.systemFont(ofSize: 14, weight: .semibold)
-//        label.frame = CGRect(x: view.width - (31 + 60), y: 197 + view.width, width: 60, height: 35)
-        label.textAlignment = .right
-        label.layer.opacity = 0
-        return label
-    }()
+    var isEnabledNextButton: Bool = false {
+        didSet {
+            self.bindNextButton(self.isEnabledNextButton)
+        }
+    }
     
     lazy var musicLabel: UILabel = {
         let label = UILabel()
         label.text = "음악"
+        label.numberOfLines = 1
         label.font = .systemFont(ofSize: 20)
-        label.textColor = .white
+        label.textColor = .black
+        label.textAlignment = .center
         return label
     }()
     
     lazy var artistLabel: UILabel = {
         let label = UILabel()
-        label.text = "아티스트"
-        label.font = .systemFont(ofSize: 10)
+        label.text = "음악"
+        label.numberOfLines = 1
+        label.font = .systemFont(ofSize: 16)
         label.textColor = .themeGray300
+        label.textAlignment = .center
         return label
     }()
     
@@ -71,22 +57,25 @@ class PlayerView: UIView {
     
     lazy var playBackButton: UIButton = {
         let button = UIButton()
-        let configuration = UIImage.SymbolConfiguration(pointSize: 35, weight: .bold, scale: .large)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
         button.setImage(UIImage(systemName: "backward.end.fill", withConfiguration: configuration), for: .normal)
+        button.imageView?.tintColor = .black
         return button
     }()
     
     lazy var playPauseButton: UIButton = {
         let button = UIButton()
-        let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large)
-        button.setImage(UIImage(systemName: "play.circle.fill", withConfiguration: configuration), for: .normal)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
+        button.setImage(UIImage(systemName: "play.fill", withConfiguration: configuration), for: .normal)
+        button.imageView?.tintColor = .black
         return button
     }()
     
     lazy var playNextButton: UIButton = {
         let button = UIButton()
-        let configuration = UIImage.SymbolConfiguration(pointSize: 35, weight: .bold, scale: .large)
+        let configuration = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
         button.setImage(UIImage(systemName: "forward.end.fill", withConfiguration: configuration), for: .normal)
+        button.imageView?.tintColor = .black
         return button
     }()
     
@@ -103,73 +92,75 @@ class PlayerView: UIView {
 
 private extension PlayerView {
     func configureUI() {
-        [self.musicLabel, self.artistLabel,
-         self.durationSlider, self.sliderCurrentValueLabel, self.sliderMaximumValueLabel,
-         self.playerStackView].forEach {
-            self.addSubview($0)
-        }
+        [self.musicLabel, self.artistLabel, self.playerStackView]
+            .forEach { self.addSubview($0) }
         
-        [self.playBackButton, self.playPauseButton, self.playNextButton].forEach {
+        [self.playBackButton, self.playPauseButton,
+         self.playNextButton].forEach {
             self.playerStackView.addArrangedSubview($0)
         }
         
         self.musicLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(5)
+            make.trailing.equalToSuperview().offset(-5)
 //            make.height.equalTo(20)
         }
         
         self.artistLabel.snp.makeConstraints { make in
             make.top.equalTo(self.musicLabel.snp.bottom).offset(5)
-            make.leading.equalTo(self.musicLabel.snp.leading)
-//            make.height.equalTo(10)
-        }
-        
-        self.durationSlider.snp.makeConstraints { make in
-            make.top.equalTo(self.artistLabel.snp.bottom).offset(12)
-            make.horizontalEdges.equalToSuperview()
-            make.height.equalTo(2)
-        }
-        
-        self.sliderCurrentValueLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.durationSlider.snp.bottom).offset(5)
-            make.leading.equalTo(self.durationSlider.snp.leading)
-        }
-        
-        self.sliderMaximumValueLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.durationSlider.snp.bottom).offset(5)
-            make.trailing.equalTo(self.durationSlider.snp.trailing)
+            make.leading.equalToSuperview().offset(5)
+            make.trailing.equalToSuperview().offset(-5)
+//            make.height.equalTo(20)
         }
         
         self.playerStackView.snp.makeConstraints { make in
-            make.top.equalTo(self.sliderCurrentValueLabel.snp.bottom).offset(5)
-            make.horizontalEdges.equalToSuperview()
+            make.top.equalTo(self.artistLabel.snp.bottom).offset(10)
+//            make.horizontalEdges.equalToSuperview()
             make.centerX.equalToSuperview()
-            make.height.equalTo(85)
+            make.height.equalTo(30)
         }
         
-//        self.playPauseButton.snp.makeConstraints { make in
-//            make.top.equalTo(self.sliderCurrentValueLabel.snp.bottom).offset(5)
-//            make.centerX.equalToSuperview()
-//            make.height.width.equalTo(50)
-//        }
-//
-//        self.playBackButton.snp.makeConstraints { make in
-//            make.top.equalTo(self.sliderCurrentValueLabel.snp.bottom).offset(5)
-//            make.centerX.equalToSuperview()
-//            make.height.width.equalTo(50)
-//        }
-//
-//        self.playNextButton.snp.makeConstraints { make in
-//            make.top.equalTo(self.sliderCurrentValueLabel.snp.bottom).offset(5)
-//            make.centerX.equalToSuperview()
-//            make.height.width.equalTo(50)
-//        }
-        
+        [self.playBackButton, self.playPauseButton,
+         self.playNextButton].forEach {
+            self.playerStackView.setCustomSpacing(20, after: $0)
+        }
     }
     
+    func bindNextButton(_ isEnabled: Bool) {
+        if isEnabled {
+            self.playNextButton.isEnabled = isEnabled
+            self.playNextButton.tintColor = .black
+        } else {
+            self.playNextButton.isEnabled = isEnabled
+            self.playNextButton.tintColor = .themeGray100
+        }
+    }
+    
+    func bindBackButton(_ isEnabled: Bool) {
+        if isEnabled {
+            self.playBackButton.isEnabled = isEnabled
+            self.playBackButton.tintColor = .black
+        } else {
+            self.playBackButton.isEnabled = isEnabled
+            self.playBackButton.tintColor = .themeGray100
+        }
+    }
 }
 
 extension PlayerView {
+    func bindPlayerController(isPaused: Bool) {
+        let configuration = UIImage.SymbolConfiguration(pointSize: 30, weight: .bold, scale: .large)
+        if isPaused {
+            self.playPauseButton.setImage(UIImage(systemName: "play.fill", withConfiguration: configuration), for: .normal)
+        } else {
+            self.playPauseButton.setImage(UIImage(systemName: "pause.fill", withConfiguration: configuration), for: .normal)
+        }
+    }
+    
+    func bindPlayerView(meloPlace: MeloPlace) {
+        self.musicLabel.text = meloPlace.musicName
+        self.artistLabel.text = meloPlace.musicArtist
+    }
     
 }

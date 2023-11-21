@@ -11,6 +11,7 @@ import UIKit
 enum TabBarPage: Int, CaseIterable {
     case main
     case map
+    case add
     case browse
     case setting
     
@@ -20,28 +21,34 @@ enum TabBarPage: Int, CaseIterable {
             return ""
         case .map:
             return ""
+        case .add:
+            return ""
         case .browse:
             return ""
         case .setting:
             return ""
+        
         }
     }
     
     func pageTabIcon() -> UIImage? {
         switch self {
         case .main:
-            return UIImage(systemName: "house")
+            return UIImage(systemName: "music.note.house")
         case .map:
             return UIImage(systemName: "map")
+        case .add:
+            return UIImage(systemName: "plus.app")
         case .browse:
             return UIImage(systemName: "list.bullet")
         case .setting:
             return UIImage(systemName: "person")
+        
         }
     }
 }
 
-class TabBarCoordinator: CoordinatorProtocol {
+class TabBarCoordinator: NSObject, CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     var childCoordinators: [CoordinatorProtocol] = []
     var type: CoordinatorType = .tab
@@ -52,9 +59,13 @@ class TabBarCoordinator: CoordinatorProtocol {
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
         self.tabBarController = UITabBarController()
-        tabBarController.tabBar.tintColor = .orange
-        tabBarController.tabBar.unselectedItemTintColor = .themeGray300
-        tabBarController.tabBar.backgroundColor = .white
+        super.init()
+        self.tabBarController.delegate = self
+        self.tabBarController.tabBar.tintColor = .orange
+        self.tabBarController.tabBar.unselectedItemTintColor = .themeGray300
+        self.tabBarController.tabBar.layer.borderColor = UIColor.themeGray100?.cgColor
+        self.tabBarController.tabBar.layer.borderWidth = 0.25
+            
     }
     
     func start() {
@@ -80,7 +91,7 @@ extension TabBarCoordinator {
     
     private func getController(page: TabBarPage) -> UINavigationController {
         let navigation = UINavigationController()
-        
+        navigation.setNavigationBarHidden(false, animated: false)
         navigation.tabBarItem = UITabBarItem.init(
             title: page.pageTitleValue(),
             image: page.pageTabIcon(),
@@ -98,6 +109,11 @@ extension TabBarCoordinator {
             mapCoordinator.finishDelegate = self
             self.childCoordinators.append(mapCoordinator)
             mapCoordinator.start()
+        case .add:
+            let addMeloPlaceCoordinator = AddMeloPlaceCoordinator(navigation: navigation)
+            addMeloPlaceCoordinator.finishDelegate = self
+            self.childCoordinators.append(addMeloPlaceCoordinator)
+            addMeloPlaceCoordinator.start()
         case .browse:
             let browseCoordinator = BrowseCoordinator(navigation: navigation)
             browseCoordinator.finishDelegate = self
@@ -108,6 +124,7 @@ extension TabBarCoordinator {
             userProfileCoordinator.finishDelegate = self
             self.childCoordinators.append(userProfileCoordinator)
             userProfileCoordinator.start()
+        
         }
         
         return navigation
@@ -120,6 +137,26 @@ extension TabBarCoordinator: CoordinatorFinishDelegate {
             Coordinator.type != childCoordinator.type
         })
     }
+}
+
+extension TabBarCoordinator: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, shouldSelect viewController: UIViewController) -> Bool {
+        guard let selectedIndex = tabBarController.viewControllers?.firstIndex(of: viewController) else {
+            return true
+        }
+        
+        if selectedIndex == 2 {
+            let addMeloPlaceCoordinator = AddMeloPlaceCoordinator(navigation: self.navigationController)
+            addMeloPlaceCoordinator.finishDelegate = self
+            self.childCoordinators.append(addMeloPlaceCoordinator)
+            addMeloPlaceCoordinator.start()
+            return false
+//            return true
+        }
+        
+        return true
+    }
+    
 }
 
 

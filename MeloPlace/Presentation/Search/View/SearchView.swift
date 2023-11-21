@@ -22,7 +22,7 @@ class SearchView: UIView {
         let label = UITextField()
         label.placeholder = "검색"
         label.font = .systemFont(ofSize: 16)
-        label.textColor = .themeColor300
+        label.textColor = .black
         return label
     }()
     
@@ -64,8 +64,9 @@ private extension SearchView {
     }
     
     func configureAttributes() {
-        self.layer.cornerRadius = 25
-        self.backgroundColor = .themeColor300
+        self.layer.cornerRadius = 8
+        self.layer.borderColor = UIColor.themeColor300?.cgColor
+        self.layer.borderWidth = 3 
     }
 }
 

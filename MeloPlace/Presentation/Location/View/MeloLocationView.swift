@@ -44,7 +44,7 @@ final class MeloLocateView: UIView {
     let cursor: UIImageView = {
         let cursor = UIImageView(image: UIImage(systemName: "mappin.and.ellipse"))
         cursor.isUserInteractionEnabled = true
-
+        cursor.tintColor = .themeColor300
         return cursor
     }()
 
@@ -52,8 +52,8 @@ final class MeloLocateView: UIView {
 
     let locationIcon: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "mappin.and.ellipse")
-        imageView.tintColor = .orange
+        imageView.image = UIImage(systemName: "mappin.and.ellipse")?.withTintColor(.themeColor300!)
+        imageView.tintColor = .themeColor300
 
         return imageView
     }()

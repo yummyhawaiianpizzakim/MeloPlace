@@ -33,8 +33,8 @@ class MapCoordinator: CoordinatorProtocol {
         
         vm.setActions(
             actions: MapViewModelActions(
-                showMapMeloPlaceListView:
-                    self.showMapMeloPlaceListView,
+//                showMapMeloPlaceListView:
+//                    self.showMapMeloPlaceListView,
                 showMeloPlaceDetailView: self.showMeloPlaceDetailView,
                 showSearchView:
                     self.showSearchView
@@ -44,18 +44,18 @@ class MapCoordinator: CoordinatorProtocol {
         self.navigation.pushViewController(vc, animated: true)
     }
     
-    lazy var showMapMeloPlaceListView: (_ meloPlaces: [MeloPlace]) -> Void = { [weak self] meloPlaces in
-        guard let self = self else { return }
-        let coordinator = MapMeloPlaceListCoordinator(navigation: self.navigation)
-        coordinator.meloPlaces.accept(meloPlaces)
-        self.childCoordinators.append(coordinator)
-        coordinator.finishDelegate = self
-        coordinator.start()
-    }
+//    lazy var showMapMeloPlaceListView: (_ meloPlaces: [MeloPlace]) -> Void = { [weak self] meloPlaces in
+//        guard let self = self else { return }
+//        let coordinator = MapMeloPlaceListCoordinator(navigation: self.navigation)
+//        coordinator.meloPlaces.accept(meloPlaces)
+//        self.childCoordinators.append(coordinator)
+//        coordinator.finishDelegate = self
+//        coordinator.start()
+//    }
     
-    lazy var showSearchView: (_ sender: MapViewModel) -> Void = { [weak self] viewModel in
+    lazy var showSearchView: () -> Void = { [weak self] in
         guard let self = self else { return }
-        let coordinator = SearchCoordinator(navigation: self.navigation, mapViewModel: viewModel)
+        let coordinator = SearchCoordinator(navigation: self.navigation)
         self.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
         coordinator.start()
@@ -64,10 +64,10 @@ class MapCoordinator: CoordinatorProtocol {
     lazy var showMeloPlaceDetailView: (_ meloPlaces: [MeloPlace], _ indexPath: IndexPath) -> Void = { [weak self] meloPlaces, indexPath in
         guard let self = self else { return }
         let coordinator = MeloPlaceDetailCoordinator(navigation: self.navigation)
-//        coordinator.meloPlace.accept(meloPlace)
+        
         coordinator.meloPlaces.accept(meloPlaces)
-//        coordinator.indexPath.accept(indexPath)
-        coordinator.indexPath = indexPath
+        coordinator.indexPath.accept(indexPath)
+//        coordinator.indexPath = indexPath
         self.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
         coordinator.start()

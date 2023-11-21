@@ -19,7 +19,6 @@ class SelectDateViewController: UIViewController {
     
     lazy var topView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
         return view
     }()
     
@@ -34,9 +33,9 @@ class SelectDateViewController: UIViewController {
     let cancelButton: UIButton = {
         let button = UIButton()
         button.setTitle("취소", for: .normal)
-        button.titleLabel?.font = .systemFont(ofSize: 12.0)
+        button.titleLabel?.font = .systemFont(ofSize: 15.0)
         button.setTitleColor(.black, for: .normal)
-
+        button.sizeToFit()
         return button
     }()
     
@@ -47,7 +46,6 @@ class SelectDateViewController: UIViewController {
         datePicker.locale = Locale(identifier: "ko-KR")
         datePicker.timeZone = .autoupdatingCurrent
         datePicker.tintColor = .themeColor300
-        datePicker.backgroundColor = .white
         datePicker.setValue(UIColor.black, forKey: "textColor")
         if #available(iOS 13.0, *) {
             datePicker.overrideUserInterfaceStyle = .light
@@ -73,6 +71,7 @@ class SelectDateViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .white
         self.configureUI()
         self.bindUI()
         self.bindViewModel()
@@ -81,7 +80,6 @@ class SelectDateViewController: UIViewController {
 
 private extension SelectDateViewController {
     func configureUI() {
-        self.view.backgroundColor = .white
         [self.cancelButton, self.titleLabel].forEach {
             self.topView.addSubview($0)
         }
@@ -99,7 +97,7 @@ private extension SelectDateViewController {
             make.leading.equalToSuperview().offset(10)
 //            make.bottom.equalToSuperview().offset(-10)
             make.centerY.equalToSuperview()
-            make.width.height.equalTo(50)
+            make.height.equalTo(15)
         }
         
         self.titleLabel.snp.makeConstraints { make in

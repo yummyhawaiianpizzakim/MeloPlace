@@ -20,7 +20,6 @@ final class MeloPlaceDetailCollectionCell: UICollectionViewCell {
         let imageView = UIImageView()
         imageView.layer.cornerRadius = 8
         imageView.clipsToBounds = true
-        imageView.backgroundColor = .white
         imageView.contentMode = .scaleAspectFill
         
         return imageView
@@ -28,7 +27,6 @@ final class MeloPlaceDetailCollectionCell: UICollectionViewCell {
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.contentView.backgroundColor = .cyan
         addSubviews()
         makeConstraints()
     }
@@ -40,7 +38,7 @@ final class MeloPlaceDetailCollectionCell: UICollectionViewCell {
 
     override func prepareForReuse() {
         super.prepareForReuse()
-
+        
     }
 
     func addSubviews() {

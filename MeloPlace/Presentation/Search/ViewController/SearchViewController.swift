@@ -13,7 +13,6 @@ import RxSwift
 import RxRelay
 import RxCocoa
 
-
 class SearchViewController: UIViewController {
     var viewModel: SearchViewModel?
     let disposeBag = DisposeBag()
@@ -22,25 +21,15 @@ class SearchViewController: UIViewController {
     
     lazy var searchBar = SearchView()
     
-//    private lazy var currentLocationButton = TrinapButton(style: .secondary).than {
-//        $0.setTitle("현재 위치", for: .normal)
-//        $0.setTitleColor(TrinapAsset.white.color, for: .normal)
-//        $0.titleLabel?.font = TrinapFontFamily.Pretendard.bold.font(size: 16)
-//    }
-//
-//    lazy var button: UIButton = {
-//        let button = UIButton()
-//        button.setTitle("현재 위치", for: .normal)
-//        button.setTitleColor(.white, for: .normal)
-//        button.tit
-//        return button
-//    }()
+    private lazy var currentLocationButton = ThemeButton(title: "현재 위치 검색")
     
     private lazy var searchTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(SearchTableCell.self,forCellReuseIdentifier: SearchTableCell.id)
-        tableView.separatorStyle = .none
+        tableView.separatorStyle = .singleLine
         tableView.allowsSelection = true
+        tableView.separatorInset = .init(top: 2.5, left: 0, bottom: 2.5, right: 0)
+        tableView.delegate = self
         return tableView
     }()
     
@@ -65,7 +54,7 @@ class SearchViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.isNavigationBarHidden = false
+        
         self.configureNavigationBar()
     }
     
@@ -80,12 +69,22 @@ class SearchViewController: UIViewController {
 
 private extension SearchViewController {
     func configureUI() {
-        [self.searchTableView].forEach {
+        [self.currentLocationButton,
+         self.searchTableView].forEach {
             self.view.addSubview($0)
         }
         
+        self.currentLocationButton.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(16)
+            make.leading.equalToSuperview().offset(16)
+            make.trailing.equalToSuperview().offset(-16)
+            make.height.equalTo(36)
+        }
+        
         self.searchTableView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+//            make.edges.equalToSuperview()
+            make.top.equalTo(self.currentLocationButton.snp.bottom).offset(5)
+            make.horizontalEdges.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }
     }
     
@@ -96,6 +95,7 @@ private extension SearchViewController {
     func bindViewModel() {
         let input = SearchViewModel.Input(
             didEditSearchText: self.searchBar.searchTextField.rx.text.orEmpty.asObservable(),
+            didTapCurrentLocationButton: self.currentLocationButton.rx.tap.asObservable(),
             didTapSearchTableCell: self.searchTableView.rx.itemSelected.asObservable()
         )
         
@@ -115,14 +115,22 @@ private extension SearchViewController {
         let appearance = UINavigationBarAppearance()
         let backButtonImage = UIImage(systemName: "arrow.left")?
             .withTintColor(.black, renderingMode: .alwaysOriginal)
-            
         
         appearance.configureWithTransparentBackground()
         appearance.setBackIndicatorImage(backButtonImage, transitionMaskImage: backButtonImage)
         
+        self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.titleView = searchBar
         self.navigationItem.standardAppearance = appearance
         self.navigationItem.scrollEdgeAppearance = appearance
+    }
+    
+}
+
+extension SearchViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        
+        return 70
     }
     
     func generateSnapshot(sources: [Space]) -> NSDiffableDataSourceSnapshot<Int, Space> {

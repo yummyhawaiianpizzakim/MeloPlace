@@ -11,10 +11,28 @@ import RxSwift
 import RxRelay
 import SpotifyiOS
 
-class SpotifyService: NSObject {
-//    static let spotify = Spotify()
-    static let shared = SpotifyService()
+enum SpotifyServiceError: Error {
+    case noToken
+    case noResponce
+}
+
+protocol SpotifyServiceProtocol: AnyObject {
+    var responseCode: String? { get set }
+    var appRemote: SPTAppRemote { get set }
+    var accessToken: String? { get set }
+    var isToken: PublishSubject<Bool> { get }
+    var isPaused: PublishSubject<Bool> { get }
+    func tryConnect()
+    func fetchAccessToken(completion: @escaping ([String: Any]?, Error?) -> Void) 
+    func searchMusic(query: String?, type: String) -> Observable<SpotifySearchDTO>
+    func fetchSpotifyUserProfile() -> Observable<SpotifyUserProfileDTO>
+    func playMusic(uri: String)
+    func stopPlayingMusic() 
+    func didTapPauseOrPlay()
     
+}
+
+class SpotifyService: NSObject, SpotifyServiceProtocol {
     let accessTokenKey = "access-token-key"
     let redirectUri = URL(string:"MeloPlace://")!
     let spotifyClientId = "d9637d39e5de4cdb818324214648b5fe"
@@ -47,7 +65,7 @@ class SpotifyService: NSObject {
     let token = BehaviorRelay<String>(value: "")
     let isToken = PublishSubject<Bool>()
     let isSession = PublishSubject<Bool>()
-    let isPaused = PublishRelay<Bool>()
+    let isPaused = PublishSubject<Bool>()
 
     // MARK: - Spotify Authorization & Configuration
     var responseCode: String? {
@@ -57,7 +75,8 @@ class SpotifyService: NSObject {
                     print("Fetching token request error \(error)")
                     return
                 }
-                let accessToken = dictionary!["access_token"] as! String
+                guard let dictionary else { return }
+                let accessToken = dictionary["access_token"] as! String
                 DispatchQueue.main.async {
                     self.appRemote.connectionParameters.accessToken = accessToken
                     if !accessToken.isEmpty {
@@ -150,19 +169,12 @@ extension SpotifyService: SPTAppRemotePlayerStateDelegate {
     }
     
     func update(playerState: SPTAppRemotePlayerState) {
-//        if lastPlayerState?.track.uri != playerState.track.uri {
-//            fetchArtwork(for: playerState.track)
-//        }
+
         lastPlayerState = playerState
-//        trackLabel.text = playerState.track.name
-//
-//        let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large)
         if playerState.isPaused {
-            self.isPaused.accept(true)
-//            playPauseButton.setImage(UIImage(systemName: "play.circle.fill", withConfiguration: configuration), for: .normal)
+            self.isPaused.onNext(true)
         } else {
-            self.isPaused.accept(false)
-//            playPauseButton.setImage(UIImage(systemName: "pause.circle.fill", withConfiguration: configuration), for: .normal)
+            self.isPaused.onNext(false)
         }
     }
 }
@@ -174,13 +186,12 @@ extension SpotifyService: SPTSessionManagerDelegate {
             print("AUTHENTICATE with WEBAPI")
             self.isSession.onNext(false)
         } else {
-//            presentAlertController(title: "Authorization Failed", message: error.localizedDescription, buttonTitle: "Bummer")
             self.isSession.onNext(false)
         }
     }
 
     func sessionManager(manager: SPTSessionManager, didRenew session: SPTSession) {
-//        presentAlertController(title: "Session Renewed", message: session.description, buttonTitle: "Sweet")
+        
     }
 
     func sessionManager(manager: SPTSessionManager, didInitiate session: SPTSession) {
@@ -230,15 +241,15 @@ extension SpotifyService {
         task.resume()
     }
 
-    func fetchArtwork(for track: SPTAppRemoteTrack) {
-        appRemote.imageAPI?.fetchImage(forItem: track, with: CGSize.zero, callback: { [weak self] (image, error) in
-            if let error = error {
-                print("Error fetching track image: " + error.localizedDescription)
-            } else if let image = image as? UIImage {
-//                self?.imageView.image = image
-            }
-        })
-    }
+//    func fetchArtwork(for track: SPTAppRemoteTrack) {
+//        appRemote.imageAPI?.fetchImage(forItem: track, with: CGSize.zero, callback: { [weak self] (image, error) in
+//            if let error = error {
+//                print("Error fetching track image: " + error.localizedDescription)
+//            } else if let image = image as? UIImage {
+////                self?.imageView.image = image
+//            }
+//        })
+//    }
 
     func fetchPlayerState() {
         appRemote.playerAPI?.getPlayerState({ [weak self] (playerState, error) in
@@ -260,7 +271,6 @@ extension SpotifyService {
     }
     
     func playMusic(uri: String) {
-//        let trackURI = "spotify:track:1vCWHaC5f2uS3yhpwWbIA6"
         appRemote.playerAPI?.play(uri, callback: { (result, error) in
             if let error = error {
                 print("Error playing track: \(error.localizedDescription)")
@@ -268,19 +278,34 @@ extension SpotifyService {
                 print("Track is now playing")
             }
         })
-
+        
+        appRemote.playerAPI?.seek(toPosition: 0, callback: { re, error in
+            print("seek??")
+        })
     }
     
-    func searchMusic(query: String, type: String) -> Observable<SpotifySearchDTO> {
-//        let token = UserDefaults.standard.string(forKey: self.spotify.accessTokenKey) ?? ""
+    func playBackMusic() {
+        appRemote.playerAPI?.seek(toPosition: 0)
+    }
+    
+    func playMusicSeek(to position: Int) {
+        appRemote.playerAPI?.seek(toPosition: position)
+    }
+    
+    func stopPlayingMusic() {
+        appRemote.playerAPI?.resume()
+    }
+    
+    func searchMusic(query: String?, type: String) -> Observable<SpotifySearchDTO> {
+        guard let query, !query.isEmpty
+        else { return Observable.empty() }
         let baseURLString = "https://api.spotify.com/v1"
         let token = self.token.value
         let searchRequestURLString = "/search"
         let headers: HTTPHeaders = ["Accept":"application/json",
                                     "Content-Type":"application/json",
                                     "Authorization":"Bearer \(token)"]
-//        print("token: \(token)")
-//        print("token: \(token)")
+        
         let parameters = [
             "q": query,
             "type": type
@@ -298,11 +323,12 @@ extension SpotifyService {
             .responseDecodable(of: SpotifySearchDTO.self) { response in
                 switch response.result {
                 case .success(let dto):
-//                    print("dto: \(dto)")
-                    return observer.onNext(dto)
+                    observer.onNext(dto)
+                    return
                 case .failure(let error):
                     print("dto: \(error)")
-                    return observer.onError(error)
+                    observer.onError(error)
+                    return
                 }
             }
             
@@ -316,7 +342,6 @@ extension SpotifyService {
         let url = "https://api.spotify.com/v1/me"
         let token = self.token.value
         let headers: HTTPHeaders = ["Authorization":"Bearer \(token)"]
-//        print("token: \(token)")
         return Observable.create { observer in
             AF.request(url,
                        method: .get,
@@ -326,10 +351,8 @@ extension SpotifyService {
             .responseDecodable(of: SpotifyUserProfileDTO.self) { response in
                 switch response.result {
                 case .success(let dto):
-//                    print("dto: \(dto)")
                     return observer.onNext(dto)
                 case .failure(let error):
-                    print("dto: \(error)")
                     return observer.onError(error)
                 }
             }
@@ -337,6 +360,10 @@ extension SpotifyService {
             return Disposables.create()
         }
 
+    }
+    
+    func seekMusic(to position: Int) {
+        
     }
     
 }

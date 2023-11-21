@@ -37,7 +37,7 @@ struct SpotifySearchItem: Codable {
     var isLocal: Bool
     var name: String
     var popularity: Int
-    var previewURL: String
+    var previewURL: String?
     var trackNumber: Int
     var type, uri: String
 

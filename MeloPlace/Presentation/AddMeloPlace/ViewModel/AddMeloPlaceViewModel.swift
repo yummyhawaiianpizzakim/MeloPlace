@@ -7,18 +7,32 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 import RxRelay
 
 struct AddMeloPlaceViewModelActions {
-    let showMeloLocationView: (_ addViewModel: AddMeloPlaceViewModel) -> Void
-    let showMusicListView: (_ addViewModel: AddMeloPlaceViewModel) -> Void
-    let showSelectDateView: (_ addViewModel: AddMeloPlaceViewModel) -> Void
+    let showMeloLocationView: () -> Void
+    let showSearchView: () -> Void
+    let showMusicListView: () -> Void
+    let showSelectDateView: () -> Void
+    let showSearchUserView: () -> Void
     let closeAddMeloPlaceView: () -> Void
 }
 
 class AddMeloPlaceViewModel {
     let disposeBag = DisposeBag()
-    let fireBaseService = FireBaseNetworkService.shared
+//    let fireBaseService = FireBaseNetworkService.shared
+    private let fetchUserUseCase: FetchUserUseCaseProtocol
+    private let createMeloPlaceUseCase: CreateMeloPlaceUseCaseProtocol
+    private let uploadImageUseCase: UploadImageUseCaseProtocol
+    
+    init(fetchUserUseCase: FetchUserUseCaseProtocol,
+         createMeloPlaceUseCase: CreateMeloPlaceUseCaseProtocol,
+         uploadImageUseCase: UploadImageUseCaseProtocol) {
+        self.fetchUserUseCase = fetchUserUseCase
+        self.createMeloPlaceUseCase = createMeloPlaceUseCase
+        self.uploadImageUseCase = uploadImageUseCase
+    }
     
     struct Input {
         var viewDidLoad: Observable<Void>
@@ -27,24 +41,28 @@ class AddMeloPlaceViewModel {
         var didTapPlaceButton: Observable<Void>
         var didTapMusicButton: Observable<Void>
         var didTapDateButton: Observable<Void>
+        var didTapTagUserButton: Observable<Void>
+        var didTapTagUserDeleteButton: Observable<String>
         var didTapDoneButton: Observable<Void>
     }
     
     struct Output {
-        let selectedAddress = PublishRelay<Address>()
-        let selectedGeoPoint = PublishRelay<GeoPoint>()
-        let selectedDate = PublishRelay<Date>()
-        let selectedMusic = PublishRelay<Music?>()
-        let isEnableDoneButton = BehaviorRelay<Bool>(value: false)
+        let selectedSpace: Driver<Space?>
+        let selectedDate: Driver<Date?>
+        let selectedMusic: Driver<Music?>
+        let selectedUserNames: Driver<[String]>
+        let deletedUserName: Driver<String>
+        let isEnableDoneButton: Driver<Bool>
     }
     
     let userInfo = PublishRelay<User>()
-    let pickedImage = PublishRelay<Data>()
-    let pickedImageURL = PublishRelay<String>()
-    let selectedAddress = PublishRelay<Address>()
-    let selectedGeoPoint = PublishRelay<GeoPoint>()
-    let selectedDate = PublishRelay<Date>()
-    let selectedMusic = PublishRelay<Music>()
+    let pickedImage = BehaviorRelay<Data?>(value: nil)
+    let pickedImageURL = BehaviorRelay<String>(value: "")
+    let selectedSpace = BehaviorRelay<Space?>(value: nil)
+    let selectedDate = BehaviorRelay<Date?>(value: nil)
+    let selectedMusic = BehaviorRelay<Music?>(value: nil)
+    let tagedFollowings = BehaviorRelay<[User]>(value: [])
+    let deletedName = BehaviorRelay<String>(value: "")
     
     var actions: AddMeloPlaceViewModelActions?
     
@@ -53,161 +71,111 @@ class AddMeloPlaceViewModel {
     }
     
     func transform(input: Input) -> Output {
-        let output = Output()
+        self.fetchUserUseCase.fetch(userID: nil)
+            .bind(to: self.userInfo)
+            .disposed(by: self.disposeBag)
         
-        input.viewDidLoad
-            .withUnretained(self)
-            .subscribe { owner, _ in
-                owner.fetchUser()
-                    .subscribe(onSuccess: { user in
-                        owner.userInfo.accept(user)
-                    }, onFailure: { error in
-                        print("user: \(error)")
-                    })
-                    .disposed(by: owner.disposeBag)
+        let meloPlace = Observable.combineLatest(
+            input.meloPlaceTitle, input.meloPlaceContent,
+            self.selectedMusic, self.selectedSpace,
+            self.selectedDate, self.pickedImageURL,
+            self.userInfo, self.tagedFollowings)
+            .map { value in
+                return self.generateMeloPlace(value: value)
             }
-            .disposed(by: disposeBag)
+            .share()
         
         input.didTapMusicButton
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
                 print("music tap!")
-                owner.actions?.showMusicListView( self )
+//                owner.actions?.showMusicListView( self )
+                owner.actions?.showMusicListView()
             })
             .disposed(by: self.disposeBag)
         
         input.didTapPlaceButton
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                owner.actions?.showMeloLocationView( self )
+//                owner.actions?.showMeloLocationView( self )
+//                owner.actions?.showMeloLocationView()
+                owner.actions?.showSearchView()
             })
             .disposed(by: self.disposeBag)
         
         input.didTapDateButton
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                owner.actions?.showSelectDateView( self )
+//                owner.actions?.showSelectDateView( self )
+                owner.actions?.showSelectDateView()
             })
             .disposed(by: self.disposeBag)
         
-        let meloPlace = Observable.combineLatest(
-            input.meloPlaceTitle, input.meloPlaceContent,
-            self.selectedMusic, self.selectedAddress,
-            self.selectedGeoPoint, self.selectedDate,
-            self.pickedImageURL, self.userInfo
-        ).map { (title, content, music, address, geoPoint, date, imageURL, user) in
-            
-            MeloPlace(id: UUID().uuidString,
-                      userId: user.id,
-                      musicURI: music.URI,
-                      musicName: music.name,
-                      musicDuration: music.duration,
-                      musicArtist: music.artist,
-                      musicAlbum: music.album,
-                      musicImageURL: music.imageURL,
-                      musicImgaeWidth: music.imageWidth,
-                      musicImgaeHeight: music.imageHeightL,
-                      images: [imageURL],
-                      title: title,
-                      description: content,
-                      address: address.full,
-                      simpleAddress: address.simple,
-                      latitude: geoPoint.latitude,
-                      longitude: geoPoint.longitude,
-                      memoryDate: date
-            )
-        }
+        input.didTapTagUserButton
+            .withUnretained(self)
+            .subscribe { owner, _ in
+                owner.actions?.showSearchUserView()
+            }
+            .disposed(by: self.disposeBag)
         
-//        input.didTapDoneButton
-//            .withLatestFrom(self.pickedImage)
-//            .map { [weak self] data in
-//                guard let self = self else { return }
-//                self.fireBaseService.uploadDataStorage(data: data, path: .meloPlaceImages)
-//                    .subscribe(onSuccess: { url in
-//                        self.pickedImageURL.accept(url)
-//                    }, onFailure: { error in
-//
-//                    })
-//                    .disposed(by: disposeBag)
-//            }
-//            .withLatestFrom(meloPlace)
-//            .withUnretained(self)
-//            .subscribe(onNext: { owner, meloPlace in
-//                owner.addMeloPlace(meloPlace: meloPlace)
-//                    .subscribe(onSuccess: { isSuccess in
-//                        print("isSuccess: \(isSuccess)")
-//                        if isSuccess {
-//                            owner.actions?.closeAddMeloPlaceView()
-//                        }
-//                    }, onFailure: { error in
-//                        print(error)
-//                    })
-//                    .disposed(by: owner.disposeBag)
-//            })
-//            .disposed(by: self.disposeBag)
+        input.didTapTagUserDeleteButton
+            .debounce(.milliseconds(200), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .withUnretained(self)
+            .debug("deletetap")
+            .do(onNext: { owner, name in
+                owner.deletedName.accept(name)
+            })
+            .map({ owner, name in
+                owner.tagedFollowings.value.filter { $0.name != name }
+            })
+            .bind(to: self.tagedFollowings)
+            .disposed(by: self.disposeBag)
         
         input.didTapDoneButton
             .withLatestFrom(self.pickedImage)
-            .flatMapLatest { [weak self] data -> Observable<String> in
-                guard let self = self else { return .empty() }
-                return self.fireBaseService.uploadDataStorage(data: data, path: .meloPlaceImages)
-                    .asObservable()
-                    .observe(on: MainScheduler.instance) // UI 작업을 위해 메인 스레드에서 실행되도록 설정합니다.
-                    .do(onNext: { url in
-                        self.pickedImageURL.accept(url)
-                    }, onError: { error in
-                        print(error)
-                    })
+            .withUnretained(self)
+            .flatMapFirst { owner, data -> Observable<String> in
+                guard let data else { return Observable.empty() }
+                return owner.uploadImageUseCase.upload(data: data)
+                    .do { owner.pickedImageURL.accept($0) }
             }
             .withLatestFrom(meloPlace)
-            .flatMapLatest { [weak self] meloPlace -> Observable<Bool> in
-                guard let self = self else { return .empty() }
-                return self.addMeloPlace(meloPlace: meloPlace)
-                    .asObservable()
+            .withUnretained(self)
+            .flatMapLatest { owner, meloPlace in
+                 owner.createMeloPlaceUseCase.create(meloPlace: meloPlace)
             }
-            .subscribe(onNext: { [weak self] isSuccess in
-                guard let self = self else { return }
-                print("isSuccess: \(isSuccess)")
-                if isSuccess {
-                    self.actions?.closeAddMeloPlaceView()
-                }
-            }, onError: { error in
+            .subscribe { [weak self] meloPlace in
+                self?.actions?.closeAddMeloPlaceView()
+            } onError: { error in
                 print(error)
-            })
+            }
             .disposed(by: self.disposeBag)
+        
+        let tagedFollowingIDs = self.tagedFollowings
+            .debug("tagedFollowingIDs")
+            .map { $0.map { $0.name} }
+            .share()
 
-        
-        self.selectedAddress
-            .bind(to: output.selectedAddress)
-            .disposed(by: self.disposeBag)
-        
-        self.selectedGeoPoint
-            .bind(to: output.selectedGeoPoint)
-            .disposed(by: self.disposeBag)
-        
-        self.selectedDate
-            .bind(to: output.selectedDate)
-            .disposed(by: self.disposeBag)
-        
-        self.selectedMusic
-            .bind(to: output.selectedMusic)
-            .disposed(by: self.disposeBag)
-        
-        Observable.combineLatest(
+        let isEnableDoneButton = Observable.combineLatest(
             input.meloPlaceTitle, input.meloPlaceContent,
-            self.selectedMusic, self.selectedAddress,
-            self.selectedGeoPoint, self.selectedDate,
-            self.pickedImage, self.userInfo
-        ).map { (title, content, music, address, geoPoint, date, iamgeData, user) in
-            var isEnable = !title.isEmpty && !content.isEmpty && !music.name.isEmpty &&
-            !address.full.isEmpty && !geoPoint.latitude.isNaN && !date.toString().isEmpty &&
-            !iamgeData.isEmpty && !user.id.isEmpty ? true : false
+            self.selectedMusic, self.selectedSpace,
+            self.selectedDate, self.pickedImage,
+            self.userInfo)
+            .map { value in
+            let isEnable = self.checkEnableButton(value: value)
+            
             return isEnable
-        }
-        .bind(to: output.isEnableDoneButton)
-        .disposed(by: self.disposeBag)
+            }.share()
         
-        return output
+        return Output(
+            selectedSpace: self.selectedSpace.asDriver(onErrorJustReturn: nil),
+            selectedDate: self.selectedDate.asDriver(onErrorJustReturn: nil),
+            selectedMusic: self.selectedMusic.asDriver(onErrorJustReturn: nil),
+            selectedUserNames: tagedFollowingIDs.asDriver(onErrorJustReturn: []),
+            deletedUserName: self.deletedName.asDriver(),
+            isEnableDoneButton: isEnableDoneButton.asDriver(onErrorJustReturn: false)
+        )
     }
 }
 
@@ -216,67 +184,53 @@ extension AddMeloPlaceViewModel {
         self.pickedImage.accept(data)
     }
     
-    private func fetchUser() -> Single<User> {
-        return Single.create {[weak self] single in
-            guard let self = self else { return Disposables.create() }
-            self.fireBaseService.read(type: UserDTO.self, userCase: .currentUser, access: .user)
-                .subscribe { UserDTO in
-//                    print("usrdototototo: \(UserDTO)")
-                    let user = UserDTO.toDomain()
-//                    print("tqtqtqtqt: \(user)")
-                    single(.success(user))
-                } onError: { error in
-                    print("tqtqtqtqt: \(error)")
-                    single(.failure(error))
-                }
-                .disposed(by: self.disposeBag)
-            
-            return Disposables.create()
-        }
-        
-
-    }
-    
-    private func addMeloPlace(meloPlace: MeloPlace) -> Single<Bool> {
-        return Single.create {[weak self] single in
-            guard let self = self else { return Disposables.create() }
-            let meloPlaceDTO = meloPlace.toDTO()
-            self.fireBaseService.create(dto: meloPlaceDTO.self, userCase: .currentUser, access: .meloPlace)
-                .subscribe(onSuccess: { dto in
-//                    print("meloDTO: \(dto)")
-                    single(.success(true))
-                }, onFailure: { error in
-                    print("meloDTO: \(error)")
-                    single(.failure(error))
-                })
-                .disposed(by: self.disposeBag)
-            
-            return Disposables.create()
-        }
-        
-        
-
-    }
 }
 
-extension AddMeloPlaceViewModel: MeloLocationViewModelDelegate {
-    func locationSelected(address: Address, geopoint: GeoPoint) {
-        self.selectedAddress.accept(address)
-        self.selectedGeoPoint.accept(geopoint)
-        print(address, geopoint)
+private extension AddMeloPlaceViewModel {
+    func checkEnableButton(value: (String, String, Music?, Space?, Date?, Data?, User)) -> Bool {
+        let (title, content, music, space, date, imageData, user) = value
+        guard let music,
+              let space,
+              let date,
+              let imageData
+        else { return false }
+        let isEnable = (!title.isEmpty && !content.isEmpty && content != "내용을 남겨주세요" && !music.name.isEmpty &&
+        !space.name.isEmpty && !space.lat.isNaN && !date.toString().isEmpty &&
+        !imageData.isEmpty && !user.id.isEmpty) ? true : false
+        
+        return isEnable
     }
     
-}
-
-extension AddMeloPlaceViewModel: SelectDateViewModelDelegate {
-    func dateDidSelect(date: Date) {
-        self.selectedDate.accept(date)
-    }
-    
-}
-
-extension AddMeloPlaceViewModel: MusicListViewModelDelegate {
-    func musicDidSelect(music: Music) {
-        self.selectedMusic.accept(music)
+    func generateMeloPlace(value: (String, String, Music?, Space?, Date?, String, User, [User])) -> MeloPlace {
+        let (title, content, music, space, date, imageURL, user, tagedUsers) = value
+        guard let music,
+              let space,
+              let date
+        else { return MeloPlace() }
+        
+        var tagedUserIDs: [String] = []
+        
+        tagedUsers.forEach { tagedUserIDs.append($0.id) }
+        
+        return MeloPlace(id: UUID().uuidString,
+                         userID: user.id,
+                         tagedUsers: tagedUserIDs,
+                         musicURI: music.URI,
+                         musicName: music.name,
+                         musicDuration: music.duration,
+                         musicArtist: music.artist,
+                         musicAlbum: music.album,
+                         musicImageURL: music.imageURL,
+                         musicImgaeWidth: music.imageWidth,
+                         musicImgaeHeight: music.imageHeightL,
+                         images: [imageURL],
+                         title: title,
+                         description: content,
+                         address: space.address,
+                         spaceName: space.name,
+                         latitude: space.lat,
+                         longitude: space.lng,
+                         memoryDate: date
+        )
     }
 }

@@ -8,9 +8,11 @@
 import Foundation
 import CoreLocation
 
-struct GeoPoint: Codable {
+struct GeoPoint: Codable, Hashable {
     let latitude: Double
     let longitude: Double
+    
+    static var seoulCoordinate = GeoPoint(latitude: 37.553836, longitude: 126.969652)
 
     var coordinate: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -21,5 +23,10 @@ struct GeoPoint: Codable {
             "latitude": latitude,
             "longitude": longitude,
         ]
+    }
+    
+    func shiftGeoPoint(latitudeDelta: Double, longitudeDelta: Double) -> GeoPoint {
+        return GeoPoint(latitude: self.latitude + latitudeDelta,
+                        longitude: self.longitude + longitudeDelta)
     }
 }

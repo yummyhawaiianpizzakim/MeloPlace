@@ -9,7 +9,8 @@ import Foundation
 
 struct MeloPlace: Hashable {
     var id: String
-    var userId: String
+    var userID: String
+    var tagedUsers: [String]
     
     var musicURI: String
     var musicName: String
@@ -25,15 +26,16 @@ struct MeloPlace: Hashable {
     var description: String
     
     var address: String
-    var simpleAddress: String
+    var spaceName: String
     
     var latitude: Double
     var longitude: Double
     var memoryDate: Date
     
-    init(id: String, userId: String, musicURI: String, musicName: String, musicDuration: Int, musicArtist: String, musicAlbum: String, musicImageURL: String, musicImgaeWidth: Int, musicImgaeHeight: Int, images: [String], title: String, description: String, address: String, simpleAddress: String, latitude: Double, longitude: Double, memoryDate: Date) {
+    init(id: String, userID: String, tagedUsers: [String], musicURI: String, musicName: String, musicDuration: Int, musicArtist: String, musicAlbum: String, musicImageURL: String, musicImgaeWidth: Int, musicImgaeHeight: Int, images: [String], title: String, description: String, address: String, spaceName: String, latitude: Double, longitude: Double, memoryDate: Date) {
         self.id = id
-        self.userId = userId
+        self.userID = userID
+        self.tagedUsers = tagedUsers
         self.musicURI = musicURI
         self.musicName = musicName
         self.musicDuration = musicDuration
@@ -46,7 +48,7 @@ struct MeloPlace: Hashable {
         self.title = title
         self.description = description
         self.address = address
-        self.simpleAddress = simpleAddress
+        self.spaceName = spaceName
         self.latitude = latitude
         self.longitude = longitude
         self.memoryDate = memoryDate
@@ -54,7 +56,8 @@ struct MeloPlace: Hashable {
     
     init() {
         self.id = ""
-        self.userId = ""
+        self.userID = ""
+        self.tagedUsers = []
         self.musicURI = ""
         self.musicName = ""
         self.musicDuration = 0
@@ -67,7 +70,7 @@ struct MeloPlace: Hashable {
         self.title = ""
         self.description = ""
         self.address = ""
-        self.simpleAddress = ""
+        self.spaceName = ""
         self.latitude = 0.00
         self.longitude = 0.00
         self.memoryDate = Date()
@@ -78,7 +81,8 @@ extension MeloPlace {
     func toDTO() -> MeloPlaceDTO {
         return MeloPlaceDTO(
             id: self.id,
-            userId: self.userId,
+            userID: self.userID,
+            tagedUsers: self.tagedUsers,
             musicURI: self.musicURI,
             musicName: self.musicName,
             musicDuration: self.musicDuration,
@@ -91,7 +95,7 @@ extension MeloPlace {
             title: self.title,
             description: self.description,
             address: self.address,
-            simpleAddress: self.simpleAddress,
+            spaceName: self.spaceName,
             latitude: self.latitude,
             longitude: self.longitude,
             memoryDate: self.memoryDate

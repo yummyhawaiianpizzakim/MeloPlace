@@ -90,6 +90,7 @@ class SignUpViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.view.backgroundColor = .white
         self.configureUI()
         self.hideKeyboardWhenTappedAround()
         self.bindUI()
@@ -99,7 +100,6 @@ class SignUpViewController: UIViewController {
 
 private extension SignUpViewController {
     func configureUI() {
-        self.view.backgroundColor = .white
         self.view.addSubview(self.scrollView)
         self.scrollView.addSubview(self.contentView)
         
@@ -171,7 +171,14 @@ private extension SignUpViewController {
     }
     
     func bindUI() {
-        
+        RxKeyboard.instance.visibleHeight
+            .skip(1)
+            .drive(onNext: { [weak self] keyboardVisibleHeight in
+                guard let self else { return }
+//                self.updateContentViewLayout(height: keyboardVisibleHeight)
+                self.scrollView.contentInset.bottom = keyboardVisibleHeight
+            })
+            .disposed(by: disposeBag)
     }
     
     func bindViewModel() {
@@ -184,7 +191,6 @@ private extension SignUpViewController {
         let output = self.viewModel?.transform(input: input)
         
         output?.profile
-            .asDriver()
             .drive(with: self, onNext: { owner, profile in
                 guard let profile = profile else { return }
                 owner.emailTextField.text = profile.email
@@ -192,22 +198,11 @@ private extension SignUpViewController {
             })
             .disposed(by: self.disposeBag)
         
-        output?.isDonButotnEnable
-            .asDriver()
+        output?.isDoneButotnEnable
             .drive(with: self, onNext: { owner, isEnable in
                 owner.doneButton.isEnabled = isEnable ? true : false
             })
             .disposed(by: self.disposeBag)
-        
-        RxKeyboard.instance.visibleHeight
-            .skip(1)
-            .drive(onNext: { [weak self] keyboardVisibleHeight in
-                guard let self else { return }
-//                self.updateContentViewLayout(height: keyboardVisibleHeight)
-                self.scrollView.contentInset.bottom = keyboardVisibleHeight
-            })
-            .disposed(by: disposeBag)
-            
     }
     
     func updateContentViewLayout(height: CGFloat) {

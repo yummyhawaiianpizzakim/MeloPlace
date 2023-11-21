@@ -23,8 +23,16 @@ class MusicListViewController: UIViewController {
     
     lazy var topView: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
         return view
+    }()
+    
+    let cancelButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("취소", for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: 15.0)
+        button.setTitleColor(.black, for: .normal)
+        button.sizeToFit()
+        return button
     }()
     
     lazy var titleLabel: UILabel = {
@@ -35,19 +43,17 @@ class MusicListViewController: UIViewController {
         return label
     }()
     
-    lazy var connectButton = ThemeButton(title: "connect")
-    
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
-        searchBar.backgroundColor = .white
-        searchBar.barTintColor = .white
-//        searchBar.tintColor = .white
+        searchBar.layer.borderColor = UIColor.systemBackground.cgColor
+        searchBar.searchBarStyle = .minimal
+        searchBar.layer.borderWidth = 0
+        searchBar.tintColor = .themeColor300
         return searchBar
     }()
     
     lazy var musicCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.configureLayout())
-        collectionView.backgroundColor = .white
         collectionView.delegate = self
         collectionView.register(MusicListCollectionCell.self, forCellWithReuseIdentifier: MusicListCollectionCell.identifier)
         return collectionView
@@ -84,13 +90,14 @@ private extension MusicListViewController {
             self.view.addSubview($0)
         }
         
-        [self.titleLabel, self.connectButton, self.searchBar].forEach {
+        [self.titleLabel, self.cancelButton,
+         self.searchBar].forEach {
             self.topView.addSubview($0)
         }
         
         self.topView.snp.makeConstraints { make in
             make.top.leading.trailing.equalToSuperview()
-            make.height.equalTo(100)
+            make.height.equalTo(120)
         }
         
         self.musicCollectionView.snp.makeConstraints { make in
@@ -101,31 +108,39 @@ private extension MusicListViewController {
         
         self.titleLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(10)
+            make.top.equalToSuperview().offset(20)
         }
         
-        self.connectButton.snp.makeConstraints { make in
-            make.trailing.top.equalToSuperview()
-            make.width.equalTo(50)
-            make.height.equalTo(30)
+        self.cancelButton.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(20)
+            make.leading.equalToSuperview().offset(10)
+            make.height.equalTo(15)
+            
         }
         
         self.searchBar.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
-            make.top.equalTo(self.connectButton.snp.bottom)
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(10)
             make.height.equalTo(40)
         }
         
         self.doneButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
-            make.horizontalEdges.equalToSuperview()
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
             make.height.equalTo(50)
         }
     }
     
     func bindUI() {
-//        self.musicCollectionView.rx
         self.doneButton.rx.tap
+            .asDriver()
+            .drive(with: self) { owner, _ in
+                owner.dismiss(animated: true)
+            }
+            .disposed(by: self.disposeBag)
+        
+        self.cancelButton.rx.tap
             .asDriver()
             .drive(with: self) { owner, _ in
                 owner.dismiss(animated: true)
@@ -134,11 +149,17 @@ private extension MusicListViewController {
     }
     
     func bindViewModel() {
+        let didDeselectItem = self.musicCollectionView.rx.itemDeselected
+            .do(onNext: { [weak self] indexPath in
+                self?.musicCollectionView.deselectItem(at: indexPath, animated: false)
+            }).asObservable()
+                
+                
+        
         let input = MusicListViewModel.Input(
-//            connectSpotify: Observable.just(()),
-            connectSpotify: self.connectButton.rx.tap.asObservable(),
             searchText: self.searchBar.rx.text.orEmpty.asObservable(),
-            didTapCell: self.musicCollectionView.rx.itemSelected.asObservable(),
+            didSelectItem: self.musicCollectionView.rx.itemSelected.asObservable(),
+            didDeselectItem: didDeselectItem,
             didTapDoneButton: self.doneButton.rx.tap.asObservable()
         )
         let output = self.viewModel?.transform(input: input)
@@ -194,11 +215,12 @@ private extension MusicListViewController {
 }
 
 extension MusicListViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        self.deselectSectionItem(collectionView, indexPath: indexPath)
-        return true
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        guard let cell = self.musicCollectionView.cellForItem(at: indexPath) as? MusicListCollectionCell else { return }
+        if cell.isSelected {
+            self.deselectSectionItem(collectionView, indexPath: indexPath)
+        }
     }
-    
     func deselectSectionItem(_ collectionView: UICollectionView, indexPath: IndexPath?) {
         guard
             let selectedItemSection = collectionView.indexPathsForSelectedItems,
@@ -207,54 +229,9 @@ extension MusicListViewController: UICollectionViewDelegate {
             return
         }
         let selectedItemIndexPath = selectedItemSection.filter { $0.section == indexPath.section }
-        
+
         if let indexPath = selectedItemIndexPath.last {
             collectionView.deselectItem(at: indexPath, animated: false)
         }
     }
-    
-//    func asd() -> Observable<Music> {
-//        return Observable.create { observer in
-//            self.musicCollectionView.rx.itemSelected
-//                .asObservable()
-//                .subscribe { indexPath in
-//
-//                }
-//
-//            return Disposables.create()
-//        }
-//    }
-//
-//    func transformSelectedItemToInput() -> Observable<Music> {
-//        return self.collectionView.rx.itemSelected
-//            .asObservable()
-//            .compactMap { [weak self] indexPath in
-//                guard
-//                    let self,
-//                    let music = self.dataSource?.itemIdentifier(for: indexPath)
-//                else {
-//                    return
-//                }
-////                if indexPath.section == 0 {
-////                    return Observable.just(music)
-////                }
-//
-//                switch indexPath.section {
-//                case 0:
-//                    return Observable.just(music)
-//
-//                }
-//            }
-//    }
-//
-//    func transformDeselectedItemToInput() -> Observable<Music> {
-//        return self.collectionView.rx.itemDeselected
-//            .asObservable()
-//            .compactMap { indexPath -> Music? in
-//                switch indexPath.section {
-//                case 0:
-//                    return 0
-//                }
-//            }
-//    }
 }

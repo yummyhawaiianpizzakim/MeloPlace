@@ -17,6 +17,14 @@ class SearchTableCell: UITableViewCell {
     
     lazy var label: UILabel = {
         let label = UILabel()
+        label.font = .systemFont(ofSize: 20)
+        return label
+    }()
+    
+    lazy var addressLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 15)
+        label.textColor = .themeGray100
         return label
     }()
     
@@ -35,13 +43,21 @@ class SearchTableCell: UITableViewCell {
 
 private extension SearchTableCell {
     func configureUI() {
-        [self.label].forEach {
+        [self.label, self.addressLabel].forEach {
             self.contentView.addSubview($0)
         }
         
         self.label.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.leading.equalToSuperview().offset(10)
+//            make.centerY.equalToSuperview()
+            make.top.equalToSuperview().offset(15)
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
+        }
+        
+        self.addressLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.label.snp.bottom).offset(5)
+            make.leading.equalTo(self.label.snp.leading)
+            make.trailing.equalToSuperview().offset(-15)
         }
     }
     
@@ -49,7 +65,8 @@ private extension SearchTableCell {
 
 extension SearchTableCell {
     func configureCell(item: Space) {
-        self.label.text = item.address
+        self.label.text = item.name
+        self.addressLabel.text = item.address
     }
     
 }

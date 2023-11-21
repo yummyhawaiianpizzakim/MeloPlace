@@ -12,18 +12,63 @@ import RxCocoa
 import RxRelay
 
 enum UserPageFilter: Int, Hashable, CaseIterable {
-    case likes = 0
-    case collections
+    case contents = 0
+    case taged
     
     var title: String {
         switch self {
-        case .likes:
-            return "likes"
-        case .collections:
-            return "collections"
+        case .contents:
+            return "내 게시물"
+        case .taged:
+            return "태그된 게시물"
         }
     }
 }
+
+enum MapMeloPlaceFilter: Int, Hashable, CaseIterable {
+    case my = 0
+    case following
+    
+    var title: String {
+        switch self {
+        case .my:
+            return "내 게시물"
+        case .following:
+            return "팔로잉 게시물"
+        }
+    }
+    
+    init(index: Int) {
+        switch index {
+        case 0: self = .my
+        case 1: self = .following
+        default: self = .my
+        }
+    }
+}
+
+enum FollowingUserListFilter: Int, Hashable, CaseIterable {
+    case follower = 0
+    case following
+    
+    var title: String {
+        switch self {
+        case .follower:
+            return "팔로워"
+        case .following:
+            return "팔로잉"
+        }
+    }
+    
+    init(index: Int) {
+        switch index {
+        case 0: self = .follower
+        case 1: self = .following
+        default: self = .follower
+        }
+    }
+}
+
 enum FilterMode: Hashable {
     typealias Item = FilterItem
         
@@ -32,13 +77,21 @@ enum FilterMode: Hashable {
         }
     
     case userPage
+    case mapMeloPlace
+    case follingUserList
     
     enum FilterItem: Hashable {
         case userPage(filter: UserPageFilter)
+        case mapMeloPlace(filter: MapMeloPlaceFilter)
+        case follingUserList(filter: FollowingUserListFilter)
         
         var title: String {
             switch self {
             case .userPage(filter: let item):
+                return item.title
+            case .mapMeloPlace(filter: let item):
+                return item.title
+            case .follingUserList(filter: let item):
                 return item.title
             }
         }
@@ -49,6 +102,14 @@ enum FilterMode: Hashable {
         case .userPage:
             return UserPageFilter.allCases.map { filter in
                 FilterItem.userPage(filter: filter)
+            }
+        case .mapMeloPlace:
+            return MapMeloPlaceFilter.allCases.map { filter in
+                FilterItem.mapMeloPlace(filter: filter)
+            }
+        case .follingUserList:
+            return FollowingUserListFilter.allCases.map {
+                FilterItem.follingUserList(filter: $0)
             }
         }
     }
@@ -62,7 +123,7 @@ class FilterCollectionView: UICollectionView {
 
     lazy var underLineBar: UIView = {
         let view = UIView()
-        view.backgroundColor = .white
+        view.backgroundColor = .black
         return view
     }()
 

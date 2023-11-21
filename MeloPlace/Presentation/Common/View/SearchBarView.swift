@@ -34,7 +34,6 @@ class SearchBarView: UIView {
     // MARK: Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
         self.configureUI()
         self.configureAttributes()
     }
@@ -64,8 +63,10 @@ private extension SearchBarView {
     }
     
     func configureAttributes() {
+        self.backgroundColor = .white
         self.layer.cornerRadius = 8
-        self.backgroundColor = .themeColor300
+        self.layer.borderColor = UIColor.themeColor300?.cgColor
+        self.layer.borderWidth = 1
     }
 }
 

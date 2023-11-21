@@ -18,11 +18,13 @@ class SelectDateCoordinator: CoordinatorProtocol {
     
     var navigation: UINavigationController
     
-    var addViewModel: AddMeloPlaceViewModel
+//    var addViewModel: AddMeloPlaceViewModel
     
-    init(navigation : UINavigationController, addViewModel: AddMeloPlaceViewModel) {
+    init(navigation : UINavigationController
+//         addViewModel: AddMeloPlaceViewModel
+    ) {
         self.navigation = navigation
-        self.addViewModel = addViewModel
+//        self.addViewModel = addViewModel
     }
     
     func start() {
@@ -32,12 +34,13 @@ class SelectDateCoordinator: CoordinatorProtocol {
     private func showBrowseViewFlow() {
         let container = DIContainer.shared.container
         guard let vm = container.resolve(SelectDateViewModel.self) else { return }
-        vm.delegate = self.addViewModel
+//        vm.delegate = self.addViewModel
         let vc = SelectDateViewController(viewModel: vm)
         
         vm.setActions(
             actions: SelectDateViewModelActions(
-                closeSelectDateView: self.closeSelectDateView
+                closeSelectDateView: self.closeSelectDateView,
+                closeSelectDateViewWith: self.closeSelectDateViewWith
             )
         )
         
@@ -46,8 +49,19 @@ class SelectDateCoordinator: CoordinatorProtocol {
     }
     
     lazy var closeSelectDateView: () -> Void = { [weak self] in
+        
         self?.finish()
-//        self?.viewController?.dismiss(animated: true)
+        
+    }
+    
+    lazy var closeSelectDateViewWith: (_ date: Date) -> Void = { [weak self] date in
+        guard
+            let addMeloPlaceViewController = self?.navigation.viewControllers.last as? AddMeloPlaceViewController
+        else { return }
+        self?.finish()
+        
+//        addMeloPlaceViewController.viewModel?.dateDidSelect(date: date)
+        addMeloPlaceViewController.viewModel?.selectedDate.accept(date)
     }
     
 //    lazy var showPhotoDetail: (_ IndexPath: IndexPath) -> Void = { [weak self] indexPath in

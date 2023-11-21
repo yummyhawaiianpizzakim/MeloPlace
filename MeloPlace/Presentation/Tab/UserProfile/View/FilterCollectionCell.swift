@@ -18,7 +18,7 @@ class FilterCollectionCell: UICollectionViewCell {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.lineBreakMode = .byWordWrapping
-        label.textColor = .white
+        label.textColor = .gray
         label.text = "test"
         label.textAlignment = .center
         return label
