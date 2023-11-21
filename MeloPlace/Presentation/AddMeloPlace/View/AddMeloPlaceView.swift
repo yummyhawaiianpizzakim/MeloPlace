@@ -9,9 +9,30 @@ import Foundation
 import SnapKit
 import UIKit
 import Kingfisher
+import RxSwift
+import RxCocoa
 
 class AddMeloPlaceView: UIView {
+    let disposeBag = DisposeBag()
     
+    lazy var topView: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    lazy var backButton: UIButton = {
+        let button = UIButton()
+        button.setImage(UIImage(systemName: "arrow.backward"), for: .normal)
+        button.tintColor = .black
+        return button
+    }()
+    
+    lazy var topViewTitleLabel: UILabel = {
+        let label = UILabel()
+        label.text = "새 게시물"
+        label.font = .systemFont(ofSize: 20)
+        return label
+    }()
     
     lazy var inputStackView: UIStackView = {
         let stackView = UIStackView()
@@ -32,81 +53,54 @@ class AddMeloPlaceView: UIView {
         return imageView
     }()
     
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.text = "멜로플레이스"
-        label.font = .systemFont(ofSize: 20)
-        label.textColor = .gray
-        return label
-    }()
-    
-    lazy var musicLabel: UILabel = {
-        let label = UILabel()
-        label.text = "음악"
-        label.font = .systemFont(ofSize: 20)
-        label.textColor = .gray
-        return label
-    }()
-    
-    lazy var placeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "장소"
-        label.font = .systemFont(ofSize: 20)
-        label.textColor = .gray
-        return label
-    }()
-    
-    lazy var DateLabel: UILabel = {
-        let label = UILabel()
-        label.text = "날짜"
-        label.font = .systemFont(ofSize: 20)
-        label.textColor = .gray
-        return label
-    }()
-    
-    lazy var contentLabel: UILabel = {
-        let label = UILabel()
-        label.text = "내용"
-        label.font = .systemFont(ofSize: 20)
-        label.textColor = .gray
-        return label
-    }()
-    
     lazy var titleTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "멜로플레이스"
+        textField.placeholder = "제목"
+        textField.layer.borderWidth = 1
+        textField.layer.cornerRadius = 8
+        textField.layer.borderColor = UIColor.white.cgColor
         return textField
     }()
     
-    lazy var musicButton = SelectButton(text: "음악")
+    lazy var titleTextCountLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 15)
+        label.text = "0/20"
+        label.textColor = .themeGray300
+        return label
+    }()
     
-    lazy var placeButton = SelectButton(text: "장소")
+    lazy var contentTextCountLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 15)
+        label.text = "0/200"
+        label.textColor = .themeGray300
+        return label
+    }()
     
-    lazy var dateButton = SelectButton(text: "날짜")
+    lazy var musicButton = SelectButtonView(text: "음악")
+    
+    lazy var placeButton = SelectButtonView(text: "장소")
+    
+    lazy var dateButton = SelectButtonView(text: "날짜")
+    
+    lazy var tagUserButton = SelectTagUserButtonView(text: "태그 유저")
     
     lazy var contentTextView: UITextView = {
         let textView = UITextView()
-        textView.backgroundColor = .gray
-//        textView.layer.borderColor = UIColor.themeGray300?.cgColor
-//        textView.layer.borderWidth = FrameResource.commonBorderWidth
-//        textView.layer.cornerRadius = FrameResource.commonCornerRadius
+        textView.backgroundColor = .white
+        textView.layer.cornerRadius = 8
         textView.font = .systemFont(ofSize: 20)
         textView.text = "내용을 남겨주세요"
-        textView.textColor = .orange
-        textView.textContainerInset = UIEdgeInsets(
-            top: 15,
-            left: 15,
-            bottom: 15,
-            right: 15
-        )
-        
+        textView.textColor = .themeGray100
+        textView.layer.borderWidth = 1
+        textView.layer.borderColor = UIColor.white.cgColor
         return textView
     }()
     
-    lazy var doneButton = ThemeButton(title: "선택 완료")
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
+        self.configureAttribute()
         self.configureUI()
         self.bindUI()
     }
@@ -117,53 +111,122 @@ class AddMeloPlaceView: UIView {
 }
 
 private extension AddMeloPlaceView {
+    func configureAttribute() {
+        self.titleTextField.delegate = self
+        self.contentTextView.delegate = self
+    }
+    
     func configureUI() {
-        self.addSubview(self.imageView)
-//        self.addSubview(self.editIconView)
-        self.addSubview(self.inputStackView)
-        [self.titleLabel, self.titleTextField,
-         self.musicLabel, self.musicButton,
-         self.placeLabel, self.placeButton,
-         self.DateLabel, self.dateButton,
-         self.contentLabel, self.contentTextView,
-         self.doneButton
+        [self.topView, self.imageView, self.inputStackView,
+         self.titleTextCountLabel, self.contentTextCountLabel
+        ]
+            .forEach { self.addSubview($0) }
+        
+        [self.backButton, self.topViewTitleLabel]
+            .forEach { self.topView.addSubview($0) }
+        
+        [self.titleTextField,
+         self.contentTextView,
+         self.musicButton,
+         self.placeButton,
+         self.dateButton,
+         self.tagUserButton
         ].forEach { view in
             self.inputStackView.addArrangedSubview(view)
         }
+        
+        self.topView.snp.makeConstraints { make in
+            make.top.equalTo(self.safeAreaLayoutGuide).offset(10)
+            make.horizontalEdges.equalToSuperview()
+            make.height.equalTo(20)
+        }
+        
         self.inputStackView.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(10)
-            make.trailing.equalToSuperview().offset(-10)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
             make.top.equalTo(self.imageView.snp.bottom).offset(10)
             make.bottom.equalToSuperview()
         }
+        
+        self.topViewTitleLabel.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
+        
+        self.backButton.snp.makeConstraints { make in
+            make.centerY.equalToSuperview()
+            make.leading.equalToSuperview().offset(10)
+            make.height.width.equalTo(20)
+        }
+        
         self.imageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalToSuperview().offset(10)
+            make.top.equalTo(self.topView.snp.bottom).offset(10)
             make.width.height.equalTo(200)
         }
         
         self.titleTextField.snp.makeConstraints { make in
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
             make.height.equalTo(30)
+        }
+        
+        self.titleTextCountLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(self.titleTextField.snp.trailing).offset(-5)
+            make.bottom.equalTo(self.titleTextField.snp.bottom).offset(-5)
         }
 
         self.contentTextView.snp.makeConstraints { make in
-            make.height.equalTo(100)
+            make.leading.equalToSuperview()
+            make.trailing.equalToSuperview()
+            make.height.equalTo(90)
         }
         
-        self.doneButton.snp.makeConstraints { make in
-            make.leading.equalToSuperview().offset(20)
-            make.trailing.equalToSuperview().offset(-20)
-            make.bottom.equalToSuperview().offset(-20)
-            make.height.equalTo(40)
+        self.contentTextCountLabel.snp.makeConstraints { make in
+            make.trailing.equalTo(self.contentTextView.snp.trailing).offset(-5)
+            make.bottom.equalTo(self.contentTextView.snp.bottom).offset(-5)
         }
         
-        [self.titleLabel, self.musicLabel, self.placeLabel, self.DateLabel, self.contentLabel].forEach { label in self.inputStackView.setCustomSpacing(10, after: label) }
-        
-        [self.titleTextField, self.musicButton, self.placeButton, self.dateButton, self.contentTextView, self.doneButton].forEach { view in self.inputStackView.setCustomSpacing(8, after: view) }
+        [self.titleTextField, self.musicButton, self.placeButton,
+         self.dateButton, self.tagUserButton, self.contentTextView
+        ].forEach { view in self.inputStackView.setCustomSpacing(8, after: view) }
     }
     
     func bindUI() {
+        self.contentTextView.rx.didBeginEditing
+            .bind { [weak self] _ in
+                if self?.contentTextView.text == "내용을 남겨주세요" {
+                    self?.contentTextView.text = ""
+                    self?.contentTextView.textColor = .black
+                    self?.contentTextView.layer.borderColor = UIColor.themeColor300?.cgColor
+                }
+            }
+            .disposed(by: self.disposeBag)
+            
+        self.contentTextView.rx.didEndEditing
+            .bind { [weak self] _ in
+                if self?.contentTextView.text == "" || self?.contentTextView.text == nil {
+                    self?.contentTextView.text = "내용을 남겨주세요"
+                    self?.contentTextView.textColor = .themeGray100
+                    self?.contentTextView.layer.borderColor = UIColor.white.cgColor
+                }
+            }
+            .disposed(by: self.disposeBag)
         
+        self.titleTextField.rx.text.orEmpty
+            .bind { [weak self] text in
+                self?.titleTextCountLabel.text = "\(text.count)/20"
+            }
+            .disposed(by: self.disposeBag)
+        
+        self.contentTextView.rx.text.orEmpty
+            .bind { [weak self] text in
+                if text == "내용을 남겨주세요" {
+                    self?.contentTextCountLabel.text = "0/200"
+                } else {
+                    self?.contentTextCountLabel.text = "\(text.count)/200"
+                }
+            }
+            .disposed(by: self.disposeBag)
     }
     
     func setImage(at profileImageURL: URL?) {
@@ -172,61 +235,44 @@ private extension AddMeloPlaceView {
         self.imageView.kf.setImage(with: profileImageURL, options: [.processor(downsamplingProcessor)])
     }
     
-}
-
-class SelectButton: UIView {
-//    private let label = ThemeLabel(size: FrameResource.fontSize100, color: .themeGray400)
-    private lazy var label: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 20)
-        label.textColor = .gray
-        return label
-    }()
-    private lazy var icon: UIImageView = {
-        let imageView = UIImageView()
-        imageView.image = UIImage(systemName: "chevron.down")
-        imageView.tintColor = .gray
-
-        return imageView
-    }()
-
-//    var eventHandler: (() -> Void)?
-
-    convenience init(text: String) {
-        self.init()
-        label.text = text
-        backgroundColor = .blue
-
-        layer.borderColor = CGColor(gray: 10, alpha: 1)
-        addSubViews()
-        makeConstraints()
-    }
-
     
-    func setText(_ text: String) {
-        label.text = text
+}
+extension AddMeloPlaceView: UITextFieldDelegate, UITextViewDelegate {
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        textField.layer.borderColor = UIColor.themeColor300?.cgColor
+        return true
     }
-
-    private func addSubViews() {
-        [label, icon].forEach {
-            addSubview($0)
-        }
+    
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+        textField.layer.borderColor = UIColor.white.cgColor
+        return true
     }
-
-    private func makeConstraints() {
-        snp.makeConstraints {
-            $0.height.equalTo(40.0)
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        guard let text = textField.text else {return false}
+        let maxLength = 20
+        
+        // 최대 글자수 이상을 입력한 이후에는 중간에 다른 글자를 추가할 수 없게 작동
+        if text.count >= maxLength && range.length == 0 && range.location >= maxLength {
+            textField.endEditing(true)
+            self.titleTextCountLabel.textColor = .red
+            return false
         }
-
-        label.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.leading.equalToSuperview().offset(10)
+        self.titleTextCountLabel.textColor = .themeGray300
+        return true
+    }
+    
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        guard let text = textView.text else {return false}
+        let maxLength = 200
+        
+        // 최대 글자수 이상을 입력한 이후에는 중간에 다른 글자를 추가할 수 없게 작동
+        if text.count >= maxLength && range.length == 0 && range.location >= maxLength {
+            textView.endEditing(true)
+            self.contentTextCountLabel.textColor = .red
+            return false
         }
-
-        icon.snp.makeConstraints {
-            $0.centerY.equalToSuperview()
-            $0.trailing.equalToSuperview().offset(-10)
-            $0.leading.greaterThanOrEqualTo(label).offset(10)
-        }
+        self.contentTextCountLabel.textColor = .themeGray300
+        return true
     }
 }

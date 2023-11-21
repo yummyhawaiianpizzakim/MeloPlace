@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		C2AC055D2C60EABBC7484183 /* Pods_MeloPlace.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8DFD7791FAE279CDDBF779A /* Pods_MeloPlace.framework */; };
+		E90038972AF626D70075ABFE /* Browse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90038962AF626D70075ABFE /* Browse.swift */; };
+		E90038992AF627210075ABFE /* FetchBrowseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90038982AF627210075ABFE /* FetchBrowseUseCase.swift */; };
+		E900389C2AF796AB0075ABFE /* BrowseCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E900389B2AF796AB0075ABFE /* BrowseCollectionCell.swift */; };
+		E900389E2AFCB52E0075ABFE /* FollowingUserListCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E900389D2AFCB52E0075ABFE /* FollowingUserListCoordinator.swift */; };
+		E90038A02AFCB55A0075ABFE /* FollowingUserListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E900389F2AFCB55A0075ABFE /* FollowingUserListViewController.swift */; };
+		E90038A22AFCB56F0075ABFE /* FollowingUserListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90038A12AFCB56F0075ABFE /* FollowingUserListViewModel.swift */; };
+		E90038A42AFCB5900075ABFE /* FollowingUserListCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90038A32AFCB5900075ABFE /* FollowingUserListCollectionCell.swift */; };
+		E90038A62AFCCD580075ABFE /* FollowingUserListCollectionHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90038A52AFCCD580075ABFE /* FollowingUserListCollectionHeader.swift */; };
 		E90E64382A80F3F4002A71B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64372A80F3F4002A71B6 /* AppDelegate.swift */; };
 		E90E643A2A80F3F4002A71B6 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64392A80F3F4002A71B6 /* SceneDelegate.swift */; };
 		E90E643C2A80F3F4002A71B6 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E643B2A80F3F4002A71B6 /* ViewController.swift */; };
@@ -112,6 +120,53 @@
 		E90E65872AAC68B3002A71B6 /* PlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65862AAC68B3002A71B6 /* PlayerView.swift */; };
 		E90E65892AACA08C002A71B6 /* MeloPlaceDetailCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65882AACA08C002A71B6 /* MeloPlaceDetailCollectionCell.swift */; };
 		E90E658B2AADCB78002A71B6 /* MeloPlaceDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E658A2AADCB78002A71B6 /* MeloPlaceDetailView.swift */; };
+		E90E658E2AB32745002A71B6 /* MapRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E658D2AB32745002A71B6 /* MapRepository.swift */; };
+		E90E65902AB32884002A71B6 /* FetchMapMeloPlaceUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E658F2AB32884002A71B6 /* FetchMapMeloPlaceUseCase.swift */; };
+		E90E65932AB47958002A71B6 /* FetchCurrentLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65922AB47958002A71B6 /* FetchCurrentLocationUseCase.swift */; };
+		E90E65952AB83D1D002A71B6 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65942AB83D1D002A71B6 /* Region.swift */; };
+		E90E65972AB85AB0002A71B6 /* MainPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65962AB85AB0002A71B6 /* MainPlayerView.swift */; };
+		E91B7C522ADD3A6A00CDCE44 /* UpdateLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B7C512ADD3A6A00CDCE44 /* UpdateLocationUseCase.swift */; };
+		E9462F1B2ACFF76C00EAF032 /* SearchLocationNameUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F1A2ACFF76C00EAF032 /* SearchLocationNameUseCase.swift */; };
+		E9462F1D2ACFFEE600EAF032 /* ReverseGeoCodeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F1C2ACFFEE600EAF032 /* ReverseGeoCodeUseCase.swift */; };
+		E9462F202AD413AD00EAF032 /* SearchUserCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F1F2AD413AD00EAF032 /* SearchUserCoordinator.swift */; };
+		E9462F222AD413E800EAF032 /* SearchUserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F212AD413E800EAF032 /* SearchUserViewController.swift */; };
+		E9462F242AD4140D00EAF032 /* SearchUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F232AD4140D00EAF032 /* SearchUserViewModel.swift */; };
+		E9462F262AD4156300EAF032 /* SearchUserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F252AD4156300EAF032 /* SearchUserTableCell.swift */; };
+		E9462F282AD7F60F00EAF032 /* UpdateUserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F272AD7F60F00EAF032 /* UpdateUserUseCase.swift */; };
+		E98D61E32AC02E20003EC5CD /* CommentDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61E22AC02E20003EC5CD /* CommentDTO.swift */; };
+		E98D61E62AC03A63003EC5CD /* CommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61E52AC03A63003EC5CD /* CommentRepository.swift */; };
+		E98D61ED2AC084DF003EC5CD /* CommentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61EC2AC084DF003EC5CD /* CommentCoordinator.swift */; };
+		E98D61EF2AC08502003EC5CD /* CommentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61EE2AC08502003EC5CD /* CommentViewController.swift */; };
+		E98D61F12AC0850D003EC5CD /* CommentViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61F02AC0850D003EC5CD /* CommentViewModel.swift */; };
+		E98D61F32AC1756D003EC5CD /* CommentInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61F22AC1756D003EC5CD /* CommentInputView.swift */; };
+		E98D61F52AC18D8D003EC5CD /* CommentCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61F42AC18D8D003EC5CD /* CommentCollectionCell.swift */; };
+		E98D61F72AC19CE5003EC5CD /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61F62AC19CE5003EC5CD /* ProfileImageView.swift */; };
+		E98D61FA2AC2A63E003EC5CD /* PostCommentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61F92AC2A63E003EC5CD /* PostCommentUseCase.swift */; };
+		E98D61FC2AC2A736003EC5CD /* FetchCommentUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61FB2AC2A736003EC5CD /* FetchCommentUseCase.swift */; };
+		E98D61FE2ACAC370003EC5CD /* CreateMeloPlaceUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61FD2ACAC370003EC5CD /* CreateMeloPlaceUseCase.swift */; };
+		E98D62012ACC22DC003EC5CD /* ImageRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D62002ACC22DC003EC5CD /* ImageRepository.swift */; };
+		E98D62042ACC249C003EC5CD /* UploadImageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D62032ACC249C003EC5CD /* UploadImageUseCase.swift */; };
+		E98D62072ACC448D003EC5CD /* SpotifyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D62062ACC448D003EC5CD /* SpotifyRepository.swift */; };
+		E98D620A2ACE8A90003EC5CD /* SearchMusicUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D62092ACE8A90003EC5CD /* SearchMusicUseCase.swift */; };
+		E98D620C2ACE8BAA003EC5CD /* FetchSpotifyUserProfileUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D620B2ACE8BAA003EC5CD /* FetchSpotifyUserProfileUseCase.swift */; };
+		E98D620E2ACE8D45003EC5CD /* TryConnectSpotifyUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D620D2ACE8D45003EC5CD /* TryConnectSpotifyUseCase.swift */; };
+		E98D62102ACE8DB5003EC5CD /* PlayMusicUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D620F2ACE8DB5003EC5CD /* PlayMusicUseCase.swift */; };
+		E98D62122ACE9325003EC5CD /* UpdatePlayerStateUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D62112ACE9325003EC5CD /* UpdatePlayerStateUseCase.swift */; };
+		E98D62142ACEA57D003EC5CD /* ObservePlayerStateUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D62132ACEA57C003EC5CD /* ObservePlayerStateUseCase.swift */; };
+		E98D62172ACEB534003EC5CD /* CollectionViewDataSource+RX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D62162ACEB534003EC5CD /* CollectionViewDataSource+RX.swift */; };
+		E98D62192ACEB570003EC5CD /* TableViewDataSource+RX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D62182ACEB570003EC5CD /* TableViewDataSource+RX.swift */; };
+		E98D621C2ACEC898003EC5CD /* SignRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D621B2ACEC898003EC5CD /* SignRepository.swift */; };
+		E98D621F2ACECC3D003EC5CD /* SignInUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D621E2ACECC3D003EC5CD /* SignInUseCase.swift */; };
+		E99BA7AB2AEE460A0009697A /* SignUpUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99BA7AA2AEE460A0009697A /* SignUpUseCase.swift */; };
+		E99BA7B22AF132210009697A /* AnotherUserProfileCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99BA7B12AF132210009697A /* AnotherUserProfileCoordinator.swift */; };
+		E99BA7B42AF1323A0009697A /* AnotherUserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99BA7B32AF1323A0009697A /* AnotherUserProfileViewController.swift */; };
+		E99BA7B62AF1326D0009697A /* AnotherUserProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99BA7B52AF1326D0009697A /* AnotherUserProfileViewModel.swift */; };
+		E99BA7B82AF1576D0009697A /* AnotherUserProfileCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E99BA7B72AF1576D0009697A /* AnotherUserProfileCollectionCell.swift */; };
+		E9CBF2C42AEA58B6007181F1 /* SelectButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF2C32AEA58B6007181F1 /* SelectButtonView.swift */; };
+		E9CBF2C62AEA595D007181F1 /* SelectTagUserButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF2C52AEA595D007181F1 /* SelectTagUserButtonView.swift */; };
+		E9CBF2C82AEA6E32007181F1 /* TagedUserCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF2C72AEA6E32007181F1 /* TagedUserCollectionCell.swift */; };
+		E9ECC0D02B03C01D001543B8 /* CommentMoreReadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9ECC0CF2B03C01D001543B8 /* CommentMoreReadCell.swift */; };
+		E9ECC0D22B0B5CC8001543B8 /* PlaceHolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9ECC0D12B0B5CC8001543B8 /* PlaceHolderView.swift */; };
 		F5799F688EC91F2B993C799E /* Pods_MeloPlaceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74DFAEE2E1A6B5551A2A2277 /* Pods_MeloPlaceTests.framework */; };
 		FA5C3C5E8A3EA8B36C6D1BCA /* Pods_MeloPlace_MeloPlaceUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FED2394756A4B4F983B47D3 /* Pods_MeloPlace_MeloPlaceUITests.framework */; };
 /* End PBXBuildFile section */
@@ -142,6 +197,14 @@
 		B8DFD7791FAE279CDDBF779A /* Pods_MeloPlace.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MeloPlace.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE9541A331ED25298FC60811 /* Pods-MeloPlace-MeloPlaceUITests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeloPlace-MeloPlaceUITests.release.xcconfig"; path = "Target Support Files/Pods-MeloPlace-MeloPlaceUITests/Pods-MeloPlace-MeloPlaceUITests.release.xcconfig"; sourceTree = "<group>"; };
 		E82026C505C66F896984D8A9 /* Pods-MeloPlace.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeloPlace.debug.xcconfig"; path = "Target Support Files/Pods-MeloPlace/Pods-MeloPlace.debug.xcconfig"; sourceTree = "<group>"; };
+		E90038962AF626D70075ABFE /* Browse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Browse.swift; sourceTree = "<group>"; };
+		E90038982AF627210075ABFE /* FetchBrowseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchBrowseUseCase.swift; sourceTree = "<group>"; };
+		E900389B2AF796AB0075ABFE /* BrowseCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseCollectionCell.swift; sourceTree = "<group>"; };
+		E900389D2AFCB52E0075ABFE /* FollowingUserListCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingUserListCoordinator.swift; sourceTree = "<group>"; };
+		E900389F2AFCB55A0075ABFE /* FollowingUserListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingUserListViewController.swift; sourceTree = "<group>"; };
+		E90038A12AFCB56F0075ABFE /* FollowingUserListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingUserListViewModel.swift; sourceTree = "<group>"; };
+		E90038A32AFCB5900075ABFE /* FollowingUserListCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingUserListCollectionCell.swift; sourceTree = "<group>"; };
+		E90038A52AFCCD580075ABFE /* FollowingUserListCollectionHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FollowingUserListCollectionHeader.swift; sourceTree = "<group>"; };
 		E90E64342A80F3F4002A71B6 /* MeloPlace.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MeloPlace.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E90E64372A80F3F4002A71B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E90E64392A80F3F4002A71B6 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -250,6 +313,53 @@
 		E90E65862AAC68B3002A71B6 /* PlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerView.swift; sourceTree = "<group>"; };
 		E90E65882AACA08C002A71B6 /* MeloPlaceDetailCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloPlaceDetailCollectionCell.swift; sourceTree = "<group>"; };
 		E90E658A2AADCB78002A71B6 /* MeloPlaceDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloPlaceDetailView.swift; sourceTree = "<group>"; };
+		E90E658D2AB32745002A71B6 /* MapRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapRepository.swift; sourceTree = "<group>"; };
+		E90E658F2AB32884002A71B6 /* FetchMapMeloPlaceUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMapMeloPlaceUseCase.swift; sourceTree = "<group>"; };
+		E90E65922AB47958002A71B6 /* FetchCurrentLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCurrentLocationUseCase.swift; sourceTree = "<group>"; };
+		E90E65942AB83D1D002A71B6 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
+		E90E65962AB85AB0002A71B6 /* MainPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPlayerView.swift; sourceTree = "<group>"; };
+		E91B7C512ADD3A6A00CDCE44 /* UpdateLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLocationUseCase.swift; sourceTree = "<group>"; };
+		E9462F1A2ACFF76C00EAF032 /* SearchLocationNameUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationNameUseCase.swift; sourceTree = "<group>"; };
+		E9462F1C2ACFFEE600EAF032 /* ReverseGeoCodeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverseGeoCodeUseCase.swift; sourceTree = "<group>"; };
+		E9462F1F2AD413AD00EAF032 /* SearchUserCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserCoordinator.swift; sourceTree = "<group>"; };
+		E9462F212AD413E800EAF032 /* SearchUserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserViewController.swift; sourceTree = "<group>"; };
+		E9462F232AD4140D00EAF032 /* SearchUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserViewModel.swift; sourceTree = "<group>"; };
+		E9462F252AD4156300EAF032 /* SearchUserTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserTableCell.swift; sourceTree = "<group>"; };
+		E9462F272AD7F60F00EAF032 /* UpdateUserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserUseCase.swift; sourceTree = "<group>"; };
+		E98D61E22AC02E20003EC5CD /* CommentDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDTO.swift; sourceTree = "<group>"; };
+		E98D61E52AC03A63003EC5CD /* CommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepository.swift; sourceTree = "<group>"; };
+		E98D61EC2AC084DF003EC5CD /* CommentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCoordinator.swift; sourceTree = "<group>"; };
+		E98D61EE2AC08502003EC5CD /* CommentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewController.swift; sourceTree = "<group>"; };
+		E98D61F02AC0850D003EC5CD /* CommentViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentViewModel.swift; sourceTree = "<group>"; };
+		E98D61F22AC1756D003EC5CD /* CommentInputView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentInputView.swift; sourceTree = "<group>"; };
+		E98D61F42AC18D8D003EC5CD /* CommentCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCollectionCell.swift; sourceTree = "<group>"; };
+		E98D61F62AC19CE5003EC5CD /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
+		E98D61F92AC2A63E003EC5CD /* PostCommentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCommentUseCase.swift; sourceTree = "<group>"; };
+		E98D61FB2AC2A736003EC5CD /* FetchCommentUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCommentUseCase.swift; sourceTree = "<group>"; };
+		E98D61FD2ACAC370003EC5CD /* CreateMeloPlaceUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateMeloPlaceUseCase.swift; sourceTree = "<group>"; };
+		E98D62002ACC22DC003EC5CD /* ImageRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageRepository.swift; sourceTree = "<group>"; };
+		E98D62032ACC249C003EC5CD /* UploadImageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageUseCase.swift; sourceTree = "<group>"; };
+		E98D62062ACC448D003EC5CD /* SpotifyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyRepository.swift; sourceTree = "<group>"; };
+		E98D62092ACE8A90003EC5CD /* SearchMusicUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMusicUseCase.swift; sourceTree = "<group>"; };
+		E98D620B2ACE8BAA003EC5CD /* FetchSpotifyUserProfileUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchSpotifyUserProfileUseCase.swift; sourceTree = "<group>"; };
+		E98D620D2ACE8D45003EC5CD /* TryConnectSpotifyUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TryConnectSpotifyUseCase.swift; sourceTree = "<group>"; };
+		E98D620F2ACE8DB5003EC5CD /* PlayMusicUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayMusicUseCase.swift; sourceTree = "<group>"; };
+		E98D62112ACE9325003EC5CD /* UpdatePlayerStateUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdatePlayerStateUseCase.swift; sourceTree = "<group>"; };
+		E98D62132ACEA57C003EC5CD /* ObservePlayerStateUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ObservePlayerStateUseCase.swift; sourceTree = "<group>"; };
+		E98D62162ACEB534003EC5CD /* CollectionViewDataSource+RX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CollectionViewDataSource+RX.swift"; sourceTree = "<group>"; };
+		E98D62182ACEB570003EC5CD /* TableViewDataSource+RX.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TableViewDataSource+RX.swift"; sourceTree = "<group>"; };
+		E98D621B2ACEC898003EC5CD /* SignRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignRepository.swift; sourceTree = "<group>"; };
+		E98D621E2ACECC3D003EC5CD /* SignInUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignInUseCase.swift; sourceTree = "<group>"; };
+		E99BA7AA2AEE460A0009697A /* SignUpUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpUseCase.swift; sourceTree = "<group>"; };
+		E99BA7B12AF132210009697A /* AnotherUserProfileCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherUserProfileCoordinator.swift; sourceTree = "<group>"; };
+		E99BA7B32AF1323A0009697A /* AnotherUserProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherUserProfileViewController.swift; sourceTree = "<group>"; };
+		E99BA7B52AF1326D0009697A /* AnotherUserProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherUserProfileViewModel.swift; sourceTree = "<group>"; };
+		E99BA7B72AF1576D0009697A /* AnotherUserProfileCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnotherUserProfileCollectionCell.swift; sourceTree = "<group>"; };
+		E9CBF2C32AEA58B6007181F1 /* SelectButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectButtonView.swift; sourceTree = "<group>"; };
+		E9CBF2C52AEA595D007181F1 /* SelectTagUserButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectTagUserButtonView.swift; sourceTree = "<group>"; };
+		E9CBF2C72AEA6E32007181F1 /* TagedUserCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagedUserCollectionCell.swift; sourceTree = "<group>"; };
+		E9ECC0CF2B03C01D001543B8 /* CommentMoreReadCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentMoreReadCell.swift; sourceTree = "<group>"; };
+		E9ECC0D12B0B5CC8001543B8 /* PlaceHolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceHolderView.swift; sourceTree = "<group>"; };
 		F48083693CF0EB1227383675 /* Pods-MeloPlace.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeloPlace.release.xcconfig"; path = "Target Support Files/Pods-MeloPlace/Pods-MeloPlace.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -303,6 +413,22 @@
 				3668B8E7D54CB5421DB52AB2 /* Pods-MeloPlaceTests.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		E90038952AF626310075ABFE /* Browse */ = {
+			isa = PBXGroup;
+			children = (
+				E90038982AF627210075ABFE /* FetchBrowseUseCase.swift */,
+			);
+			path = Browse;
+			sourceTree = "<group>";
+		};
+		E900389A2AF796890075ABFE /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E900389B2AF796AB0075ABFE /* BrowseCollectionCell.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		E90E642B2A80F3F4002A71B6 = {
@@ -379,6 +505,8 @@
 		E90E646C2A80F76C002A71B6 /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				E99BA7AC2AF1315B0009697A /* AnotherUserProfile */,
+				E98D61E72AC084A2003EC5CD /* Comment */,
 				E90E65552AA5C042002A71B6 /* Search */,
 				E90E65452AA09673002A71B6 /* MapMeloPlaceList */,
 				E90E65372A987651002A71B6 /* MeloPlaceDetail */,
@@ -428,6 +556,7 @@
 		E90E64702A80F8FF002A71B6 /* Browse */ = {
 			isa = PBXGroup;
 			children = (
+				E900389A2AF796890075ABFE /* View */,
 				E90E647C2A80F94B002A71B6 /* ViewModel */,
 				E90E647B2A80F944002A71B6 /* ViewController */,
 				E90E647A2A80F93F002A71B6 /* Coordinator */,
@@ -463,6 +592,7 @@
 			isa = PBXGroup;
 			children = (
 				E90E648B2A80FA8C002A71B6 /* UserProfileCoordinator.swift */,
+				E900389D2AFCB52E0075ABFE /* FollowingUserListCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -471,6 +601,7 @@
 			isa = PBXGroup;
 			children = (
 				E90E648D2A80FA96002A71B6 /* UserProfileViewController.swift */,
+				E900389F2AFCB55A0075ABFE /* FollowingUserListViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -479,6 +610,7 @@
 			isa = PBXGroup;
 			children = (
 				E90E648F2A80FAA0002A71B6 /* UserProfileViewModel.swift */,
+				E90038A12AFCB56F0075ABFE /* FollowingUserListViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -553,6 +685,7 @@
 			children = (
 				E90E649E2A810B37002A71B6 /* MainCollectionViewFlowLayout.swift */,
 				E90E64A02A810D3E002A71B6 /* MainCell.swift */,
+				E90E65962AB85AB0002A71B6 /* MainPlayerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -577,6 +710,8 @@
 				E90E656B2AAAF1CC002A71B6 /* UserProfileSection.swift */,
 				E90E656D2AAAF259002A71B6 /* UserProfileLayout.swift */,
 				E90E65712AAAF8AA002A71B6 /* User.swift */,
+				E90E65942AB83D1D002A71B6 /* Region.swift */,
+				E90038962AF626D70075ABFE /* Browse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -620,6 +755,9 @@
 			isa = PBXGroup;
 			children = (
 				E90E64B12A824BDF002A71B6 /* AddMeloPlaceView.swift */,
+				E9CBF2C32AEA58B6007181F1 /* SelectButtonView.swift */,
+				E9CBF2C52AEA595D007181F1 /* SelectTagUserButtonView.swift */,
+				E9CBF2C72AEA6E32007181F1 /* TagedUserCollectionCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -627,6 +765,7 @@
 		E90E64B32A84CABE002A71B6 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				E98D62152ACEB4F9003EC5CD /* Extension */,
 				E90E64B42A84CAD5002A71B6 /* Extension.swift */,
 				E90E64E12A87864C002A71B6 /* Array+.swift */,
 				E90E64E32A878797002A71B6 /* CLLocationManager+RX.swift */,
@@ -643,7 +782,6 @@
 			children = (
 				E90E64BC2A84F37E002A71B6 /* Spotify.swift */,
 				E90E64BE2A84F578002A71B6 /* SpotifyViewController.swift */,
-				E90E64DB2A87806D002A71B6 /* LocationManager.swift */,
 				E90E65232A8DF7B3002A71B6 /* FireBaseNetworkService.swift */,
 			);
 			path = InfraStructure;
@@ -720,6 +858,8 @@
 				E90E64D02A8773DF002A71B6 /* MapView.swift */,
 				E90E65412A9897D6002A71B6 /* AnnotationView.swift */,
 				E90E65522AA4B90B002A71B6 /* SearchBarView.swift */,
+				E98D61F62AC19CE5003EC5CD /* ProfileImageView.swift */,
+				E9ECC0D12B0B5CC8001543B8 /* PlaceHolderView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -777,6 +917,7 @@
 		E90E64F82A8B5562002A71B6 /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				E9462F1E2AD3EBF900EAF032 /* Location */,
 				E90E64FD2A8B74D0002A71B6 /* DTO */,
 				E90E64F92A8B556D002A71B6 /* Spotify */,
 			);
@@ -810,6 +951,7 @@
 				E90E65252A8DF975002A71B6 /* DTOProtocol.swift */,
 				E90E65272A8DF9F4002A71B6 /* UserDTO.swift */,
 				E90E65332A94A9B6002A71B6 /* MeloPlaceDTO.swift */,
+				E98D61E22AC02E20003EC5CD /* CommentDTO.swift */,
 			);
 			path = DTO;
 			sourceTree = "<group>";
@@ -1041,6 +1183,7 @@
 			isa = PBXGroup;
 			children = (
 				E90E65592AA5C0F5002A71B6 /* SearchCoordintor.swift */,
+				E9462F1F2AD413AD00EAF032 /* SearchUserCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -1049,6 +1192,7 @@
 			isa = PBXGroup;
 			children = (
 				E90E655B2AA5C11A002A71B6 /* SearchViewController.swift */,
+				E9462F212AD413E800EAF032 /* SearchUserViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1057,6 +1201,7 @@
 			isa = PBXGroup;
 			children = (
 				E90E655D2AA5C125002A71B6 /* SearchViewModel.swift */,
+				E9462F232AD4140D00EAF032 /* SearchUserViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1066,6 +1211,7 @@
 			children = (
 				E90E65622AA5D20E002A71B6 /* SearchView.swift */,
 				E90E65642AA5D70C002A71B6 /* SearchTableCell.swift */,
+				E9462F252AD4156300EAF032 /* SearchUserTableCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1077,6 +1223,8 @@
 				E90E656F2AAAF3DE002A71B6 /* UserContentCollectionCell.swift */,
 				E90E65812AAB127E002A71B6 /* FilterCollectionView.swift */,
 				E90E65832AAB12AD002A71B6 /* FilterCollectionCell.swift */,
+				E90038A32AFCB5900075ABFE /* FollowingUserListCollectionCell.swift */,
+				E90038A52AFCCD580075ABFE /* FollowingUserListCollectionHeader.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1084,6 +1232,12 @@
 		E90E65732AAB017F002A71B6 /* UseCase */ = {
 			isa = PBXGroup;
 			children = (
+				E90038952AF626310075ABFE /* Browse */,
+				E98D621D2ACECC2F003EC5CD /* Sign */,
+				E98D62082ACE89E5003EC5CD /* Spotify */,
+				E98D62022ACC2483003EC5CD /* Image */,
+				E98D61F82AC2A5C1003EC5CD /* Comment */,
+				E90E65912AB4793E002A71B6 /* Map */,
 				E90E65752AAB01A3002A71B6 /* MeloPlace */,
 				E90E65742AAB018D002A71B6 /* User */,
 			);
@@ -1094,6 +1248,7 @@
 			isa = PBXGroup;
 			children = (
 				E90E65762AAB01CB002A71B6 /* FetchUserUseCase.swift */,
+				E9462F272AD7F60F00EAF032 /* UpdateUserUseCase.swift */,
 			);
 			path = User;
 			sourceTree = "<group>";
@@ -1102,6 +1257,8 @@
 			isa = PBXGroup;
 			children = (
 				E90E657F2AAB0B89002A71B6 /* FetchMeloPlaceUseCase.swift */,
+				E90E658F2AB32884002A71B6 /* FetchMapMeloPlaceUseCase.swift */,
+				E98D61FD2ACAC370003EC5CD /* CreateMeloPlaceUseCase.swift */,
 			);
 			path = MeloPlace;
 			sourceTree = "<group>";
@@ -1109,6 +1266,11 @@
 		E90E65782AAB0377002A71B6 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
+				E98D621A2ACEC881003EC5CD /* Sign */,
+				E98D62052ACC446D003EC5CD /* Spotify */,
+				E98D61FF2ACC22C6003EC5CD /* Image */,
+				E98D61E42AC03A51003EC5CD /* Comment */,
+				E90E658C2AB32731002A71B6 /* Map */,
 				E90E657A2AAB03D6002A71B6 /* MeloPlace */,
 				E90E65792AAB03CE002A71B6 /* User */,
 			);
@@ -1137,6 +1299,201 @@
 				E90E65862AAC68B3002A71B6 /* PlayerView.swift */,
 				E90E65882AACA08C002A71B6 /* MeloPlaceDetailCollectionCell.swift */,
 				E90E658A2AADCB78002A71B6 /* MeloPlaceDetailView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E90E658C2AB32731002A71B6 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				E90E658D2AB32745002A71B6 /* MapRepository.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		E90E65912AB4793E002A71B6 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				E90E65922AB47958002A71B6 /* FetchCurrentLocationUseCase.swift */,
+				E9462F1A2ACFF76C00EAF032 /* SearchLocationNameUseCase.swift */,
+				E9462F1C2ACFFEE600EAF032 /* ReverseGeoCodeUseCase.swift */,
+				E91B7C512ADD3A6A00CDCE44 /* UpdateLocationUseCase.swift */,
+			);
+			path = Map;
+			sourceTree = "<group>";
+		};
+		E9462F1E2AD3EBF900EAF032 /* Location */ = {
+			isa = PBXGroup;
+			children = (
+				E90E64DB2A87806D002A71B6 /* LocationManager.swift */,
+			);
+			path = Location;
+			sourceTree = "<group>";
+		};
+		E98D61E42AC03A51003EC5CD /* Comment */ = {
+			isa = PBXGroup;
+			children = (
+				E98D61E52AC03A63003EC5CD /* CommentRepository.swift */,
+			);
+			path = Comment;
+			sourceTree = "<group>";
+		};
+		E98D61E72AC084A2003EC5CD /* Comment */ = {
+			isa = PBXGroup;
+			children = (
+				E98D61EB2AC084CD003EC5CD /* View */,
+				E98D61EA2AC084C8003EC5CD /* ViewModel */,
+				E98D61E92AC084C1003EC5CD /* ViewController */,
+				E98D61E82AC084B6003EC5CD /* Coordinator */,
+			);
+			path = Comment;
+			sourceTree = "<group>";
+		};
+		E98D61E82AC084B6003EC5CD /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				E98D61EC2AC084DF003EC5CD /* CommentCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		E98D61E92AC084C1003EC5CD /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E98D61EE2AC08502003EC5CD /* CommentViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		E98D61EA2AC084C8003EC5CD /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E98D61F02AC0850D003EC5CD /* CommentViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E98D61EB2AC084CD003EC5CD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E98D61F22AC1756D003EC5CD /* CommentInputView.swift */,
+				E98D61F42AC18D8D003EC5CD /* CommentCollectionCell.swift */,
+				E9ECC0CF2B03C01D001543B8 /* CommentMoreReadCell.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		E98D61F82AC2A5C1003EC5CD /* Comment */ = {
+			isa = PBXGroup;
+			children = (
+				E98D61F92AC2A63E003EC5CD /* PostCommentUseCase.swift */,
+				E98D61FB2AC2A736003EC5CD /* FetchCommentUseCase.swift */,
+			);
+			path = Comment;
+			sourceTree = "<group>";
+		};
+		E98D61FF2ACC22C6003EC5CD /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				E98D62002ACC22DC003EC5CD /* ImageRepository.swift */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
+		E98D62022ACC2483003EC5CD /* Image */ = {
+			isa = PBXGroup;
+			children = (
+				E98D62032ACC249C003EC5CD /* UploadImageUseCase.swift */,
+			);
+			path = Image;
+			sourceTree = "<group>";
+		};
+		E98D62052ACC446D003EC5CD /* Spotify */ = {
+			isa = PBXGroup;
+			children = (
+				E98D62062ACC448D003EC5CD /* SpotifyRepository.swift */,
+			);
+			path = Spotify;
+			sourceTree = "<group>";
+		};
+		E98D62082ACE89E5003EC5CD /* Spotify */ = {
+			isa = PBXGroup;
+			children = (
+				E98D62092ACE8A90003EC5CD /* SearchMusicUseCase.swift */,
+				E98D620B2ACE8BAA003EC5CD /* FetchSpotifyUserProfileUseCase.swift */,
+				E98D620D2ACE8D45003EC5CD /* TryConnectSpotifyUseCase.swift */,
+				E98D620F2ACE8DB5003EC5CD /* PlayMusicUseCase.swift */,
+				E98D62112ACE9325003EC5CD /* UpdatePlayerStateUseCase.swift */,
+				E98D62132ACEA57C003EC5CD /* ObservePlayerStateUseCase.swift */,
+			);
+			path = Spotify;
+			sourceTree = "<group>";
+		};
+		E98D62152ACEB4F9003EC5CD /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				E98D62162ACEB534003EC5CD /* CollectionViewDataSource+RX.swift */,
+				E98D62182ACEB570003EC5CD /* TableViewDataSource+RX.swift */,
+			);
+			path = Extension;
+			sourceTree = "<group>";
+		};
+		E98D621A2ACEC881003EC5CD /* Sign */ = {
+			isa = PBXGroup;
+			children = (
+				E98D621B2ACEC898003EC5CD /* SignRepository.swift */,
+			);
+			path = Sign;
+			sourceTree = "<group>";
+		};
+		E98D621D2ACECC2F003EC5CD /* Sign */ = {
+			isa = PBXGroup;
+			children = (
+				E98D621E2ACECC3D003EC5CD /* SignInUseCase.swift */,
+				E99BA7AA2AEE460A0009697A /* SignUpUseCase.swift */,
+			);
+			path = Sign;
+			sourceTree = "<group>";
+		};
+		E99BA7AC2AF1315B0009697A /* AnotherUserProfile */ = {
+			isa = PBXGroup;
+			children = (
+				E99BA7B02AF131AC0009697A /* View */,
+				E99BA7AF2AF131A60009697A /* ViewModel */,
+				E99BA7AE2AF131A00009697A /* ViewController */,
+				E99BA7AD2AF131960009697A /* Coordinator */,
+			);
+			path = AnotherUserProfile;
+			sourceTree = "<group>";
+		};
+		E99BA7AD2AF131960009697A /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				E99BA7B12AF132210009697A /* AnotherUserProfileCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		E99BA7AE2AF131A00009697A /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				E99BA7B32AF1323A0009697A /* AnotherUserProfileViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		E99BA7AF2AF131A60009697A /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				E99BA7B52AF1326D0009697A /* AnotherUserProfileViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		E99BA7B02AF131AC0009697A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				E99BA7B72AF1576D0009697A /* AnotherUserProfileCollectionCell.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1389,11 +1746,16 @@
 			buildActionMask = 2147483647;
 			files = (
 				E90E653E2A9876B2002A71B6 /* MeloPlaceDetailViewController.swift in Sources */,
+				E90E65972AB85AB0002A71B6 /* MainPlayerView.swift in Sources */,
+				E9ECC0D22B0B5CC8001543B8 /* PlaceHolderView.swift in Sources */,
 				E90E655C2AA5C11A002A71B6 /* SearchViewController.swift in Sources */,
+				E98D61E32AC02E20003EC5CD /* CommentDTO.swift in Sources */,
 				E90E64822A80F9BE002A71B6 /* MainViewController.swift in Sources */,
+				E98D61FA2AC2A63E003EC5CD /* PostCommentUseCase.swift in Sources */,
 				E90E655A2AA5C0F5002A71B6 /* SearchCoordintor.swift in Sources */,
 				E90E64882A80F9EB002A71B6 /* TabBarCoordinator.swift in Sources */,
 				E90E64BD2A84F37E002A71B6 /* Spotify.swift in Sources */,
+				E99BA7B82AF1576D0009697A /* AnotherUserProfileCollectionCell.swift in Sources */,
 				E90E64AE2A823812002A71B6 /* AddMeloPlaceViewController.swift in Sources */,
 				E90E64A52A820FB5002A71B6 /* MeloPlace.swift in Sources */,
 				E90E65722AAAF8AA002A71B6 /* User.swift in Sources */,
@@ -1401,9 +1763,16 @@
 				E90E65342A94A9B6002A71B6 /* MeloPlaceDTO.swift in Sources */,
 				E90E65872AAC68B3002A71B6 /* PlayerView.swift in Sources */,
 				E90E65772AAB01CB002A71B6 /* FetchUserUseCase.swift in Sources */,
+				E9CBF2C42AEA58B6007181F1 /* SelectButtonView.swift in Sources */,
 				E90E64982A80FAD9002A71B6 /* BrowseCoordinator.swift in Sources */,
 				E90E65512AA09D10002A71B6 /* MapMeloPlaceListCollectionCell.swift in Sources */,
+				E98D61E62AC03A63003EC5CD /* CommentRepository.swift in Sources */,
+				E98D61FC2AC2A736003EC5CD /* FetchCommentUseCase.swift in Sources */,
 				E90E65842AAB12AD002A71B6 /* FilterCollectionCell.swift in Sources */,
+				E90038972AF626D70075ABFE /* Browse.swift in Sources */,
+				E9462F242AD4140D00EAF032 /* SearchUserViewModel.swift in Sources */,
+				E90038992AF627210075ABFE /* FetchBrowseUseCase.swift in Sources */,
+				E90E65902AB32884002A71B6 /* FetchMapMeloPlaceUseCase.swift in Sources */,
 				E90E648A2A80F9FC002A71B6 /* AppCoordinator.swift in Sources */,
 				E90E64902A80FAA0002A71B6 /* UserProfileViewModel.swift in Sources */,
 				E90E643C2A80F3F4002A71B6 /* ViewController.swift in Sources */,
@@ -1412,72 +1781,115 @@
 				E90E64F02A8B4734002A71B6 /* MusicListViewController.swift in Sources */,
 				E90E655E2AA5C125002A71B6 /* SearchViewModel.swift in Sources */,
 				E90E65322A8E22E4002A71B6 /* SignUpViewModel.swift in Sources */,
+				E98D61F52AC18D8D003EC5CD /* CommentCollectionCell.swift in Sources */,
+				E98D62072ACC448D003EC5CD /* SpotifyRepository.swift in Sources */,
 				E90E657C2AAB03EC002A71B6 /* UserRepository.swift in Sources */,
+				E98D62192ACEB570003EC5CD /* TableViewDataSource+RX.swift in Sources */,
 				E90E649A2A80FAE4002A71B6 /* BrowseViewController.swift in Sources */,
+				E98D61F12AC0850D003EC5CD /* CommentViewModel.swift in Sources */,
 				E90E657E2AAB09F0002A71B6 /* MeloPlaceRepository.swift in Sources */,
+				E9ECC0D02B03C01D001543B8 /* CommentMoreReadCell.swift in Sources */,
 				E90E656A2AAAEFBC002A71B6 /* UserProfileCollectionCell.swift in Sources */,
+				E90038A22AFCB56F0075ABFE /* FollowingUserListViewModel.swift in Sources */,
 				E90E65822AAB127E002A71B6 /* FilterCollectionView.swift in Sources */,
+				E98D620C2ACE8BAA003EC5CD /* FetchSpotifyUserProfileUseCase.swift in Sources */,
 				E90E64B22A824BDF002A71B6 /* AddMeloPlaceView.swift in Sources */,
 				E90E654C2AA09766002A71B6 /* MapMeloPlaceListViewController.swift in Sources */,
+				E98D61EF2AC08502003EC5CD /* CommentViewController.swift in Sources */,
+				E98D62042ACC249C003EC5CD /* UploadImageUseCase.swift in Sources */,
 				E90E64B52A84CAD5002A71B6 /* Extension.swift in Sources */,
+				E90038A62AFCCD580075ABFE /* FollowingUserListCollectionHeader.swift in Sources */,
+				E98D61F72AC19CE5003EC5CD /* ProfileImageView.swift in Sources */,
 				E90E65672AA996DF002A71B6 /* SwiftUIPreView.swift in Sources */,
 				E90E653C2A9876A4002A71B6 /* MeloPlaceDetailCoordinator.swift in Sources */,
 				E90E65302A8E22D7002A71B6 /* SignUpViewController.swift in Sources */,
 				E90E652E2A8E22C9002A71B6 /* SignUpCoordinator.swift in Sources */,
+				E98D62172ACEB534003EC5CD /* CollectionViewDataSource+RX.swift in Sources */,
 				E90E64E02A878228002A71B6 /* Address.swift in Sources */,
+				E99BA7AB2AEE460A0009697A /* SignUpUseCase.swift in Sources */,
 				E90E64F22A8B47D0002A71B6 /* MusicListViewModel.swift in Sources */,
+				E98D61ED2AC084DF003EC5CD /* CommentCoordinator.swift in Sources */,
 				E90E65282A8DF9F4002A71B6 /* UserDTO.swift in Sources */,
+				E9462F222AD413E800EAF032 /* SearchUserViewController.swift in Sources */,
 				E90E656C2AAAF1CC002A71B6 /* UserProfileSection.swift in Sources */,
 				E90E64E22A87864C002A71B6 /* Array+.swift in Sources */,
 				E90E65602AA5CF3A002A71B6 /* Space.swift in Sources */,
+				E98D620A2ACE8A90003EC5CD /* SearchMusicUseCase.swift in Sources */,
 				E90E64FB2A8B5587002A71B6 /* SpotifyService.swift in Sources */,
+				E90038A02AFCB55A0075ABFE /* FollowingUserListViewController.swift in Sources */,
 				E90E647E2A80F99C002A71B6 /* MainCoordinator.swift in Sources */,
+				E9CBF2C82AEA6E32007181F1 /* TagedUserCollectionCell.swift in Sources */,
 				E90E64FF2A8B74D6002A71B6 /* SpotifySearchDTO.swift in Sources */,
+				E98D62102ACE8DB5003EC5CD /* PlayMusicUseCase.swift in Sources */,
 				E90E64F42A8B4FE6002A71B6 /* MusicListCollectionCell.swift in Sources */,
 				E90E65802AAB0B89002A71B6 /* FetchMeloPlaceUseCase.swift in Sources */,
 				E90E64C92A876AD7002A71B6 /* MeloLocationViewController.swift in Sources */,
 				E90E64A12A810D3E002A71B6 /* MainCell.swift in Sources */,
+				E9CBF2C62AEA595D007181F1 /* SelectTagUserButtonView.swift in Sources */,
 				E90E65242A8DF7B3002A71B6 /* FireBaseNetworkService.swift in Sources */,
 				E90E648C2A80FA8C002A71B6 /* UserProfileCoordinator.swift in Sources */,
+				E91B7C522ADD3A6A00CDCE44 /* UpdateLocationUseCase.swift in Sources */,
 				E90E64F62A8B51F5002A71B6 /* Music.swift in Sources */,
 				E90E658B2AADCB78002A71B6 /* MeloPlaceDetailView.swift in Sources */,
 				E90E65102A8CB89C002A71B6 /* SelectDateViewController.swift in Sources */,
+				E98D61F32AC1756D003EC5CD /* CommentInputView.swift in Sources */,
+				E99BA7B42AF1323A0009697A /* AnotherUserProfileViewController.swift in Sources */,
+				E9462F202AD413AD00EAF032 /* SearchUserCoordinator.swift in Sources */,
 				E90E651E2A8DEE65002A71B6 /* SignInViewController.swift in Sources */,
 				E90E64CD2A876E6B002A71B6 /* MeloLocationCoordinator.swift in Sources */,
+				E99BA7B22AF132210009697A /* AnotherUserProfileCoordinator.swift in Sources */,
 				E90E651C2A8DEE23002A71B6 /* SignInCoordinator.swift in Sources */,
 				E90E64D32A877901002A71B6 /* ThemeButton.swift in Sources */,
 				E90E64E42A878797002A71B6 /* CLLocationManager+RX.swift in Sources */,
 				E90E649C2A80FAED002A71B6 /* BrowseViewModel.swift in Sources */,
 				E90E64962A80FABB002A71B6 /* MapViewModel.swift in Sources */,
 				E90E65702AAAF3DE002A71B6 /* UserContentCollectionCell.swift in Sources */,
+				E99BA7B62AF1326D0009697A /* AnotherUserProfileViewModel.swift in Sources */,
+				E90E65952AB83D1D002A71B6 /* Region.swift in Sources */,
 				E90E64AC2A8237AD002A71B6 /* AddMeloPlaceCoordinator.swift in Sources */,
 				E90E64EE2A8B4688002A71B6 /* MusicListCoordinator.swift in Sources */,
 				E90E64BF2A84F578002A71B6 /* SpotifyViewController.swift in Sources */,
 				E90E64382A80F3F4002A71B6 /* AppDelegate.swift in Sources */,
 				E90E654E2AA0976E002A71B6 /* MapMeloPlaceListViewModel.swift in Sources */,
+				E98D62142ACEA57D003EC5CD /* ObservePlayerStateUseCase.swift in Sources */,
+				E98D621F2ACECC3D003EC5CD /* SignInUseCase.swift in Sources */,
+				E9462F1B2ACFF76C00EAF032 /* SearchLocationNameUseCase.swift in Sources */,
+				E98D621C2ACEC898003EC5CD /* SignRepository.swift in Sources */,
 				E90E65142A8DDF79002A71B6 /* SpotifyUserProfileDTO.swift in Sources */,
+				E90E658E2AB32745002A71B6 /* MapRepository.swift in Sources */,
 				E90E654A2AA0975A002A71B6 /* MapMeloPlaceListCoordinator.swift in Sources */,
+				E90E65932AB47958002A71B6 /* FetchCurrentLocationUseCase.swift in Sources */,
+				E98D62012ACC22DC003EC5CD /* ImageRepository.swift in Sources */,
 				E90E646B2A80F710002A71B6 /* DIContainer.swift in Sources */,
 				E90E65202A8DEE6F002A71B6 /* SignInViewModel.swift in Sources */,
+				E98D61FE2ACAC370003EC5CD /* CreateMeloPlaceUseCase.swift in Sources */,
 				E90E65262A8DF975002A71B6 /* DTOProtocol.swift in Sources */,
 				E90E65532AA4B90B002A71B6 /* SearchBarView.swift in Sources */,
 				E90E65632AA5D20E002A71B6 /* SearchView.swift in Sources */,
+				E9462F282AD7F60F00EAF032 /* UpdateUserUseCase.swift in Sources */,
 				E90E64922A80FAA9002A71B6 /* MapCoordinator.swift in Sources */,
 				E90E64692A80F6F8002A71B6 /* CoordinatorProtocol.swift in Sources */,
 				E90E643A2A80F3F4002A71B6 /* SceneDelegate.swift in Sources */,
 				E90E64D82A877D09002A71B6 /* ThemeFont.swift in Sources */,
+				E900389E2AFCB52E0075ABFE /* FollowingUserListCoordinator.swift in Sources */,
 				E90E64DE2A8781D3002A71B6 /* GeoPoint.swift in Sources */,
 				E90E64D62A8779AC002A71B6 /* ThemeColor.swift in Sources */,
 				E90E65442A989E87002A71B6 /* UIImage+.swift in Sources */,
 				E90E64842A80F9C8002A71B6 /* MainViewModel.swift in Sources */,
 				E90E65422A9897D6002A71B6 /* AnnotationView.swift in Sources */,
 				E90E64CF2A876ED3002A71B6 /* MeloLocationView.swift in Sources */,
+				E9462F1D2ACFFEE600EAF032 /* ReverseGeoCodeUseCase.swift in Sources */,
+				E9462F262AD4156300EAF032 /* SearchUserTableCell.swift in Sources */,
 				E90E649F2A810B37002A71B6 /* MainCollectionViewFlowLayout.swift in Sources */,
+				E98D62122ACE9325003EC5CD /* UpdatePlayerStateUseCase.swift in Sources */,
+				E900389C2AF796AB0075ABFE /* BrowseCollectionCell.swift in Sources */,
 				E90E64942A80FAB3002A71B6 /* MapViewController.swift in Sources */,
 				E90E65402A9876BB002A71B6 /* MeloPlaceDetailViewModel.swift in Sources */,
 				E90E65652AA5D70C002A71B6 /* SearchTableCell.swift in Sources */,
 				E90E648E2A80FA96002A71B6 /* UserProfileViewController.swift in Sources */,
 				E90E65892AACA08C002A71B6 /* MeloPlaceDetailCollectionCell.swift in Sources */,
+				E90038A42AFCB5900075ABFE /* FollowingUserListCollectionCell.swift in Sources */,
+				E98D620E2ACE8D45003EC5CD /* TryConnectSpotifyUseCase.swift in Sources */,
 				E90E656E2AAAF259002A71B6 /* UserProfileLayout.swift in Sources */,
 				E90E65362A9665B1002A71B6 /* ViewController+Rx.swift in Sources */,
 				E90E64E62A8787D0002A71B6 /* MKMapView+RX.swift in Sources */,

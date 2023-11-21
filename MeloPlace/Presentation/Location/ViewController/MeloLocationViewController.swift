@@ -16,7 +16,6 @@ final class MeloLocationViewController: UIViewController {
     var viewModel: MeloLocationViewModel?
 
     let mainView = MeloLocateView()
-    let locationManager = LocationManager.shared.core
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
@@ -37,116 +36,96 @@ final class MeloLocationViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.view.backgroundColor = .white
         configure()
-        goToCurrentLocation()
         bindViewModel()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        locationManager.stopUpdatingLocation()
-    }
-
     func bindViewModel() {
+        self.mainView.locateMap.rx.regionDidChangeAnimated
+            .subscribe(onNext: { [weak self] mapView in
+                let coordinate = mapView.centerCoordinate
+                let geoPoint = GeoPoint(latitude: coordinate.latitude, longitude: coordinate.longitude)
+                
+                self?.viewModel?.geoPoint.accept(geoPoint)
+            })
+            .disposed(by: disposeBag)
         
-        let input = MeloLocationViewModel
-            .Input(done: self.mainView.doneButton.rx.tap.asObservable(),
-                   cancel: self.mainView.cancelButton.rx.tap.asObservable()
-            )
+        let input = MeloLocationViewModel.Input(
+            viewWillAppear: self.rx.viewWillAppear
+                .map({ _ in })
+                .asObservable(),
+            viewWillDisappear: self.rx.viewWillDisappear
+                .map({ _ in })
+                .asObservable(),
+            done: self.mainView.doneButton.rx.tap.asObservable(),
+            cancel: self.mainView.cancelButton.rx.tap.asObservable()
+        )
         
         let output = self.viewModel?.transform(input: input)
-        // Drag
-//        viewModel?.input.isDragging
-//            .withUnretained(self)
-//            .bind { owner, isDragging in
-//                if isDragging {
-//                    owner.mainView.cursor.image = .locateDisabled
-//                } else {
-//                    owner.mainView.cursor.image = .locate
-//                }
-//            }.disposed(by: disposeBag)
         
         output?.isDragging
             .asDriver(onErrorJustReturn: false)
             .drive(with: self,
                    onNext: { owner, isDragging in
                 if isDragging {
-                    owner.mainView.cursor.image = UIImage(systemName: "x.circle")
+                    owner.mainView.cursor.image = UIImage(systemName: "mappin.and.ellipse")
                 } else {
-                    owner.mainView.cursor.image = UIImage(systemName: "o.circle")
+                    owner.mainView.cursor.image = UIImage(systemName: "mappin.and.ellipse")
                 }
             })
             .disposed(by: self.disposeBag)
-
-        output?.doneButtonState
-            .withUnretained(self)
-            .subscribe(onNext: { owner, state in
-                owner.mainView.doneButton.isEnabled = state
-            })
-            .disposed(by: disposeBag)
-
-        // 주소
-        output?.fullAddress
-            .subscribe(onNext: { [weak self] in
-                self?.mainView.locationLabel.text = $0 ?? LocationError.invalidGeopoint.errorDescription
-            })
-            .disposed(by: disposeBag)
         
         output?.isCenceled
-            .asDriver(onErrorJustReturn: false)
             .drive(with: self, onNext: { owner, isCenceled in
                 owner.dismiss(animated: true)
             })
             .disposed(by: self.disposeBag)
         
         output?.isDone
-            .asDriver(onErrorJustReturn: false)
             .drive(with: self, onNext: { owner, isCenceled in
                 owner.dismiss(animated: true)
             })
             .disposed(by: self.disposeBag)
 
-        self.mainView.locateMap.rx.regionDidChangeAnimated
-            .subscribe(onNext: { [weak self] mapView in
-                let coordinate = mapView.centerCoordinate
-                
-                output?.geopoint.accept(
-                    GeoPoint(latitude: coordinate.latitude, longitude: coordinate.longitude)
-                )
+        output?.space
+            .drive(onNext: { [weak self] space in
+                guard let space else { return }
+                self?.mainView.locationLabel.text = space.name
             })
-            .disposed(by: disposeBag)
+            .disposed(by: self.disposeBag)
+        
+        output?.geoPoint
+            .drive(onNext: {[weak self] geoPoint in
+                guard let self = self
+                else { return }
+                
+                self.goToLocation(geoPoint: geoPoint)
+            })
+            .disposed(by: self.disposeBag)
         
     }
 
     private func configure() {
-        view.backgroundColor = .white
-//        self.view.addSubview(self.mainView)
-        configureLocationManager()
         configureGesture()
     }
-
-    private func goToCurrentLocation() {
-        guard let center = LocationManager.shared.coordinate else {
-            return
-        }
-
+    
+    private func goToLocation(geoPoint: GeoPoint) {
+        let coordinate = CLLocationCoordinate2D(latitude: geoPoint.latitude, longitude: geoPoint.longitude)
+        
         let span = MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01)
-        let region = MKCoordinateRegion(center: center, span: span)
-
-        mainView.locateMap.setRegion(region, animated: true)
+        let region = MKCoordinateRegion(center: coordinate, span: span)
+        
+        self.mainView.locateMap.setRegion(region, animated: true)
     }
 }
 
 // MARK: - CLLocationManager
 
 extension MeloLocationViewController: CLLocationManagerDelegate {
-    private func configureLocationManager() {
-        locationManager.delegate = self
-    }
 
     func locationManager(_ manager: CLLocationManager, didChangeAuthorization status: CLAuthorizationStatus) {
-        LocationManager.shared.checkAuthorization(status: status)
+//        LocationManager.shared.checkAuthorization(status: status)
     }
 }
 
@@ -157,7 +136,7 @@ extension MeloLocationViewController: UIGestureRecognizerDelegate {
         let panGesture = UIPanGestureRecognizer(target: self, action: #selector(drag(sender:)))
         panGesture.delegate = self
 
-        mainView.locateMap.addGestureRecognizer(panGesture)
+        self.mainView.locateMap.addGestureRecognizer(panGesture)
     }
 
     @objc func drag(sender: UIPanGestureRecognizer) {

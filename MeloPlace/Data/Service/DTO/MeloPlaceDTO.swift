@@ -9,7 +9,8 @@ import Foundation
 
 struct MeloPlaceDTO: DTOProtocol {
     var id: String
-    var userId: String
+    var userID: String
+    var tagedUsers: [String]
     
     var musicURI: String
     var musicName: String
@@ -25,7 +26,7 @@ struct MeloPlaceDTO: DTOProtocol {
     var description: String
     
     var address: String
-    var simpleAddress: String
+    var spaceName: String
     
     var latitude: Double
     var longitude: Double
@@ -36,7 +37,8 @@ extension MeloPlaceDTO {
     func toDomain() -> MeloPlace {
         return MeloPlace(
             id: self.id,
-            userId: self.userId,
+            userID: self.userID,
+            tagedUsers: self.tagedUsers,
             musicURI: self.musicURI,
             musicName: self.musicName,
             musicDuration: self.musicDuration,
@@ -49,7 +51,7 @@ extension MeloPlaceDTO {
             title: self.title,
             description: self.description,
             address: self.address,
-            simpleAddress: self.simpleAddress,
+            spaceName: self.spaceName,
             latitude: self.latitude,
             longitude: self.longitude,
             memoryDate: self.memoryDate

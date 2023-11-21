@@ -13,29 +13,38 @@ final class PointAnnotation: MKPointAnnotation {
     let uuid: String?
     let date: Date?
     weak var annotationView: AnnotationView?
-
-    lazy var pinImage: UIImage? = {
-        let image = UIImage(systemName: "circle.circle.fill")?.resize(size: .init(width: 20, height: 20))
-        return image
-    }()
-
-    required init(uuid: String?, memoryDate: Date?, latitude: Double, longitude: Double) {
+    var imageURLString: String?
+    
+    required init(uuid: String?, memoryDate: Date?, imageURLString: String,  latitude: Double, longitude: Double) {
         self.uuid = uuid
-        date = memoryDate
+        self.date = memoryDate
         super.init()
-
+        
         if let memoryDateString = memoryDate?.toString() {
             title = memoryDateString
         }
+        
+        self.imageURLString = imageURLString
         coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 }
 
 final class AnnotationView: MKAnnotationView {
+    lazy var imageView: UIImageView = {
+        let view = UIImageView(frame: CGRect(x: 0, y: 0, width: 50, height: 50)) // frame 설정
+        let cornerRadius = 50.0 / 2
+        view.layer.cornerRadius = cornerRadius
+        view.clipsToBounds = true
+        view.contentMode = .scaleAspectFill
+        view.layer.borderColor = UIColor.themeColor300?.cgColor
+        view.layer.borderWidth = 1.5
+        return view
+    }()
+    
     private let detailButton = {
         let detailButton = UIButton(type: .detailDisclosure)
         detailButton.setImage(UIImage(systemName: "mappin.and.ellipse"), for: .normal)
-        detailButton.tintColor = .red
+        detailButton.tintColor = .themeColor300
         return detailButton
     }()
 
@@ -57,22 +66,26 @@ final class AnnotationView: MKAnnotationView {
     }
 
     private func configure() {
-        centerOffset = CGPoint(x: 0, y: -frame.size.height / 2)
-        canShowCallout = true
+        centerOffset = CGPoint(x: 0, y: frame.size.height / 2)
+        self.canShowCallout = true
+//        self.clipsToBounds = true
+        self.bounds.size = .init(width: 50, height: 50)
         rightCalloutAccessoryView = detailButton
+        self.addSubview(self.imageView)
     }
 
     func update(for annotation: MKAnnotation?) {
-        guard let pinImage = (annotation as? PointAnnotation)?.pinImage,
-              let imageData = pinImage.pngData() else {
-            return
-        }
-
-        let newWidth: CGFloat = 10.0
-        let ratio = newWidth / pinImage.size.width
-        let newHeight = pinImage.size.height * ratio
-        let size = CGSize(width: newWidth, height: newHeight)
-        self.image = UIImage(data: imageData, scale: 2.0)?.resize(size: size)
+        guard
+                let annotation = annotation as? PointAnnotation,
+                let imageURLString = annotation.imageURLString
+        else { return }
         
+        self.setImage(imageURLString: imageURLString)
+//        self.image = self.imageView.image
+    }
+    
+    func setImage(imageURLString: String) {
+        let url = URL(string: imageURLString)
+        self.imageView.kf.setImage(with: url)
     }
 }

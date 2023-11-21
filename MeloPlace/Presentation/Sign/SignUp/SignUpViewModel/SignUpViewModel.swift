@@ -8,12 +8,22 @@
 import Foundation
 import RxSwift
 import RxRelay
+import RxCocoa
 
 struct SignUpViewModelActions {
     let closeSignUpView: () -> Void
 }
 
 class SignUpViewModel {
+    let disposeBag = DisposeBag()
+    private let signUpUseCase: SignUpUseCaseProtocol
+    var actions: SignUpViewModelActions?
+    
+    let profile = BehaviorRelay<SpotifyUserProfile?>(value: nil)
+    
+    init(signUpUseCase: SignUpUseCaseProtocol) {
+        self.signUpUseCase = signUpUseCase
+    }
     
     struct Input {
         var emailText: Observable<String>
@@ -22,68 +32,45 @@ class SignUpViewModel {
     }
     
     struct Output {
-        let profile = BehaviorRelay<SpotifyUserProfile?>(value: nil)
-        let isDonButotnEnable = BehaviorRelay<Bool>(value: false)
+        let profile: Driver<SpotifyUserProfile?>
+        let isDoneButotnEnable: Driver<Bool>
     }
     
-    let fireBaseService = FireBaseNetworkService.shared
-    var actions: SignUpViewModelActions?
-    let disposeBag = DisposeBag()
-    
-    let profile = BehaviorRelay<SpotifyUserProfile?>(value: nil)
+    func transform(input: Input) -> Output {
+        let loginText = Observable.combineLatest(input.emailText, input.passwordText).share()
+        
+        let isDoneButotnEnable = loginText
+            .map({ email, pw in
+                let isDone = !email.isEmpty && !pw.isEmpty ?
+                true : false
+                
+                return isDone
+            })
+        
+        input.didTapDoneButton
+            .withLatestFrom( Observable.combineLatest(loginText, self.profile) )
+            .flatMap({ [weak self] values -> Observable<Bool> in
+                let ((email, pw), profile) = values
+                guard let self, let profile else { return Observable.just(false) }
+                
+                return self.signUpUseCase.signUp(email: email, pw: pw, profile: profile)
+            })
+            .withUnretained(self)
+            .subscribe(onNext: { owner, isSuccess in
+                if isSuccess {
+                    owner.actions?.closeSignUpView()
+                } else {
+                    print("signUP fail")
+                }
+            })
+            .disposed(by: self.disposeBag)
+        
+        return Output(profile: self.profile.asDriver(),
+                      isDoneButotnEnable: isDoneButotnEnable.asDriver(onErrorJustReturn: false))
+    }
     
     func setActions(actions: SignUpViewModelActions) {
         self.actions = actions
     }
     
-    func transform(input: Input) -> Output {
-        let output = Output()
-        
-        let loginText = Observable.combineLatest(input.emailText, input.passwordText)
-        
-        loginText
-            .bind(onNext: { email, pw in
-                if !email.isEmpty && !pw.isEmpty {
-                    output.isDonButotnEnable.accept(true)
-                } else {
-                    output.isDonButotnEnable.accept(false)
-                }
-            })
-            .disposed(by: self.disposeBag)
-        
-        input.didTapDoneButton
-            .withLatestFrom( loginText )
-            .subscribe { [weak self] email, pw in
-                guard let self = self, let profile = self.profile.value else { return }
-                
-                self.fireBaseService.signUp(
-                    userDTO: UserDTO(
-                        id: "",
-                        spotifyID: profile.id,
-                        name: profile.name,
-                        email: email,
-                        password: pw,
-                        imageURL: profile.imageURL,
-                        imageWidth: profile.imageWidth,
-                        imageHeight: profile.imageHeight
-                    )
-                )
-                .subscribe(onSuccess: { isSuccess in
-                    if isSuccess {
-                        self.actions?.closeSignUpView()
-                    } else {
-                        print("SIGN UP FAIL")
-                    }
-                }, onFailure: { error in
-                    print(error)
-                }).disposed(by: self.disposeBag)
-            }
-            .disposed(by: self.disposeBag)
-        
-        self.profile
-            .bind(to: output.profile)
-            .disposed(by: self.disposeBag)
-        
-        return output
-    }
 }

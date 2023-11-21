@@ -17,11 +17,13 @@ class MusicListCoordinator: CoordinatorProtocol {
     
     var navigation: UINavigationController
     
-    var addViewModel: AddMeloPlaceViewModel?
+//    var addViewModel: AddMeloPlaceViewModel?
     
-    init(navigation : UINavigationController, addViewModel: AddMeloPlaceViewModel) {
+    init(navigation : UINavigationController
+//         addViewModel: AddMeloPlaceViewModel
+    ) {
         self.navigation = navigation
-        self.addViewModel = addViewModel
+//        self.addViewModel = addViewModel
     }
     
     init() {
@@ -36,14 +38,16 @@ class MusicListCoordinator: CoordinatorProtocol {
         let container = DIContainer.shared.container
         guard let vm = container.resolve(MusicListViewModel.self) else { return }
         
-        vm.delegate = self.addViewModel
+//        vm.delegate = self.addViewModel
         let vc = MusicListViewController(viewModel: vm)
         
         vm.setActions(
             actions: MusicListViewModelActions(
 //                closeMeloLocationView: self.closeMeloLocationView
                 showMusicPlayerView: self.showMusicPlayerView,
-                closeMusicListView: self.closeMusicListView)
+                closeMusicListView: self.closeMusicListView,
+                submitSelectedMusic: self.submitSelectedMusic
+            )
         )
         
         self.navigation.present(vc, animated: true)
@@ -62,6 +66,13 @@ class MusicListCoordinator: CoordinatorProtocol {
 //        let vc = PhotoDetailViewController(viewModel: vm)
 ////        self?.navigation.present(vc, animated: true)
 //        self?.navigation.pushViewController(vc, animated: true)
+    }
+    
+    lazy var submitSelectedMusic: (_ music: Music) -> Void = { [weak self] music in
+        guard let viewController = self?.navigation.viewControllers.last as? AddMeloPlaceViewController else { return }
+        
+        self?.finish()
+        viewController.viewModel?.selectedMusic.accept(music)
     }
 }
 

@@ -24,8 +24,8 @@ class MeloPlaceDetailCoordinator: CoordinatorProtocol {
     let meloPlaces = BehaviorRelay<[MeloPlace]>(value: [])
     
 //    let indexPath = PublishRelay<IndexPath>()
-//    let indexPath = BehaviorRelay<IndexPath>(value: [0, 0])
-    var indexPath: IndexPath?
+    let indexPath = BehaviorRelay<IndexPath>(value: [0, 0])
+//    var indexPath: IndexPath?
     
     init(navigation : UINavigationController) {
         self.navigation = navigation
@@ -44,32 +44,40 @@ class MeloPlaceDetailCoordinator: CoordinatorProtocol {
             .bind(to: vm.meloPlaces)
             .disposed(by: self.disposeBag)
         
-//        self.indexPath
-//            .bind(to: vm.indexPath)
-//            .disposed(by: self.disposeBag)
-        vm.indexPath = self.indexPath
+        self.indexPath
+            .bind(to: vm.indexPath)
+            .disposed(by: self.disposeBag)
+//        vm.indexPath = self.indexPath
         
         let vc = MeloPlaceDetailViewController(viewModel: vm)
         
-//        vm.setActions(
-//            actions: PhotoListViewModelActions(
-//                showPhotoDetail: self.showPhotoDetail
-//            )
-//        )
-//        vc.modalPresentationStyle = .fullScreen
-        self.navigation.present(vc, animated: true)
-//        self.navigation.pushViewController(vc, animated: true)
+        vc.hidesBottomBarWhenPushed = true
+        
+        vm.setActions(
+            actions: MeloPlaceDetailViewModelActions(
+                showCommentsView: self.showCommentsView,
+                closeCommentsView: self.closeCommentsView
+            )
+        )
+//        vc.modalPresentationStyle = .overFullScreen
+//        self.navigation.present(vc, animated: true)
+        self.navigation.pushViewController(vc, animated: true)
         
     }
     
-//    lazy var showPhotoDetail: (_ IndexPath: IndexPath) -> Void = { [weak self] indexPath in
-//        let container = DIContainer.shared.container
-//        guard let vm = container.resolve(PhotoDetailViewModel.self) else { return }
-//        vm.indexpath = indexPath
-//        let vc = PhotoDetailViewController(viewModel: vm)
-////        self?.navigation.present(vc, animated: true)
-//        self?.navigation.pushViewController(vc, animated: true)
-//    }
+    lazy var showCommentsView: (_ meloPlace: MeloPlace) -> Void = { [weak self] meloPlace in
+        guard let self = self else { return }
+        let commentCoordinator = CommentCoordinator(navigation: self.navigation)
+        commentCoordinator.meloPlace.accept(meloPlace)
+        commentCoordinator.finishDelegate = self
+        self.childCoordinators.append(commentCoordinator)
+        commentCoordinator.start()
+    }
+    
+    lazy var closeCommentsView: () -> Void = { [weak self] in
+        self?.navigation.popViewController(animated: false)
+        self?.finish()
+    }
 }
 
 extension MeloPlaceDetailCoordinator: CoordinatorFinishDelegate {

@@ -20,97 +20,114 @@ enum LocationError: LocalizedError {
     }
 }
 
-protocol MeloLocationViewModelDelegate: AnyObject {
-    func locationSelected(address: Address,geopoint: GeoPoint)
-}
+//protocol MeloLocationViewModelDelegate: AnyObject {
+//    func locationSelected(space: Space)
+//}
 
 struct MeloLocationViewModelActions {
-    let closeMeloLocationView: () -> Void
+    let closeMeloLocationView: (_ space: Space?) -> Void
+//    let submitMeloLocationView: (_ space: Space) -> Void
 }
 
 final class MeloLocationViewModel {
+    let disposeBag = DisposeBag()
+    private let updateLocationUseCase: UpdateLocationUseCaseProtocol
+    private let fetchCurrentLocationUseCase: FetchCurrentLocationUseCaseProtocol
+    private let reverseGeoCodeUseCase: ReverseGeoCodeUseCaseProtocol
+    
+    var actions: MeloLocationViewModelActions?
+//    var delegate: MeloLocationViewModelDelegate?
+    
+    let geoPoint = PublishRelay<GeoPoint>()
+    let space = BehaviorRelay<Space?>(value: nil)
+    let isDragging = PublishRelay<Bool>()
+    
+    init(updateLocationUseCase: UpdateLocationUseCaseProtocol, fetchCurrentLocationUseCase: FetchCurrentLocationUseCaseProtocol, reverseGeoCodeUseCase: ReverseGeoCodeUseCaseProtocol) {
+        self.updateLocationUseCase = updateLocationUseCase
+        self.fetchCurrentLocationUseCase = fetchCurrentLocationUseCase
+        self.reverseGeoCodeUseCase = reverseGeoCodeUseCase
+    }
     
     struct Input {
+        let viewWillAppear: Observable<Void>
+        let viewWillDisappear: Observable<Void>
         var done: Observable<Void>
         var cancel: Observable<Void>
     }
 
     struct Output {
-        let address = PublishRelay<Address>()
-        let fullAddress = PublishRelay<String?>()
-        let simpleAddress = PublishRelay<String>()
-        let geopoint = PublishRelay<GeoPoint>()
-        let doneButtonState = BehaviorRelay<Bool>(value: false)
-        let isDone = PublishRelay<Bool>()
-        let isCenceled = PublishRelay<Bool>()
-        let isDragging = PublishRelay<Bool>()
-
-        var locationObservable: Observable<(address: Address, geopoint: GeoPoint)> {
-            Observable.combineLatest(address, geopoint) { address, geopoint in
-                (address: address, geopoint: geopoint)
-            }
-        }
-    }
-    
-    var disposeBag: DisposeBag = DisposeBag()
-
-    var actions: MeloLocationViewModelActions?
-    var delegate: MeloLocationViewModelDelegate?
-    
-    let isDragging = PublishRelay<Bool>()
-    
-    func setActions(actions: MeloLocationViewModelActions) {
-        self.actions = actions
+        let isCenceled: Driver<Bool>
+        let isDone: Driver<Bool>
+        let isDragging: Driver<Bool>
+        let space: Driver<Space?>
+        let geoPoint: Driver<GeoPoint>
+        let locationAuth: Driver<Bool>
     }
     
     func transform(input: Input) -> Output {
-        let output = Output()
-        
-        input.cancel
-            .subscribe(onNext: { [weak self] in
-                self?.actions?.closeMeloLocationView()
-                output.isCenceled.accept(true)
+        let locationAuth = input.viewWillAppear
+            .withUnretained(self)
+            .flatMap({ owner, _ in
+                owner.updateLocationUseCase.executeLocationTracker()
+                return owner.updateLocationUseCase.observeAuthorizationStatus()
             })
-            .disposed(by: disposeBag)
-
-        input.done
-            .withLatestFrom(output.locationObservable)
-            .subscribe(onNext: { [weak self] address, geopoint in
-                print("done tap!")
-                self?.delegate?.locationSelected(address: address, geopoint: geopoint)
-                self?.actions?.closeMeloLocationView()
-                output.isDone.accept(true)
-            })
-            .disposed(by: disposeBag)
-
-        output.geopoint
-            .subscribe(
-                onNext: { [weak self] in
-                    LocationManager.shared.reverseGeocode(point: $0) { address in
-                        guard let address else {
-                            output.doneButtonState.accept(false)
-                            output.fullAddress.accept(LocationError.invalidGeopoint.localizedDescription)
-                            return
-                        }
-
-                        output.doneButtonState.accept(true)
-                        output.address.accept(address)
-                        output.fullAddress.accept(address.full)
-                        output.simpleAddress.accept(address.simple)
-                    }
-                },
-                onError: { [weak self] error in
-                    output.doneButtonState.accept(false)
-                    output.fullAddress.accept(error.localizedDescription)
-                }
-            )
-            .disposed(by: disposeBag)
-        
-        self.isDragging
-            .bind(to: output.isDragging)
+            .asDriver(onErrorJustReturn: false)
+            
+        input.viewWillDisappear
+            .withUnretained(self)
+            .subscribe { owner, _ in
+                owner.updateLocationUseCase.terminateLocationTracker()
+            }
             .disposed(by: self.disposeBag)
         
-        return output
+        self.geoPoint.asObservable()
+            .debounce(.milliseconds(200), scheduler: MainScheduler.instance)
+            .distinctUntilChanged()
+            .withUnretained(self)
+            .flatMap({  owner, geoPoint in
+                owner.reverseGeoCodeUseCase.reverse(point: geoPoint)
+            })
+            .bind(to: self.space)
+            .disposed(by: self.disposeBag)
+        
+        let isCenceled = input.cancel
+            .do(onNext: {[weak self] _ in
+                self?.actions?.closeMeloLocationView(nil)
+            })
+            .map { _ in
+                return true
+            }
+            .asDriver(onErrorJustReturn: false)
+
+        let isdone = input.done
+            .withLatestFrom(self.space)
+            .do { [weak self] space in
+                guard let space else { return }
+                self?.actions?.closeMeloLocationView(space)
+            }
+            .map { _ in
+                return true
+            }
+            .asDriver(onErrorJustReturn: false)
+        
+        let geoPoint = self.fetchCurrentLocationUseCase.fetchCurrentLocation()
+            .map { val in
+                let (geoPoint, address) = val
+                return geoPoint
+            }
+        
+        return Output(
+            isCenceled: isCenceled,
+            isDone: isdone,
+            isDragging: self.isDragging.asDriver(onErrorJustReturn: false),
+            space: self.space.asDriver(),
+            geoPoint: geoPoint.asDriver(onErrorJustReturn: GeoPoint.seoulCoordinate),
+            locationAuth: locationAuth
+        )
+    }
+    
+    func setActions(actions: MeloLocationViewModelActions) {
+        self.actions = actions
     }
     
 }

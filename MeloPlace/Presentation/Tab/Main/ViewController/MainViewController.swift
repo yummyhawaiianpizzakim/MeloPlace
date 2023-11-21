@@ -16,7 +16,6 @@ import SpotifyiOS
 
 class MainViewController: UIViewController {
     var viewModel: MainViewModel?
-    var service = SpotifyService.shared
     let disposeBag = DisposeBag()
     
     typealias DataSource = UICollectionViewDiffableDataSource<Section, MeloPlace>
@@ -24,52 +23,49 @@ class MainViewController: UIViewController {
     
     var dataSource: DataSource?
     var currentIndex = BehaviorRelay<Int>(value: 0)
-//    var itemCount: Int?
     let indexPathCount = BehaviorRelay<Int>(value: 1)
     
-    lazy var testLabel: UILabel = {
+    private lazy var placeHolderView = PlaceHolderView(text: "멜로플레이스가 없습니다.")
+    
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "aaa"
-        label.font = .systemFont(ofSize: 40)
+        label.font = .systemFont(ofSize: 24.0)
+        label.textColor = .black
+        label.numberOfLines = 1
+        label.textAlignment = .center
         return label
     }()
     
-    lazy var addButton: UIButton = {
-        let button = UIButton()
-        button.frame.size = CGSize(width: 50.0, height: 50.0)
-        button.setImage(UIImage(systemName: "plus"), for: .normal)
-        button.backgroundColor = .yellow
-        button.tintColor = .black
-        button.layer.cornerRadius = 50.0 / 2
-        return button
+    private lazy var addressLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 20.0)
+        label.textColor = .black
+        label.numberOfLines = 1
+        label.textAlignment = .center
+        return label
     }()
     
-    lazy var mainCollectionView: UICollectionView = {
-//        let layout = HSCycleGalleryViewLayout()
+    private lazy var descriptionLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 20.0)
+        label.textColor = .black
+        label.numberOfLines = 1
+        label.textAlignment = .center
+        return label
+    }()
+    
+    private lazy var mainCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.configureLayout())
-//        collectionView.collectionViewLayout = layout
         collectionView.contentInsetAdjustmentBehavior = .always
         collectionView.register(MainCell.self, forCellWithReuseIdentifier: MainCell.id)
         collectionView.backgroundColor = .none
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.clipsToBounds = true
-        collectionView.backgroundColor = .magenta
+        
         return collectionView
     }()
     
-    lazy var playPauseButton: UIButton = {
-        let button = UIButton()
-        let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large)
-        button.setImage(UIImage(systemName: "play.circle.fill", withConfiguration: configuration), for: .normal)
-        return button
-    }()
-    
-    lazy var nextButton: UIButton = {
-        let button = UIButton()
-        let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large)
-        button.setImage(UIImage(systemName: "chevron.right.to.line", withConfiguration: configuration), for: .normal)
-        return button
-    }()
+    private lazy var playerView = PlayerView()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
@@ -91,64 +87,103 @@ class MainViewController: UIViewController {
         self.bindUI()
         self.bindViewModel()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.configureNavigationBar()
+    }
 }
 
 private extension MainViewController {
     func configureUI() {
-        [self.mainCollectionView, self.addButton, self.playPauseButton, self.nextButton].forEach {
+        [self.mainCollectionView, self.playerView, self.titleLabel, self.addressLabel].forEach {
             self.view.addSubview($0)
         }
         
-        self.mainCollectionView.snp.makeConstraints { make in
-//            make.edges.equalToSuperview()
-            make.leading.trailing.equalToSuperview()
-            make.top.equalToSuperview().offset(20)
-        }
-        self.addButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview().offset(-10)
-            make.right.equalToSuperview().offset(-10)
-            make.width.height.equalTo(50.0)
-        }
-        
-        self.playPauseButton.snp.makeConstraints { make in
-            make.top.equalTo(self.mainCollectionView.snp.bottom).offset(10)
-            make.bottom.equalToSuperview()
+        self.addressLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.view.safeAreaLayoutGuide).offset(50)
             make.centerX.equalToSuperview()
-            make.height.width.equalTo(50)
         }
         
-        self.nextButton.snp.makeConstraints { make in
-            make.top.equalTo(self.playPauseButton.snp.top)
-            make.bottom.equalToSuperview()
-            make.leading.equalTo(self.playPauseButton.snp.trailing).offset(20)
-            make.height.width.equalTo(50)
+        self.mainCollectionView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview()
+            make.top.equalTo(self.titleLabel.snp.bottom).offset(10)
+            make.height.equalTo(230)
+        }
+        
+        self.titleLabel.snp.makeConstraints { make in
+            make.top.equalTo(self.addressLabel.snp.bottom).offset(10)
+            make.centerX.equalToSuperview()
+        }
+        
+        self.playerView.snp.makeConstraints { make in
+            make.horizontalEdges.equalToSuperview()
+            make.top.equalTo(self.mainCollectionView.snp.bottom).offset(10)
+//            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
+            make.height.equalTo(150)
         }
     }
     
     func bindUI() {
-//        self.nextButton.rx.tap.asObservable()
-//            .subscribe { [weak self] _ in
-//                self?.scrollToNextCell()
-//            }
-//            .disposed(by: self.disposeBag)
+        self.mainCollectionView.rx.contentOffset
+            .observe(on: MainScheduler.asyncInstance)
+            .bind(onNext: { [weak self] offset in
+                if offset.y != 0 {
+                    self?.mainCollectionView.contentOffset.y = 0
+                }
+            })
+            .disposed(by: self.disposeBag)
+        
+        Observable.combineLatest(self.currentIndex.distinctUntilChanged(), self.viewModel!.meloPlaces)
+            .asDriver(onErrorJustReturn: (0, []))
+            .drive(with: self) { owner, val in
+                let (currentIndex, meloPlaces) = val
+                if meloPlaces.count - 1 > currentIndex {
+                    owner.playerView.isEnabledNextButton = true
+                } else {
+                    owner.playerView.isEnabledNextButton = false
+                }
+                
+                if currentIndex > 0 {
+                    owner.playerView.isEnableBackButton = true
+                } else {
+                    owner.playerView.isEnableBackButton = false
+                }
+            }
+            .disposed(by: self.disposeBag)
+        
+        self.playerView.playNextButton.rx.tap
+            .withUnretained(self)
+            .bind { owner, _ in
+                owner.scrollToNextCell(index: owner.currentIndex.value)
+            }
+            .disposed(by: self.disposeBag)
+        
+        self.playerView.playBackButton.rx.tap
+            .withUnretained(self)
+            .bind { owner, _ in
+                owner.scrollToBackCell(index: owner.currentIndex.value)
+            }
+            .disposed(by: self.disposeBag)
         
     }
     
     func bindViewModel() {
         let input = MainViewModel.Input(
-            viewWillAppear: self.rx.viewWillAppear.map({ _ in () }),
+            viewWillAppear: self.rx.viewWillAppear.map({ _ in ()}).asObservable(),
             didSelectItem: self.mainCollectionView.rx.itemSelected.asObservable(),
-            didTapAddButton:  self.addButton.rx.tap.asObservable(),
-            didTapPlayPauseButton: self.playPauseButton.rx.tap.asObservable()
+            didTapPlayPauseButton: self.playerView.playPauseButton.rx.tap.asObservable()
         )
         
         let output = self.viewModel?.transform(input: input)
         
         output?.dataSource
-            .asDriver(onErrorJustReturn: [])
-            .map({[weak self] models in
+            .compactMap({[weak self] models in
+                self?.configurePlaceHolderView(with: models)
                 self?.indexPathCount.accept(models.count)
-                self?.bindPlayingMusic()
+                self?.bindPlayingMusic(meloPlaces: models)
+                self?.bindView(meloPlaces: models)
+                self?.bindPlayer(meloPlaces: models)
                 return self!.generateSnapshot(models: models)
             })
             .drive(onNext: {[weak self] snapshot in
@@ -157,55 +192,98 @@ private extension MainViewController {
             .disposed(by: self.disposeBag)
         
         output?.isPaused
-            .asDriver()
             .drive(with: self,onNext: { owner, isPaused in
-                let configuration = UIImage.SymbolConfiguration(pointSize: 50, weight: .bold, scale: .large)
-                if isPaused {
-                    self.playPauseButton.setImage(UIImage(systemName: "play.circle.fill", withConfiguration: configuration), for: .normal)
-                } else {
-                    self.playPauseButton.setImage(UIImage(systemName: "pause.circle.fill", withConfiguration: configuration), for: .normal)
-                }
+                self.playerView.bindPlayerController(isPaused: isPaused)
+                
             })
             .disposed(by: self.disposeBag)
-        
-//        output?.music
-//            .asDriver(onErrorJustReturn: nil)
-//            .drive(onNext: {[weak self] music in
-//                guard let music = music else { return }
-//                self?.service.playMusic(uri: music.URI)
-//            })
-//            .disposed(by: self.disposeBag)
-        
     }
     
-    func bindPlayingMusic() {
-        guard let meloPlaces = self.viewModel?.meloPlaces.asDriver() else { return }
+    func configureNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+
+        appearance.configureWithTransparentBackground()
+        self.navigationItem.title = "뮤직 플레이어"
+        self.navigationItem.standardAppearance = appearance
+        self.navigationItem.scrollEdgeAppearance = appearance
+    }
+    
+    func configurePlaceHolderView(with meloPlaces: [MeloPlace]) {
+        if meloPlaces.isEmpty {
+            self.view.addSubview(self.placeHolderView)
+            
+            self.placeHolderView.snp.makeConstraints { make in
+                make.edges.equalTo(self.view.safeAreaLayoutGuide)
+            }
+        } else {
+            self.placeHolderView.removeFromSuperview()
+        }
+    }
+    
+    func bindView(meloPlaces: [MeloPlace]) {
         Driver.combineLatest(
             self.currentIndex.asDriver()
-                .debounce(.seconds(1))
+                .debounce(.milliseconds(200))
                 .distinctUntilChanged(),
-            meloPlaces
+            Driver.of(meloPlaces)
+        )
+        .drive(onNext: { [weak self] index, meloPlaces in
+            guard let self = self else { return }
+            if !meloPlaces.isEmpty && meloPlaces.count > index {
+                let meloPlace = meloPlaces[index]
+                let spaceName = meloPlace.spaceName.replaceString(where: "대한민국", of: "대한민국 ", with: "")
+                self.addressLabel.text = "\(meloPlace.memoryDate.toString()) \(spaceName)에서"
+                self.titleLabel.text = meloPlace.title
+            }
+        })
+        .disposed(by: self.disposeBag)
+    }
+    
+    func bindPlayingMusic(meloPlaces: [MeloPlace]) {
+        Driver.combineLatest(
+            self.currentIndex.asDriver()
+                .debounce(.milliseconds(100))
+                .distinctUntilChanged(),
+            Driver.of(meloPlaces)
         )
         .drive(onNext: { [weak self] index, meloPlaces in
             guard let self = self else { return }
             if !meloPlaces.isEmpty && meloPlaces.count > index {
                 print("bbbb: \(index)")
-                var musicURI = meloPlaces[index].musicURI
+                let musicURI = meloPlaces[index].musicURI
                 self.viewModel?.playMusic(uri: musicURI)
             }
         })
         .disposed(by: self.disposeBag)
     }
     
+    func bindPlayer(meloPlaces: [MeloPlace]) {
+        Driver.combineLatest(
+            self.currentIndex.asDriver()
+                .debounce(.milliseconds(100))
+                .distinctUntilChanged(),
+            Driver.of(meloPlaces)
+        )
+        .drive { [weak self] index, meloPlaces in
+            if !meloPlaces.isEmpty && meloPlaces.count > index {
+                let meloPlace = meloPlaces[index]
+                self?.playerView.bindPlayerView(meloPlace: meloPlace)
+                
+            }
+        }
+        .disposed(by: self.disposeBag)
+        
+    }
+    
 }
 
 private extension MainViewController {
     func configureLayout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(250), heightDimension: .absolute(400))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(250), heightDimension: .absolute(216))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(250), heightDimension: .absolute(400))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(250), heightDimension: .absolute(216))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         
@@ -237,21 +315,12 @@ private extension MainViewController {
                 
                 if distanceFromCenter < minDistanceFromCenter {
                     minDistanceFromCenter = distanceFromCenter
-//                    Driver.just(item.indexPath.item)
-//                        .debounce(.seconds(1))
-//                        .distinctUntilChanged()
-//                        .drive { index in
-//                            centerItemIndex = index
-//                        }
-//                        .disposed(by: self.disposeBag)
-//
                     centerItemIndex = item.indexPath.item
                 }
                 
                 if self.currentIndex.value != centerItemIndex {
                     self.currentIndex.accept(centerItemIndex ?? 0)
                 }
-//                print("The index of the centered item is: \(centerItemIndex ?? -1)")
 
             }
             
@@ -268,13 +337,6 @@ private extension MainViewController {
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCell.id, for: indexPath) as? MainCell else { return UICollectionViewCell() }
             cell.configureCell(item: itemIdentifier)
-//            self.viewModel?.playMusic(indexPath: indexPath)
-            
-//            self.nextButton.rx.tap.asObservable()
-//                .subscribe { _ in
-//                    self.scrollToNextCell(indexPath: indexPath)
-//                }
-//                .disposed(by: self.disposeBag)
             
             return cell
         })
@@ -294,16 +356,24 @@ private extension MainViewController {
     
 }
 
-extension MainViewController {
-    func scrollToNextCell(indexPath: IndexPath) {
-        let nextIndexPath = IndexPath(item: indexPath.item + 1, section: indexPath.section)
-        
-        DispatchQueue.main.async {
-            self.mainCollectionView.scrollToItem(at: nextIndexPath, at: .centeredHorizontally, animated: true)
+private extension MainViewController {
+    func scrollToNextCell(index: Int) {
+        guard let meloPlaces = self.viewModel?.meloPlaces.value else { return }
+        if meloPlaces.count - 1 > self.currentIndex.value {
+            let nextIndexPath = IndexPath(item: index + 1, section: 0)
+            DispatchQueue.main.async {
+                self.mainCollectionView.scrollToItem(at: nextIndexPath, at: .centeredHorizontally, animated: true)
+            }
         }
-        
     }
     
+    func scrollToBackCell(index: Int) {
+        guard let meloPlaces = self.viewModel?.meloPlaces.value else { return }
+        let preIndexPath = IndexPath(item: index - 1, section: 0)
+        DispatchQueue.main.async {
+            self.mainCollectionView.scrollToItem(at: preIndexPath, at: .centeredHorizontally, animated: true)
+        }
+    }
 }
 
 extension MainViewController {

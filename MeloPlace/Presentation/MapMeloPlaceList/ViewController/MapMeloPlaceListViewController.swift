@@ -12,21 +12,31 @@ import RxSwift
 import RxRelay
 import RxCocoa
 
-
 class MapMeloPlaceListViewController: UIViewController {
     var viewModel: MapMeloPlaceListViewModel?
     let disposeBag = DisposeBag()
     
-    typealias DataSource = UICollectionViewDiffableDataSource<Int, MeloPlace>
-    typealias Snapshot = NSDiffableDataSourceSnapshot<Int, MeloPlace>
     
-    var dataSource: DataSource?
+    lazy var placeholderView: PlaceHolderView = {
+        let view = PlaceHolderView(text: "게시물이 없습니다.")
+        view.isHidden = true
+        return view
+    }()
+    
+    lazy var scrollView = UIScrollView()
+    
+    lazy var contentView = UIView()
     
     lazy var locationLabel: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 30)
-        label.textColor = .white
+        label.textColor = .black
         return label
+    }()
+    
+    lazy var filterView: UICollectionView = {
+        let view = FilterCollectionView(filterMode: .mapMeloPlace)
+        return view
     }()
     
     lazy var meloPlaceCollectionView: UICollectionView = {
@@ -43,87 +53,89 @@ class MapMeloPlaceListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    convenience init(viewModel: MapMeloPlaceListViewModel) {
-        self.init(nibName: nil, bundle: nil)
-        self.viewModel = viewModel
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.configureAtributes()
         self.configureUI()
-//        self.setDataSource()
         self.bindViewModel()
     }
 }
 
 private extension MapMeloPlaceListViewController {
+    func configureAtributes() {
+    }
+    
     func configureUI() {
-        [self.meloPlaceCollectionView].forEach {
-            self.view.addSubview($0)
+        self.view.addSubview(self.scrollView)
+        self.scrollView.addSubview(self.contentView)
+        
+        [self.locationLabel, self.filterView,
+         self.placeholderView, self.meloPlaceCollectionView
+        ].forEach {
+            self.contentView.addSubview($0)
         }
         
-//        self.locationLabel.snp.makeConstraints { make in
-//            make.top.equalToSuperview().offset(30)
-//            make.leading.equalToSuperview().offset(10)
-//            make.trailing.equalToSuperview().offset(-10)
-//            make.height.equalTo(30)
-//        }
+        self.scrollView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+        }
+        
+        self.contentView.snp.makeConstraints { make in
+            make.edges.equalToSuperview()
+            make.width.equalToSuperview()
+        }
+        
+        self.locationLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(30)
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
+            make.height.equalTo(30)
+        }
+        
+        self.filterView.snp.makeConstraints { make in
+            make.top.equalTo(self.locationLabel.snp.bottom).offset(20)
+            make.leading.equalTo(self.locationLabel.snp.leading)
+            make.trailing.equalTo(self.locationLabel.snp.trailing)
+            make.height.equalTo( self.view.appOffset * 6 )
+        }
         
         self.meloPlaceCollectionView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-//            make.top.equalTo(self.locationLabel.snp.bottom).offset(10)
-//            make.leading.equalToSuperview().offset(10)
-//            make.trailing.equalToSuperview().offset(-10)
-//            make.bottom.equalToSuperview().offset(-10)
+            make.top.equalTo(self.filterView.snp.bottom).offset(20)
+            make.leading.equalTo(self.locationLabel.snp.leading)
+            make.trailing.equalTo(self.locationLabel.snp.trailing)
+            make.height.equalTo(500)
+            make.bottom.equalToSuperview().offset(-10)
+        }
+        
+        UIView.animate(withDuration: 1.5, delay: 1.0) {
+            self.placeholderView.snp.makeConstraints { make in
+                make.top.equalTo(self.meloPlaceCollectionView.snp.top).offset(self.view.appOffset * 4)
+                make.horizontalEdges.equalToSuperview()
+                make.bottom.equalTo(self.meloPlaceCollectionView.snp.bottom)
+                make.height.equalTo(150)
+            }
         }
     }
     
     func bindViewModel() {
-        let input = MapMeloPlaceListViewModel.Input(
-            didTapCell: self.meloPlaceCollectionView.rx.itemSelected.asObservable()
-        )
-        let output = self.viewModel?.transform(input: input)
         
-//        output?.dataSource
-//            .asDriver()
-//            .drive(onNext: {[weak self] meloPlaces in
-//                self?.setSnapshot(models: meloPlaces)
-//            })
-//            .disposed(by: self.disposeBag)
     }
    
 }
 
 extension MapMeloPlaceListViewController {
     private func configureLayout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(60))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(80))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
-        item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(60))
+//        item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 5, bottom: 5, trailing: 5)
+//
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(80))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
+        group.interItemSpacing = NSCollectionLayoutSpacing.fixed(20)
 
         let section = NSCollectionLayoutSection(group: group)
 
         let layout = UICollectionViewCompositionalLayout(section: section)
         
         return layout
-    }
-    
-    private func setDataSource() {
-        self.dataSource = UICollectionViewDiffableDataSource(collectionView: self.meloPlaceCollectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
-            
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MapMeloPlaceListCollectionCell.id, for: indexPath) as? MapMeloPlaceListCollectionCell else { return UICollectionViewCell() }
-            cell.configureCell(item: itemIdentifier)
-            cell.backgroundColor = .green
-            return cell
-        })
-        
-    }
-    
-    func setSnapshot(models: [MeloPlace]) {
-        var snapshot = Snapshot()
-        snapshot.appendSections([0])
-        snapshot.appendItems(models, toSection: 0)
-        self.dataSource?.apply(snapshot, animatingDifferences: false)
     }
 }

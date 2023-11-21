@@ -17,12 +17,9 @@ class SearchCoordinator: CoordinatorProtocol {
     
     var navigation: UINavigationController
     
-    var mapViewModel: MapViewModel
-    
-    init(navigation : UINavigationController,
-         mapViewModel: MapViewModel) {
+    init(navigation : UINavigationController
+    ) {
         self.navigation = navigation
-        self.mapViewModel = mapViewModel
     }
     
     func start() {
@@ -32,11 +29,13 @@ class SearchCoordinator: CoordinatorProtocol {
     private func showSearchViewFlow() {
         let container = DIContainer.shared.container
         guard let vm = container.resolve(SearchViewModel.self) else { return }
-        vm.delegate = self.mapViewModel
+//        vm.delegate = self.mapViewModel
         let vc = SearchViewController(viewModel: vm)
         
+        vc.hidesBottomBarWhenPushed = true
         vm.setActions(
             actions: SearchViewModelActions(
+                showLocationView: self.showMeloLocationView,
                 closeSearchView: self.closeSearchView
             )
         )
@@ -44,10 +43,52 @@ class SearchCoordinator: CoordinatorProtocol {
         self.navigation.pushViewController(vc, animated: false)
     }
     
-    lazy var closeSearchView: () -> Void = { [weak self] in
-        self?.navigation.popViewController(animated: false)
-        self?.finish()
+    lazy var showMeloLocationView: () -> Void = { [weak self] in
+        let coordinator = MeloLocationCoordinator(navigation: self!.navigation)
+        self?.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
     }
+    
+    lazy var closeSearchView: (_ space: Space) -> Void = { [weak self] space in
+        guard let self else { return }
+        self.navigation.popViewController(animated: false)
+        self.finish()
+        
+        switch self.navigation.viewControllers.last {
+        case is MapViewController:
+            let viewController = self.navigation.viewControllers.last as? MapViewController
+            viewController?.viewModel?.searchSpaceDidSelect(space: space)
+        case is AddMeloPlaceViewController:
+            let viewController = self.navigation.viewControllers.last as? AddMeloPlaceViewController
+            viewController?.viewModel?.selectedSpace.accept(space)
+            self.navigation.isNavigationBarHidden = true
+        case .none:
+            return
+        case .some(_):
+            return
+        }
+    }
+    
+//    lazy var closeSearchView: () -> Void = { [weak self] in
+//        self?.navigation.popViewController(animated: false)
+//        self?.finish()
+//
+//        switch self?.navigation.viewControllers.last {
+//        case is MapViewController:
+//            let viewController = self?.navigation.viewControllers.last as? MapViewController
+//            viewController?.viewModel.
+//        case is AddMeloPlaceViewController:
+//            let viewController = self?.navigation.viewControllers.last as? AddMeloPlaceViewController
+//            viewController?.viewModel
+//
+//        }
+//
+//        let viewController = self?.navigation.viewControllers.last as? MapViewController
+//
+//        viewController?.viewModel.
+//
+//    }
     
 //    lazy var showPhotoDetail: (_ IndexPath: IndexPath) -> Void = { [weak self] indexPath in
 //        let container = DIContainer.shared.container

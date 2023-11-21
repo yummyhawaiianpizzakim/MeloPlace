@@ -18,9 +18,6 @@ class AddMeloPlaceViewController: UIViewController {
     var viewModel: AddMeloPlaceViewModel?
     let disposeBag = DisposeBag()
     
-    let pickedImage = PublishRelay<Data>()
-    let date = PublishRelay<Date>()
-    
     lazy var scrollView = UIScrollView()
     
     private lazy var imagePicker: PHPickerViewController = {
@@ -34,6 +31,8 @@ class AddMeloPlaceViewController: UIViewController {
     }()
     
     lazy var addMeloPlaceView = AddMeloPlaceView()
+    
+    lazy var doneButton = ThemeButton(title: "선택 완료")
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
@@ -50,22 +49,28 @@ class AddMeloPlaceViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .orange
+//        self.view.backgroundColor = .white
         self.configureUI()
+//        self.configureNavigationBar()
         self.bindUI()
         self.bindViewModel()
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
+    }
+    
 }
 
 private extension AddMeloPlaceViewController {
     func configureUI() {
         self.view.addSubview(self.scrollView)
-//        self.view.addSubview(self.doneButton)
+        self.view.addSubview(self.doneButton)
         self.scrollView.addSubview(self.addMeloPlaceView)
-//        self.scrollView.addSubview(self.doneButton)
         
         self.scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
+            make.edges.equalTo(self.view.safeAreaLayoutGuide)
         }
         
         self.addMeloPlaceView.snp.makeConstraints { make in
@@ -73,6 +78,13 @@ private extension AddMeloPlaceViewController {
             make.width.equalToSuperview()
         }
         
+        self.doneButton.snp.makeConstraints { make in
+//            make.bottom.equalToSuperview().offset(-20)
+            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.height.equalTo(40)
+        }
         
     }
     
@@ -85,20 +97,17 @@ private extension AddMeloPlaceViewController {
             }
             .disposed(by: self.disposeBag)
         
-//        self.addMeloPlaceView.dateButton.rx.tapGesture()
-//            .when(.recognized)
-//            .withUnretained(self)
-//            .subscribe { owner, _ in
-//                owner.showDateSelectView()
-//            }
-//            .disposed(by: self.disposeBag)
+        self.addMeloPlaceView.backButton.rx.tap
+            .asDriver()
+            .drive { [weak self] _ in
+                self?.navigationController?.popViewController(animated: true)
+            }
+            .disposed(by: self.disposeBag)
         
     }
     
     func bindViewModel() {
-        let imageData = self.pickedImage.asObservable()
-        let date = self.date.asObservable()
-            
+        
         let input = AddMeloPlaceViewModel.Input(
             viewDidLoad: Observable.just(()),
             meloPlaceTitle: self.addMeloPlaceView.titleTextField.rx.text.orEmpty.asObservable(),
@@ -115,39 +124,71 @@ private extension AddMeloPlaceViewController {
                 .when(.recognized)
                 .map({ _ in })
                 .asObservable(),
-            didTapDoneButton: self.addMeloPlaceView.doneButton.rx.tap.asObservable()
+            didTapTagUserButton: self.addMeloPlaceView.tagUserButton.rx.tapGesture()
+                .when(.recognized)
+                .map({ _ in })
+                .asObservable(),
+            didTapTagUserDeleteButton: self.addMeloPlaceView.tagUserButton.deletedName.asObservable(),
+            didTapDoneButton: self.doneButton.rx.tap.throttle(.seconds(1), scheduler: MainScheduler.instance).asObservable()
         )
         
         let output = self.viewModel?.transform(input: input)
         
-        output?.selectedAddress
-            .asDriver(onErrorJustReturn: Address(full: "", simple: ""))
-            .drive(onNext: {[weak self] address in
-                self?.addMeloPlaceView.placeButton.setText(address.full)
+        output?.selectedSpace
+            .drive(onNext: { [weak self] space in
+                guard let space else { return }
+                self?.addMeloPlaceView.placeButton.setText(space.name)
             })
             .disposed(by: self.disposeBag)
         
         output?.selectedDate
-            .asDriver(onErrorJustReturn: Date())
             .drive(with: self, onNext: { owner, date in
+                guard let date else { return }
                 owner.addMeloPlaceView.dateButton.setText(date.toString())
             })
             .disposed(by: self.disposeBag)
         
         output?.selectedMusic
-            .asDriver(onErrorJustReturn: nil)
             .drive(with: self, onNext: { owner, music in
                 guard let music = music else { return }
                 owner.addMeloPlaceView.musicButton.setText(music.name)
             })
             .disposed(by: self.disposeBag)
         
-        output?.isEnableDoneButton
-            .asDriver()
-            .drive(with: self, onNext: { owner, isEnable in
-                owner.addMeloPlaceView.doneButton.isEnabled = isEnable
+        output?.selectedUserNames
+            .drive(onNext: { [weak self] names in
+                self?.addMeloPlaceView.tagUserButton.setSnapshot(models: names)
             })
             .disposed(by: self.disposeBag)
+        
+        output?.deletedUserName
+            .drive(with: self, onNext: { owner, name in
+                self.addMeloPlaceView.tagUserButton
+                    .deleteItem(item: name)
+            })
+            .disposed(by: self.disposeBag)
+            
+        output?.isEnableDoneButton
+            .drive(with: self, onNext: { owner, isEnable in
+                owner.doneButton.isEnabled = isEnable
+            })
+            .disposed(by: self.disposeBag)
+    }
+    
+    func configureNavigationBar() {
+        let appearance = UINavigationBarAppearance()
+        let backButtonImage = UIImage(systemName: "arrow.backward")
+        
+        appearance.configureWithOpaqueBackground()
+        appearance.setBackIndicatorImage(backButtonImage, transitionMaskImage: backButtonImage)
+//        appearance.shadowColor = TrinapAsset.white.color
+        appearance.shadowColor = .themeGray100
+        self.navigationController?.navigationBar.tintColor = .black
+        
+        self.navigationItem.standardAppearance = appearance
+        self.navigationItem.scrollEdgeAppearance = appearance
+        self.navigationItem.backButtonTitle = ""
+        
     }
 }
 
@@ -174,7 +215,7 @@ extension AddMeloPlaceViewController: PHPickerViewControllerDelegate {
             }
             
             self.viewModel?.addImage(data: data)
-            self.pickedImage.accept(data)
+//            self.pickedImage.accept(data)
         }
         
     }
@@ -209,56 +250,56 @@ extension AddMeloPlaceViewController: PHPickerViewControllerDelegate {
 }
 
 extension AddMeloPlaceViewController {
-    func showDateSelectView() {
-        
-        let alert = UIAlertController(
-            title: "만료 기한을 선택해주세요",
-            message: nil,
-            preferredStyle: .alert
-        )
-        
-        let datePicker = createDatePicker()
-        alert.view.addSubview(datePicker)
-        datePicker.snp.makeConstraints { make in
-            make.centerX.equalTo(alert.view)
-            make.top.equalTo(alert.view).inset(55)
-            make.bottom.equalTo(alert.view).inset(60)
-        }
-        
-        
-        let cancelAction = UIAlertAction(
-            title: "취소",
-            style: .cancel,
-            handler: nil
-        )
-        
-        let selectAction = UIAlertAction(
-            title: "선택",
-            style: .default,
-            handler: { [weak self] _ in
-                let date = datePicker.date
-                let dateString = date.toString()
-                self?.addMeloPlaceView.dateButton.setText(dateString)
-                self?.date.accept(date)
-            }
-        )
-        
-        alert.addAction(cancelAction)
-        alert.addAction(selectAction)
-        alert.view.tintColor = .white
-        present(alert, animated: true)
-        
-    }
-    
-    func createDatePicker() -> UIDatePicker {
-        let datePicker = UIDatePicker()
-//        datePicker.date = Date()
-        datePicker.preferredDatePickerStyle = .wheels
-        datePicker.datePickerMode = .date
-        datePicker.locale = Locale(identifier: "ko-KR")
-        datePicker.timeZone = .autoupdatingCurrent
-        datePicker.tintColor = .gray
-        
-        return datePicker
-    }
+//    func showDateSelectView() {
+//
+//        let alert = UIAlertController(
+//            title: "만료 기한을 선택해주세요",
+//            message: nil,
+//            preferredStyle: .alert
+//        )
+//
+//        let datePicker = createDatePicker()
+//        alert.view.addSubview(datePicker)
+//        datePicker.snp.makeConstraints { make in
+//            make.centerX.equalTo(alert.view)
+//            make.top.equalTo(alert.view).inset(55)
+//            make.bottom.equalTo(alert.view).inset(60)
+//        }
+//
+//
+//        let cancelAction = UIAlertAction(
+//            title: "취소",
+//            style: .cancel,
+//            handler: nil
+//        )
+//
+//        let selectAction = UIAlertAction(
+//            title: "선택",
+//            style: .default,
+//            handler: { [weak self] _ in
+//                let date = datePicker.date
+//                let dateString = date.toString()
+//                self?.addMeloPlaceView.dateButton.setText(dateString)
+////                self?.date.accept(date)
+//            }
+//        )
+//
+//        alert.addAction(cancelAction)
+//        alert.addAction(selectAction)
+//        alert.view.tintColor = .white
+//        present(alert, animated: true)
+//
+//    }
+//
+//    func createDatePicker() -> UIDatePicker {
+//        let datePicker = UIDatePicker()
+////        datePicker.date = Date()
+//        datePicker.preferredDatePickerStyle = .wheels
+//        datePicker.datePickerMode = .date
+//        datePicker.locale = Locale(identifier: "ko-KR")
+//        datePicker.timeZone = .autoupdatingCurrent
+//        datePicker.tintColor = .gray
+//
+//        return datePicker
+//    }
 }

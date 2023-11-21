@@ -23,51 +23,51 @@ final class MainCell: UICollectionViewCell {
         imageView.clipsToBounds = true
         imageView.backgroundColor = .white
         imageView.contentMode = .scaleAspectFill
-        
+        imageView.layer.borderColor = UIColor.themeColor300?.cgColor
+        imageView.layer.borderWidth = 2
         return imageView
     }()
     
-    lazy var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 24.0)
-        label.textColor = .black
-        label.numberOfLines = 1
-        label.textAlignment = .center
-        return label
-    }()
-
-    lazy var descriptionLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 20.0)
-        label.textColor = .gray
-        label.numberOfLines = 3
-        label.textAlignment = .center
-        return label
-    }()
+//    lazy var titleLabel: UILabel = {
+//        let label = UILabel()
+//        label.font = .systemFont(ofSize: 24.0)
+//        label.textColor = .white
+//        label.numberOfLines = 1
+//        label.textAlignment = .center
+//        return label
+//    }()
+//
+//    lazy var descriptionLabel: UILabel = {
+//        let label = UILabel()
+//        label.font = .systemFont(ofSize: 20.0)
+//        label.textColor = .white
+//        label.numberOfLines = 1
+//        label.textAlignment = .center
+//        return label
+//    }()
+//
+//    lazy var addressLabel: UILabel = {
+//        let label = UILabel()
+//        label.font = .systemFont(ofSize: 20.0)
+//        label.textColor = .white
+//        label.numberOfLines = 1
+//        label.textAlignment = .center
+//        return label
+//    }()
     
-    lazy var addressLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 20.0)
-        label.textColor = .gray
-        label.numberOfLines = 3
-        label.textAlignment = .center
-        return label
-    }()
-    
-    lazy var musicLabel: UILabel = {
-        let label = UILabel()
-        label.font = .systemFont(ofSize: 20.0)
-        label.textColor = .gray
-        label.numberOfLines = 3
-        label.textAlignment = .center
-        return label
-    }()
+//    lazy var musicLabel: UILabel = {
+//        let label = UILabel()
+//        label.font = .systemFont(ofSize: 20.0)
+//        label.textColor = .white
+//        label.numberOfLines = 3
+//        label.textAlignment = .center
+//        return label
+//    }()
     
 //    lazy var playPauseButton = UIButton(type: .system)
 
     override init(frame: CGRect) {
         super.init(frame: frame)
-        self.contentView.backgroundColor = .cyan
         addSubviews()
         makeConstraints()
     }
@@ -83,38 +83,43 @@ final class MainCell: UICollectionViewCell {
     }
 
     func addSubviews() {
-        [self.addressLabel, self.imageView, self.titleLabel, self.descriptionLabel, self.musicLabel].forEach {
-            self.contentView.addSubview($0)
-        }
+//        [self.addressLabel, self.imageView, self.titleLabel, self.descriptionLabel, self.musicLabel].forEach {
+//            self.contentView.addSubview($0)
+//        }
+        self.contentView.addSubview(self.imageView)
     }
 
     func makeConstraints() {
-        self.addressLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(20)
-            make.centerX.equalToSuperview()
-        }
+//        self.contentView.snp.makeConstraints { make in
+//            make.centerY.equalToSuperview()
+//        }
+        
+//        self.addressLabel.snp.makeConstraints { make in
+//            make.top.equalToSuperview().offset(20)
+//            make.centerX.equalToSuperview()
+//        }
         
         self.imageView.snp.makeConstraints {
             $0.centerX.equalToSuperview()
-            $0.top.equalTo(self.addressLabel.snp.bottom).offset(20)
+            $0.top.equalToSuperview()
             $0.width.equalTo(216.0)
             $0.height.equalTo(216.0)
         }
 
-        self.titleLabel.snp.makeConstraints {
-            $0.top.equalTo(self.imageView.snp.bottom).offset(10.0 * 2)
-            $0.centerX.equalToSuperview()
-        }
-
-        self.descriptionLabel.snp.makeConstraints {
-            $0.top.equalTo(self.titleLabel.snp.bottom).offset(10.0)
-            $0.centerX.equalToSuperview()
-        }
-        
-        self.musicLabel.snp.makeConstraints { make in
-            make.top.equalTo(self.descriptionLabel.snp.bottom).offset(10)
-            make.centerX.equalToSuperview()
-        }
+//        self.titleLabel.snp.makeConstraints {
+//            $0.top.equalTo(self.imageView.snp.bottom).offset(10.0 * 2)
+//            $0.centerX.equalToSuperview()
+//        }
+//
+//        self.descriptionLabel.snp.makeConstraints {
+//            $0.top.equalTo(self.titleLabel.snp.bottom).offset(10.0)
+//            $0.centerX.equalToSuperview()
+//        }
+//
+//        self.musicLabel.snp.makeConstraints { make in
+//            make.top.equalTo(self.descriptionLabel.snp.bottom).offset(10)
+//            make.centerX.equalToSuperview()
+//        }
         
 //        self.playPauseButton.snp.makeConstraints { make in
 //            make.top.equalTo(self.musicLabel.snp.bottom).offset(10)
@@ -124,10 +129,10 @@ final class MainCell: UICollectionViewCell {
 
     func configureCell(item: MeloPlace) {
         guard let imageURLString = item.images.first else { return }
-        self.titleLabel.text = item.title
-        self.descriptionLabel.text = item.description
-        self.addressLabel.text = item.simpleAddress
-        self.musicLabel.text = item.musicName
+//        self.titleLabel.text = item.title
+//        self.descriptionLabel.text = item.description
+//        self.addressLabel.text = item.simpleAddress
+//        self.musicLabel.text = item.musicName
         self.setImage(imageURLString: imageURLString)
 
     }
@@ -136,9 +141,9 @@ final class MainCell: UICollectionViewCell {
 extension MainCell {
     private func setImage(imageURLString: String) {
         guard let url = URL(string: imageURLString) else { return }
-        let maxProfileImageSize = CGSize(width: 100, height: 100)
-        let downsamplingProcessor = DownsamplingImageProcessor(size: maxProfileImageSize)
-        self.imageView.kf.setImage(with: url, placeholder: .none, options: [.processor(downsamplingProcessor)])
+//        let maxProfileImageSize = CGSize(width: 100, height: 100)
+//        let downsamplingProcessor = DownsamplingImageProcessor(size: maxProfileImageSize)
+        self.imageView.kf.setImage(with: url, placeholder: .none, options: [])
     }
     
     

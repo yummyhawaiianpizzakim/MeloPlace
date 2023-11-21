@@ -16,8 +16,10 @@ struct UserDTO: DTOProtocol {
     var imageURL: String
     var imageWidth: Int
     var imageHeight: Int
+    var follower: [String]
+    var following: [String]
     
-    init(id: String, spotifyID: String, name: String, email: String, password: String, imageURL: String, imageWidth: Int, imageHeight: Int) {
+    init(id: String, spotifyID: String, name: String, email: String, password: String, imageURL: String, imageWidth: Int, imageHeight: Int, follower: [String], following: [String]) {
         self.id = id
         self.spotifyID = spotifyID
         self.name = name
@@ -26,6 +28,8 @@ struct UserDTO: DTOProtocol {
         self.imageURL = imageURL
         self.imageWidth = imageWidth
         self.imageHeight = imageHeight
+        self.follower = follower
+        self.following = following
     }
     
     init() {
@@ -37,24 +41,14 @@ struct UserDTO: DTOProtocol {
         self.imageURL = ""
         self.imageWidth = 0
         self.imageHeight = 0
+        self.follower = []
+        self.following = []
     }
     
-//    init(userDTO: UserDTO) {
-//        self.id = ""
-//        self.spotifyID = userDTO.spotifyID
-//        self.name = userDTO.name
-//        self.email = userDTO.email
-//        self.password = userDTO.password
-//        self.imageURL = userDTO.imageURL
-//        self.imageWidth = userDTO.imageWidth
-//        self.imageHeight = userDTO.imageHeight
-//    }
-//    
 }
 
 extension UserDTO {
     func toDomain() -> User {
-//        print("Inside toDomain function")
         let user = User(id: self.id,
                         spotifyID: self.spotifyID,
                         name: self.name,
@@ -62,10 +56,11 @@ extension UserDTO {
                         password: self.password,
                         imageURL: self.imageURL,
                         imageWidth: self.imageWidth,
-                        imageHeight: self.imageHeight
+                        imageHeight: self.imageHeight,
+                        follower: self.follower,
+                        following: self.following
             )
         
-//        print("todomain: \(user)")
         return user
     }
 }

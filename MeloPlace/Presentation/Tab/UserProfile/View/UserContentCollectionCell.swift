@@ -27,7 +27,7 @@ class UserContentCollectionCell: UICollectionViewCell {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.text = "name"
-        label.textColor = .white
+        label.textColor = .black
         label.font = .systemFont(ofSize: 8)
         label.textAlignment = .center
         return label
@@ -85,8 +85,9 @@ private extension UserContentCollectionCell {
     
     func setImage(imageURLString: String) {
         guard let url = URL(string: imageURLString) else { return }
-        let maxProfileImageSize = CGSize(width: 100, height: 100)
+        let maxProfileImageSize = CGSize(width: 300, height: 300)
         let downsamplingProcessor = DownsamplingImageProcessor(size: maxProfileImageSize)
+        self.imageView.kf.indicatorType = .activity
         self.imageView.kf.setImage(with: url, placeholder: .none, options: [.processor(downsamplingProcessor)])
     }
     

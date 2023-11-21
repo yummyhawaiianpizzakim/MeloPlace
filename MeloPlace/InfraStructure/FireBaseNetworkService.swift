@@ -62,6 +62,7 @@ enum CRUD {
 enum Access {
     case user
     case meloPlace
+    case comment(meloPlaceID: String)
     
     var path: String {
         switch self {
@@ -69,18 +70,44 @@ enum Access {
             return "users"
         case .meloPlace:
             return "meloPlace"
+        case .comment:
+            return "comment"
         }
     }
 }
 
+enum FirebaseFilter {
+    case coordinate([FirebaseQueryDTO])
+    case date([FirebaseQueryDTO])
+    case isEqualTo([FirebaseQueryDTO])
+    case taged([FirebaseQueryDTO])
+    case anotherUser([FirebaseQueryDTO])
+    case `in`([FirebaseQueryDTO])
+}
+
+struct FirebaseQueryDTO {
+    var key: String
+    var value: Any
+}
+
 protocol FireBaseNetworkServiceProtocol {
+    var uid: BehaviorRelay<String?> { get }
+    func determineUserID(id: String?) throws -> String
     func signIn(email: String, password: String) -> Single<Bool>
     func signOut() -> Single<Bool>
-//    func signUp(email: String, password: String, spotifyID: String, userDTO: UserDTO) -> Single<Bool>
     func signUp(userDTO: UserDTO) -> Single<Bool>
-    func fetchUserInforWithSpotifyID(spotifyID: String) -> Observable<UserDTO?>
-    func create<T: DTOProtocol>(dto: T, userCase: UserCase, access: Access) -> Single<T>
-    func read<T: DTOProtocol>(type: T.Type, userCase: UserCase, access: Access) -> Observable<T>
+    func fetchUserInfor(withSpotifyID id: String) -> Observable<UserDTO?>
+    
+    func create<T: DTOProtocol>(dto: T, access: Access) -> Single<T>
+    func read<T: DTOProtocol>(type: T.Type, access: Access, firebaseFilter: FirebaseFilter) -> Observable<T>
+    func update<T: DTOProtocol>(dto:T, access: Access) -> Single<T>
+    func delete<T: DTOProtocol>(dto: T, access: Access) -> Single<T>
+    func readForPagination<T: DTOProtocol>(type: T.Type, access: Access, firebaseFilter: FirebaseFilter) -> Observable<T>
+    func initMeloPlaceLastSnapshot()
+    func initCommentLastSnapshot()
+    
+    func uploadDataStorage(data: Data, path: StoragePath) -> Single<String>
+    func downloadDataStorage(fileName: String) -> Single<Data>
 }
 
 class FireBaseNetworkService: FireBaseNetworkServiceProtocol {
@@ -88,7 +115,10 @@ class FireBaseNetworkService: FireBaseNetworkServiceProtocol {
     var db: Firestore
     var auth: Auth
     private var storage: Storage
-    private(set) var uid: BehaviorRelay<String?> = BehaviorRelay<String?>(value: nil)
+    var uid: BehaviorRelay<String?> = BehaviorRelay<String?>(value: nil)
+    var userLastSnapshot: QueryDocumentSnapshot?
+    var meloPlaceLastSnapshot: QueryDocumentSnapshot?
+    var commentLastSnapshot: QueryDocumentSnapshot?
     
     init() {
         self.db = Firestore.firestore()
@@ -97,6 +127,12 @@ class FireBaseNetworkService: FireBaseNetworkServiceProtocol {
         self.uid.accept(auth.currentUser?.uid)
     }
     
+    func determineUserID(id: String?) throws -> String {
+        if let id { return id }
+        guard let id = self.uid.value else { throw NetworkServiceError.noAuthError }
+        
+        return id
+    }
 }
 
 extension FireBaseNetworkService {
@@ -171,18 +207,20 @@ extension FireBaseNetworkService {
                               password: userDTO.password,
                               imageURL: userDTO.imageURL,
                               imageWidth: userDTO.imageWidth,
-                              imageHeight: userDTO.imageHeight)
-        try db.collection(UserCase.currentUser.path).document(uuid)
+                              imageHeight: userDTO.imageHeight,
+                              follower: userDTO.follower,
+                              following: userDTO.following)
+        try db.collection(Access.user.path).document(uuid)
             .setData(from: userDto)
     }
     
-    func fetchUserInforWithSpotifyID(spotifyID: String) -> Observable<UserDTO?> {
+    func fetchUserInfor(withSpotifyID id: String) -> Observable<UserDTO?> {
         return Observable.create { [weak self] observer in
             
             guard let self = self else { return Disposables.create() }
             
             self.db.collection(Access.user.path)
-                .whereField("spotifyID", isEqualTo: spotifyID)
+                .whereField("spotifyID", isEqualTo: id)
                 .getDocuments { (querySnapshot, error) in
                     if let error = error {
                         observer.onError(error)
@@ -208,29 +246,157 @@ extension FireBaseNetworkService {
 }
 
 extension FireBaseNetworkService {
-    @discardableResult
-    private func documentReference(userCase: UserCase) throws -> DocumentReference {
-        switch userCase {
-        case .currentUser:
-            guard let currentUserUid = uid.value else { throw NetworkServiceError.noAuthError }
-            return db.collection(userCase.path).document(currentUserUid)
-        case let .anotherUser(uid):
-            return db.collection(userCase.path).document(uid)
+    private func makeQuery(collection: CollectionReference, filter: FirebaseFilter? = nil) throws -> Query {
+        var query: Query
+        
+        if let filter = filter {
+            switch filter {
+            case .coordinate(let queryDTO):
+                let westLat = queryDTO[0]
+                let eastLat = queryDTO[1]
+                let userID = queryDTO[2]
+                guard let userIDs = queryDTO[2].value as? [String]
+                else { throw NetworkServiceError.needFilterError }
+                
+                query = collection
+                    .whereField(westLat.key, isGreaterThan: westLat.value)
+                    .whereField(eastLat.key, isLessThan: eastLat.value)
+                    .whereField(userID.key, in: userIDs)
+                
+                return query
+            case .date(let date):
+                guard
+                    let date = date.first,
+                    let value = date.value as? Bool
+                else { throw NetworkServiceError.needFilterError }
+                query = collection
+                    .order(by: date.key, descending: value)
+                
+                return query
+            case .isEqualTo(let data):
+                guard let firstFilter = data.first
+                else { throw NetworkServiceError.needFilterError }
+                query = collection
+                    .whereField(firstFilter.key, isEqualTo: firstFilter.value)
+                
+                return query
+            case .taged(let data):
+                guard let data = data.first,
+                      let values = data.value as? [String],
+                      !values.isEmpty
+                else { throw NetworkServiceError.needFilterError }
+                query = collection
+                    .whereField(data.key, arrayContains: data.value)
+                
+                return query
+            case .anotherUser(let data):
+                guard let data = data.first,
+                      let value = data.value as? String,
+                      value != ""
+                else { throw NetworkServiceError.needFilterError }
+                let startValue = "\(value)"
+                let endValue = "\(value)\u{f8ff}"
+                query = collection
+                    .whereField(data.key, isGreaterThanOrEqualTo: startValue)
+                    .whereField(data.key, isLessThanOrEqualTo: endValue)
+                
+                return query
+            case .in(let data):
+                guard let data = data.first,
+                      let values = data.value as? [Any],
+                      !values.isEmpty
+                else { throw NetworkServiceError.needFilterError }
+                query =
+                collection.whereField(data.key, in: values)
+                
+                return query
+            }
+        } else {
+            query = collection
+            return query
         }
     }
     
-    func create<T: DTOProtocol>(dto: T, userCase: UserCase, access: Access) -> Single<T> {
+    private func makePaginateQuery(
+        collection: CollectionReference,
+        filter: FirebaseFilter,
+        lastSnapShot: QueryDocumentSnapshot?) throws -> Query {
+            var query: Query
+                switch filter {
+                case .date(let datas):
+                    guard
+                        let date = datas.first,
+                        let value = date.value as? Bool
+                    else { throw NetworkServiceError.needFilterError }
+                    if let lastSnapShot {
+                        query = collection
+                            .order(by: date.key, descending: value)
+                            .limit(to: 20)
+                            .start(afterDocument: lastSnapShot)
+                        
+                        return query
+                    } else {
+                        query = collection
+                            .order(by: date.key, descending: value)
+                            .limit(to: 20)
+                        
+                        return query
+                    }
+                    
+                case .coordinate(_):
+                    break
+                case .isEqualTo(_):
+                    break
+                case .taged(_):
+                    break
+                case .anotherUser(_):
+                    break
+                case .in(let data):
+                    guard let data = data.first,
+                          let values = data.value as? [Any],
+                          !values.isEmpty
+                    else { throw NetworkServiceError.needFilterError }
+                    
+                    query = collection.whereField(data.key, in: values)
+                    
+                    return query
+                }
+            
+            query = collection
+            
+            return query
+        }
+    
+    
+    @discardableResult
+    private func collectionReference(access: Access) throws -> CollectionReference {
+        switch access {
+        case .user:
+            return self.db.collection(access.path)
+        case .meloPlace:
+            return self.db.collection(access.path)
+        case .comment(let meloPlaceID):
+            return self.db.collection(Access.meloPlace.path).document(meloPlaceID).collection(access.path)
+        }
+    }
+    
+    func create<T: DTOProtocol>(dto: T, access: Access) -> Single<T> {
         return Single<T>.create { [weak self] single in
             do {
                 guard let self = self else { throw NetworkServiceError.noNetworkService }
-                let ref = try self.documentReference(userCase: userCase)
+                let ref = try self.collectionReference(access: access)
                 switch access {
                 case .user:
                     try ref
+                        .document(dto.id)
                         .setData(from: dto)
                 case .meloPlace:
-                    try ref.collection(access.path)
-                        .document("\(dto.id)")
+                    try ref
+                        .document(dto.id)
+                        .setData(from: dto)
+                case .comment(_):
+                    try ref
+                        .document(dto.id)
                         .setData(from: dto)
                 }
                 single(.success(dto))
@@ -242,52 +408,229 @@ extension FireBaseNetworkService {
         }
     }
     
-    func read<T: DTOProtocol>(type: T.Type, userCase: UserCase, access: Access) -> Observable<T> {
-        return Observable<T>.create { [weak self] obserser in
+    func read<T: DTOProtocol>(type: T.Type, access: Access, firebaseFilter: FirebaseFilter) -> Observable<T> {
+        return Observable<T>.create { [weak self] observer in
             do {
-                guard let self = self else { throw NetworkServiceError.noNetworkService }
-                let ref = try self.documentReference(userCase: userCase)
+                guard let self = self
+                else { throw NetworkServiceError.noNetworkService }
+                
+                let ref = try self.collectionReference(access: access)
+                
                 switch access {
                 case .user:
-                    ref.getDocument(as: type) { result in
-                        switch result {
-                        case .success(let user):
-//                            print("onNext \(user)")
-//                            print("read user success")
-                            obserser.onNext(user)
-                        case .failure(let error):
-//                            print("onError \(error)")
-//                            print("read user error")
-                            obserser.onError(error)
-                        }
-                        obserser.onCompleted()
-                        
-                    }
-                case .meloPlace:
-                    ref.collection(access.path).getDocuments { snapshot, error in
-                        guard let snapshot = snapshot else { return }
+                    let query = try self.makeQuery(collection: ref, filter: firebaseFilter)
+                    query.getDocuments { snapshot, error in
+                        guard let snapshot else { return }
                         for document in snapshot.documents {
                             do {
-                                let data = try document.data(as: type)
-//                                print(data)
-                                obserser.onNext(data)
-                                
+                                let user = try document.data(as: type)
+                                observer.onNext(user)
                             } catch let error {
-                                obserser.onError(error)
+                                observer.onError(error)
                             }
                         }
-                        obserser.onCompleted()
+                        observer.onCompleted()
                     }
-//                    obserser.onCompleted()
+                case .meloPlace:
+                    let query = try self.makeQuery(collection: ref, filter: firebaseFilter)
+                    
+                    query.getDocuments { snapshot, error in
+                        guard let snapshot
+                        else { return }
+                        for document in snapshot.documents {
+                            do {
+                                let meloPlace = try document.data(as: type)
+                                observer.onNext(meloPlace)
+                            } catch let error {
+                                observer.onError(error)
+                            }
+                        }
+                        observer.onCompleted()
+                    }
+                case .comment(_):
+                    let query =
+                    try self.makeQuery(collection: ref, filter: firebaseFilter)
+                    
+                    query.getDocuments { snapshot, error in
+                        if let error = error { return }
+                        guard let snapshot
+                        else { return }
+                        
+                        for document in snapshot.documents {
+                            do {
+                                let comment = try document.data(as: type)
+                                observer.onNext(comment)
+                            } catch let error {
+                                observer.onError(error)
+                            }
+                        }
+                        observer.onCompleted()
+                    }
+                    
                 }
-                
             } catch let error {
-                obserser.onError(error)
+                observer.onError(error)
             }
-//            obserser.onCompleted()
             
             return Disposables.create()
         }
+    }
+    
+    func update<T: DTOProtocol>(dto:T, access: Access) -> Single<T> {
+        return Single<T>.create { [weak self] single in
+            do {
+                guard let self = self else { throw NetworkServiceError.noNetworkService }
+                let ref = try self.collectionReference(access: access)
+                switch access {
+                case .user:
+                    try ref
+                        .document(dto.id)
+                        .setData(from: dto, merge: true)
+                case .meloPlace:
+                    try ref
+                        .document(dto.id)
+                        .setData(from: dto, merge: true)
+                case .comment(_):
+                    try ref
+                        .document(dto.id)
+                        .setData(from: dto, merge: true)
+                }
+                single(.success(dto))
+            } catch let error {
+                single(.failure(error))
+            }
+            
+            return Disposables.create()
+        }
+    }
+    
+    /// Delete
+    /// - Parameters:
+    ///   - userCase: current User / another User
+    ///   - access: quests / receiveQuests / userInfo
+    ///   - dto: DTO (Codable)
+    /// - Returns: Single<T>
+    func delete<T: DTOProtocol>(dto: T, access: Access) -> Single<T> {
+        return Single<T>.create { [weak self] single in
+            do {
+                guard let self = self else { throw NetworkServiceError.noNetworkService }
+                let ref = try self.collectionReference(access: access)
+                switch access {
+                case .user:
+                    ref.document(dto.id)
+                        .delete(completion: { error in
+                            if let error {
+                                single(.failure(error))
+                            } else {
+                                single(.success(dto))
+                            }
+                        })
+                case .meloPlace:
+                    ref.document(dto.id)
+                        .delete(completion: { error in
+                            if let error {
+                                single(.failure(error))
+                            } else {
+                                single(.success(dto))
+                            }
+                        })
+                case .comment(_):
+                    ref.document(dto.id)
+                        .delete(completion: { error in
+                            if let error {
+                                single(.failure(error))
+                            } else {
+                                single(.success(dto))
+                            }
+                        })
+                }
+            } catch let error {
+                single(.failure(error))
+            }
+            return Disposables.create()
+        }
+    }
+    
+    func readForPagination<T: DTOProtocol>(type: T.Type, access: Access, firebaseFilter: FirebaseFilter) -> Observable<T> {
+        return Observable<T>.create { [weak self] observer in
+            do {
+                guard let self = self
+                else { throw NetworkServiceError.noNetworkService }
+                
+                let ref = try self.collectionReference(access: access)
+                
+                switch access {
+                case .user:
+                    let query = try self.makePaginateQuery(collection: ref, filter: firebaseFilter, lastSnapShot: self.meloPlaceLastSnapshot)
+                    query.getDocuments { snapshot, error in
+                        guard let snapshot else { return }
+                        self.userLastSnapshot = snapshot.documents.last
+                        for document in snapshot.documents {
+                            do {
+                                let user = try document.data(as: type)
+                                print(user)
+                                observer.onNext(user)
+                            } catch let error {
+                                observer.onError(error)
+                            }
+                        }
+                        observer.onCompleted()
+                    }
+                case .meloPlace:
+                    let query = try self.makePaginateQuery(collection: ref, filter: firebaseFilter, lastSnapShot: self.meloPlaceLastSnapshot)
+                    
+                    query.addSnapshotListener { snapshot, error in
+                        guard let snapshot
+                        else {
+                            observer.onError(error!)
+                            return  }
+                        self.meloPlaceLastSnapshot = snapshot.documents.last
+                        for document in snapshot.documents {
+                            do {
+                                let meloPlace = try document.data(as: type)
+                                observer.onNext(meloPlace)
+                            } catch let error {
+                                observer.onError(error)
+                            }
+                        }
+                        observer.onCompleted()
+                    }
+                case .comment(_):
+                    let query = try self.makePaginateQuery(collection: ref, filter: firebaseFilter, lastSnapShot: self.commentLastSnapshot)
+                    
+                    query.addSnapshotListener { snapshot, error in
+                        guard let snapshot else { return }
+                    self.commentLastSnapshot = snapshot.documents.last
+                        for document in snapshot.documents {
+                            do {
+                                let comment = try document.data(as: type)
+                                observer.onNext(comment)
+                            } catch let error {
+                                observer.onError(error)
+                            }
+                        }
+                        observer.onCompleted()
+                    }
+                    
+                }
+            } catch let error {
+                observer.onError(error)
+            }
+            
+            return Disposables.create()
+        }
+    }
+    
+    func initMeloPlaceLastSnapshot() {
+        self.meloPlaceLastSnapshot = nil
+    }
+    
+    func initCommentLastSnapshot() {
+        self.commentLastSnapshot = nil
+    }
+    
+    func initUserLastSnapshot() {
+        self.userLastSnapshot = nil
     }
 }
 

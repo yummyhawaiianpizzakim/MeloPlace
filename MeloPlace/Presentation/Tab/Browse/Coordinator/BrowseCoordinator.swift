@@ -31,23 +31,61 @@ class BrowseCoordinator: CoordinatorProtocol {
         
         let vc = BrowseViewController(viewModel: vm)
         
-//        vm.setActions(
-//            actions: PhotoListViewModelActions(
-//                showPhotoDetail: self.showPhotoDetail
-//            )
-//        )
+        vm.setActions(
+            actions: BrowseViewModelActions(
+                showSearchUserView: self.showSearchUserView,
+                showMeloPlaceDetailView: self.showMeloPlaceDetailView,
+                showAnotherUserProfileView: self.showAnotherUserProfileView,
+                showCommentsView: self.showCommentsView
+            )
+        )
         
         self.navigation.pushViewController(vc, animated: true)
     }
     
-//    lazy var showPhotoDetail: (_ IndexPath: IndexPath) -> Void = { [weak self] indexPath in
-//        let container = DIContainer.shared.container
-//        guard let vm = container.resolve(PhotoDetailViewModel.self) else { return }
-//        vm.indexpath = indexPath
-//        let vc = PhotoDetailViewController(viewModel: vm)
-////        self?.navigation.present(vc, animated: true)
-//        self?.navigation.pushViewController(vc, animated: true)
-//    }
+    lazy var showSearchUserView: () -> Void = { [weak self] in
+        guard let self else { return }
+        let coordinator = SearchUserCoordinator(navigation: self.navigation)
+        
+        self.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
+    }
+    
+    lazy var showMeloPlaceDetailView: (_ meloPlaces: [MeloPlace], _ indexPath: IndexPath) -> Void = { [weak self] meloPlaces, indexPath in
+        guard let self = self else { return }
+        let coordinator = MeloPlaceDetailCoordinator(navigation: self.navigation)
+        
+        coordinator.meloPlaces.accept(meloPlaces)
+        coordinator.indexPath.accept(indexPath)
+//        coordinator.indexPath = indexPath
+        self.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
+    }
+    
+    lazy var showAnotherUserProfileView: (_ id: String) -> Void = { [weak self] id in
+        guard let self = self else { return }
+        let coordinator = AnotherUserProfileCoordinator(navigation: self.navigation)
+        coordinator.userID = id
+        self.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
+    }
+    
+    lazy var showCommentsView: (_ meloPlace: MeloPlace) -> Void = { [weak self] meloPlace in
+        guard let self = self else { return }
+        let commentCoordinator = CommentCoordinator(navigation: self.navigation)
+        commentCoordinator.meloPlace.accept(meloPlace)
+        commentCoordinator.finishDelegate = self
+        self.childCoordinators.append(commentCoordinator)
+        commentCoordinator.start()
+    }
+    
+    lazy var closeCommentsView: () -> Void = { [weak self] in
+        self?.navigation.popViewController(animated: false)
+        self?.finish()
+    }
 }
 
 extension BrowseCoordinator: CoordinatorFinishDelegate {

@@ -31,10 +31,11 @@ class UserProfileCoordinator: CoordinatorProtocol {
         
         let vc = UserProfileViewController(viewModel: vm)
         
-        
         vm.setActions(
             actions: UserProfileViewModelActions(
-                showMeloPlaceDetailView: self.showMeloPlaceDetailView
+                showMeloPlaceDetailView: self.showMeloPlaceDetailView,
+                showSearchUserView: self.showSearchUserView,
+                showFollowingUserView: self.showFollowingUserView
             )
         )
         
@@ -44,10 +45,28 @@ class UserProfileCoordinator: CoordinatorProtocol {
     lazy var showMeloPlaceDetailView: (_ meloPlaces: [MeloPlace], _ indexPath: IndexPath) -> Void = { [weak self] meloPlaces, indexPath in
         guard let self = self else { return }
         let coordinator = MeloPlaceDetailCoordinator(navigation: self.navigation)
-//        coordinator.meloPlace.accept(meloPlace)
+        
         coordinator.meloPlaces.accept(meloPlaces)
-//        coordinator.indexPath.accept(indexPath)
-        coordinator.indexPath = indexPath
+        coordinator.indexPath.accept(indexPath)
+//        coordinator.indexPath = indexPath
+        self.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
+    }
+    
+    lazy var showSearchUserView: () -> Void = { [weak self] in
+        guard let self = self else { return }
+        let coordinator = SearchUserCoordinator(navigation: self.navigation)
+        self.childCoordinators.append(coordinator)
+        coordinator.finishDelegate = self
+        coordinator.start()
+    }
+    
+    lazy var showFollowingUserView: (_ id: String, _ tabState: Int) -> Void = { [weak self] id, tabState in
+        guard let self = self else { return }
+        let coordinator = FollowingUserListCoordinator(navigation: self.navigation)
+        coordinator.userID = id
+        coordinator.tabState = tabState
         self.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
         coordinator.start()

@@ -9,7 +9,8 @@ import Foundation
 import RxSwift
 
 protocol FetchMeloPlaceUseCaseProtocol: AnyObject {
-    func fetch() -> Observable<[MeloPlace]> 
+    func fetch(id: String?) -> Observable<[MeloPlace]>
+    func fetchTagedMeloPLace(id: String?) -> Observable<[MeloPlace]>
 }
 
 class FetchMeloPlaceUseCase: FetchMeloPlaceUseCaseProtocol {
@@ -19,8 +20,12 @@ class FetchMeloPlaceUseCase: FetchMeloPlaceUseCaseProtocol {
         self.meloPlaceRepository = meloPlaceRepository
     }
     
-    func fetch() -> Observable<[MeloPlace]> {
-        return self.meloPlaceRepository.fetchUserMeloPlace().asObservable()
+    func fetch(id: String?) -> Observable<[MeloPlace]> {
+        return self.meloPlaceRepository.fetchUserMeloPlace(id: id)
+    }
+    
+    func fetchTagedMeloPLace(id: String?) -> Observable<[MeloPlace]> {
+        return self.meloPlaceRepository.fetchTagedMeloPlace(id: id)
     }
     
 }

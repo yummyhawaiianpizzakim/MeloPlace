@@ -12,8 +12,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
     var appCoordinator: AppCoordinator?
-    lazy var rootViewController = SpotifyViewController()
-    var spotifyService = SpotifyService.shared
+    var spotifyService = DIContainer.shared.container.resolve(SpotifyServiceProtocol.self)
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -47,11 +46,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            print("No access token error =", error_description)
 //        }
         
-        let parameters = spotifyService.appRemote.authorizationParameters(from: url)
+        let parameters = spotifyService?.appRemote.authorizationParameters(from: url)
         if let code = parameters?["code"] {
-            spotifyService.responseCode = code
+            spotifyService?.responseCode = code
         } else if let access_token = parameters?[SPTAppRemoteAccessTokenKey] {
-            spotifyService.accessToken = access_token
+            spotifyService?.accessToken = access_token
         } else if let error_description = parameters?[SPTAppRemoteErrorDescriptionKey] {
             print("No access token error =", error_description)
         }
@@ -76,12 +75,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //            rootViewController.appRemote.connect()
 //        }
         
-        if let accessToken = spotifyService.appRemote.connectionParameters.accessToken {
-            spotifyService.appRemote.connectionParameters.accessToken = accessToken
-            spotifyService.appRemote.connect()
-        } else if let accessToken = spotifyService.accessToken {
-            spotifyService.appRemote.connectionParameters.accessToken = accessToken
-            spotifyService.appRemote.connect()
+        if let accessToken = spotifyService?.appRemote.connectionParameters.accessToken {
+            spotifyService?.appRemote.connectionParameters.accessToken = accessToken
+            spotifyService?.appRemote.connect()
+        } else if let accessToken = spotifyService?.accessToken {
+            spotifyService?.appRemote.connectionParameters.accessToken = accessToken
+            spotifyService?.appRemote.connect()
         }
     }
 
@@ -91,7 +90,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 //        if rootViewController.appRemote.isConnected {
 //            rootViewController.appRemote.disconnect()
 //        }
-        
+        guard let spotifyService = self.spotifyService else { return }
         if spotifyService.appRemote.isConnected {
             spotifyService.appRemote.disconnect()
         }

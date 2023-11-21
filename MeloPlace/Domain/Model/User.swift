@@ -16,8 +16,10 @@ struct User: Hashable {
     var imageURL: String
     var imageWidth: Int
     var imageHeight: Int
+    var follower: [String]
+    var following: [String]
     
-    init(id: String, spotifyID: String, name: String, email: String, password: String, imageURL: String, imageWidth: Int, imageHeight: Int) {
+    init(id: String, spotifyID: String, name: String, email: String, password: String, imageURL: String, imageWidth: Int, imageHeight: Int, follower: [String], following: [String]) {
         self.id = id
         self.spotifyID = spotifyID
         self.name = name
@@ -26,8 +28,10 @@ struct User: Hashable {
         self.imageURL = imageURL
         self.imageWidth = imageWidth
         self.imageHeight = imageHeight
+        self.follower = follower
+        self.following = following
     }
-    
+  
     init() {
         self.id = ""
         self.spotifyID = ""
@@ -37,5 +41,22 @@ struct User: Hashable {
         self.imageURL = ""
         self.imageWidth = 0
         self.imageHeight = 0
+        self.follower = []
+        self.following = []
+    }
+}
+
+extension User {
+    func toDTO() -> UserDTO {
+        return UserDTO(id: self.id,
+                       spotifyID: self.spotifyID,
+                       name: self.name,
+                       email: self.email,
+                       password: self.password,
+                       imageURL: self.imageURL,
+                       imageWidth: self.imageWidth,
+                       imageHeight: self.imageHeight,
+                       follower: self.follower,
+                       following: self.following)
     }
 }
