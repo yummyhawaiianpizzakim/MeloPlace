@@ -33,6 +33,7 @@ class DIContainer {
     func registerRepository() {
         self.registerSignRepository()
         self.registerSpotifyRepository()
+        self.registerCommentRepository()
         self.registerImageRepository()
         self.registerMapRepository()
         self.registerUserRepository()
@@ -46,6 +47,7 @@ class DIContainer {
         self.registerSearchMusicUseCase()
         self.registerFetchSpotifyUserProfileUseCase()
         self.registerTryConnectSpotifyUseCase()
+        self.registerPlayMusicUseCase()
         self.registerUpdatePlayerStateUseCase()
         self.registerObservePlayerStateUseCase()
         self.registerUploadImageUseCase()
