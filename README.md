@@ -21,7 +21,7 @@
 | ------------------------------------------------------------ | ------------------------------------------------------- |
 | 화면 구현 | UIKit |
 | 데이터베이스 | Firebase |
-| 의존성 관리 도구 | CocoaPads |
+| 의존성 관리 도구 | CocoaPads |
 | 디자인 패턴 | Clean Architecture With MVVM-C |
 | 비동기 처리 | RxSwift |
 | 통신 네트워크 | Alamofire |
@@ -33,19 +33,42 @@
 
 # 주요 기능  
 
-## 멜로플레이스 플레이리스트  
+## 내 게시물의 음악을 플레이리스트로 들을 수 있습니다.  
+| 로그인 | 플레이리스트 |
+|:-:|:-:|
+| ![IMG_5635](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/af6b2ae6-41b4-4e26-9f97-07c38d9b61fb) 
+| ![IMG_5623](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/e22f0c11-9242-4c52-906c-b693fad57956) |  
 
-## 멜로플레이스 지도  
+## 나와 팔로잉한 유저의 게시물을 지도에서 볼 수 있습니다.  
+| 지도 | 장소 검색 | 현재 위치 검색 |
+|:-:|:-:|:-:|
+| ![IMG_5624](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/78187e11-5bfb-4977-8af3-4d98e51a73a0) 
+| ![IMG_5628](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/9b4f4188-429d-407a-bccd-4248d510a95e) 
+| ![IMG_5629](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/8644ef37-dd00-4e3b-9c1e-b6fa341cdcd3) |  
+## 게시물을 추가하여 추억을 저장할 수 있습니다.  
+| 게시물 추가 | 음악 검색 | 날짜 선택 |
+|:-:|:-:|:-:|
+| ![IMG_5632](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/77db3761-0102-4e77-b110-3e804169156b) 
+| ![IMG_5627](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/263d4b89-4d28-47ee-933a-ae1646f3da00) 
+| ![IMG_5630](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/31113ec6-cdb3-471c-9503-e4ed7e8dd079) |  
+## 다른 유저의 게시물들을 둘러볼 수 있습니다.  
+| 브라우저 | 유저 검색 |
+|:-:|:-:|
+| ![IMG_5625](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/351f9547-5587-46a4-bd66-c4314cb9d3a9) 
+| ![IMG_5631](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/f2570cc4-19a5-4abd-ba49-9c9f41dae707) |  
+## 나의 정보, 내 게시물, 태그 된 게시물을 확인할 수 있습니다.   
+| 유저프로파일 | 팔로우 리스트 |
+|:-:|:-:|
+| ![IMG_5626](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/5d53c5b1-2262-477c-a9ef-10d56d1d0d9e) 
+| ![IMG_5636](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/ab47afd3-4b79-449d-aedc-aab81c520afe) |  
+## 게시물의 상세하게 볼 수 있습니다.  
+| ![IMG_5626](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/0592bd09-b142-4ab2-9a8c-fe17a577bf15) |  
 
-## 멜로플레이스 추가  
-
-## 멜로플레이스 브라우저  
-
-## 유저프로파일  
-
-## 멜로플레이스 상세  
-
-## 게시물 댓글  
+## 댓글로 다른 사람과 소통 할 수 있습니다.  
+| 댓글 |  |
+|:-:|:-:|
+| ![IMG_5622](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/9306ca3f-d13a-411b-bfc9-39a7a96109b6) 
+| ![IMG_5633](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/103d8d37-7b79-4af2-91f2-ec61597a112a) |  
 
 # 기술 소개  
 
@@ -85,7 +108,7 @@
 ## FireBase  
 
 ### 도입 이유  
-사용자 인증, 정보 저장 등의 기능 구현을 위해 별도의 서버 구현없이 빠르게 개발 가능한 FireBase를 사용하였습니다.  
+- 사용자 인증, 정보 저장 등의 기능 구현을 위해 별도의 서버 구현없이 빠르게 개발 가능한 FireBase를 사용하였습니다.  
 
 ### 도입 결과  
 - Firebase Authentication을 사용하여 이메일 기반으로 Spotify의 UID정보가 일치하는 유저 정보를 찾아 자동 로그인 기능을 구현하였습니다.  
