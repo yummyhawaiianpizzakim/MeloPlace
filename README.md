@@ -56,7 +56,9 @@
 | <img src="https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/5d53c5b1-2262-477c-a9ef-10d56d1d0d9e" width="200"> | <img src="https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/ab47afd3-4b79-449d-aedc-aab81c520afe" width="200"> |  
 
 ## 🔎 게시물의 상세하게 볼 수 있습니다.  
-<img src="https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/0592bd09-b142-4ab2-9a8c-fe17a577bf15" width="200">  
+| 상세 내용 |
+|:-:|
+| <img src="https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/f9b4d7e6-0264-44bc-a792-e5be52e93174" width="200"> |  
 
 ## 💬 댓글로 다른 유저와 소통 할 수 있습니다.  
 | 댓글 |  |
