@@ -214,7 +214,8 @@ final class BrowseCollectionCell: UICollectionViewCell {
         
         self.imageView.snp.makeConstraints { make in
             make.top.equalTo(self.topView.snp.bottom).offset(15)
-            make.horizontalEdges.equalToSuperview()
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
             make.height.equalTo(400)
         }
         

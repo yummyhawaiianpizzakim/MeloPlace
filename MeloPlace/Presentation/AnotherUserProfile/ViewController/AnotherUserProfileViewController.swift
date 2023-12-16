@@ -230,14 +230,14 @@ private extension AnotherUserProfileViewController {
                 cell.followerCountLabel.rx.tapGesture()
                     .when(.recognized)
                     .bind { _ in
-                        viewModel.showFollowingUserView(tabState: self.tabstate.value)
+                        viewModel.showFollowingUserView(tabState: 0)
                     }
                     .disposed(by: self.disposeBag)
                 
                 cell.followingCountLabel.rx.tapGesture()
                     .when(.recognized)
                     .bind { _ in
-                        viewModel.showFollowingUserView(tabState: self.tabstate.value)
+                        viewModel.showFollowingUserView(tabState: 1)
                     }
                     .disposed(by: self.disposeBag)
                     

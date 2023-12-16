@@ -1,16 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "album_black_48dp (1).svg",
+      "filename" : "MeloPlaceLogoX1.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "album_black_48dp.svg",
+      "filename" : "MeloPlaceLogoX2.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
+      "filename" : "MeloPlaceLogoX3.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

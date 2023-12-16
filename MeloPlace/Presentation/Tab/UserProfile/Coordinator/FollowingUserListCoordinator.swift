@@ -35,13 +35,14 @@ class FollowingUserListCoordinator: CoordinatorProtocol {
         
         let vc = FollowingUserListViewController(viewModel: vm)
         vc.tabstate.accept(self.tabState ?? 0)
+        vc.hidesBottomBarWhenPushed = true
         vm.userID = self.userID
         vm.setActions(
             actions:
                 FollowingUserListViewModelActions(
                     showAnotherUserProfileView: self.showAnotherUserProfileView)
         )
-        self.navigation.hidesBottomBarWhenPushed = true
+        
         self.navigation.pushViewController(vc, animated: true)
     }
     

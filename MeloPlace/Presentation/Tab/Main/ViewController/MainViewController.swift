@@ -108,7 +108,7 @@ private extension MainViewController {
         self.mainCollectionView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
             make.top.equalTo(self.titleLabel.snp.bottom).offset(10)
-            make.height.equalTo(230)
+            make.height.equalTo(260)
         }
         
         self.titleLabel.snp.makeConstraints { make in
@@ -279,11 +279,11 @@ private extension MainViewController {
 
 private extension MainViewController {
     func configureLayout() -> UICollectionViewLayout {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(250), heightDimension: .absolute(216))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .absolute(240), heightDimension: .absolute(240))
         
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(250), heightDimension: .absolute(216))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .absolute(240), heightDimension: .absolute(240))
         
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         

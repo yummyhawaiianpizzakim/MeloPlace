@@ -112,7 +112,8 @@ private extension SelectDateViewController {
         
         self.doneButton.snp.makeConstraints { make in
             make.top.equalTo(self.datePicker.snp.bottom)
-            make.horizontalEdges.equalToSuperview()
+            make.leading.equalToSuperview().offset(15)
+            make.trailing.equalToSuperview().offset(-15)
             make.bottom.equalToSuperview().offset(-20)
             make.height.equalTo(50)
         }

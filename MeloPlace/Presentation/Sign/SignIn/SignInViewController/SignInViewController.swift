@@ -21,12 +21,16 @@ class SignInViewController: UIViewController {
     
     private var appUIImageView: UIImageView = {
         let view = UIImageView()
-        view.image = UIImage(named: "album")
+        view.image = UIImage(named: "Album")?.withRenderingMode(.alwaysTemplate)
         view.tintColor = .themeColor300
         return view
     }()
     
-    lazy var signInButton = ThemeButton(title: "Sign In With Spotify")
+    lazy var signInButton: ThemeButton = {
+        let button = ThemeButton(title: "Sign In With Spotify")
+        button.titleLabel?.font = .systemFont(ofSize: 15)
+        return button
+    }()
     
     override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nil, bundle: nil)
@@ -93,7 +97,8 @@ private extension SignInViewController {
             
             self.view.addSubview(indicator)
             indicator.snp.makeConstraints { make in
-                make.width.height.equalTo(100)
+                make.width.equalTo(258)
+                make.height.equalTo(280)
                 make.center.equalToSuperview()
             }
             

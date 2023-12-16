@@ -60,18 +60,9 @@ class SelectDateCoordinator: CoordinatorProtocol {
         else { return }
         self?.finish()
         
-//        addMeloPlaceViewController.viewModel?.dateDidSelect(date: date)
         addMeloPlaceViewController.viewModel?.selectedDate.accept(date)
     }
     
-//    lazy var showPhotoDetail: (_ IndexPath: IndexPath) -> Void = { [weak self] indexPath in
-//        let container = DIContainer.shared.container
-//        guard let vm = container.resolve(PhotoDetailViewModel.self) else { return }
-//        vm.indexpath = indexPath
-//        let vc = PhotoDetailViewController(viewModel: vm)
-////        self?.navigation.present(vc, animated: true)
-//        self?.navigation.pushViewController(vc, animated: true)
-//    }
 }
 
 extension SelectDateCoordinator: CoordinatorFinishDelegate {

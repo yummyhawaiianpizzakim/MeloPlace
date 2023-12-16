@@ -209,7 +209,7 @@ private extension UserProfileViewController {
                     .when(.recognized)
                     .withUnretained(self)
                     .bind { owner, _ in
-                        owner.viewModel?.showFollowingUserView(tabState: owner.tabstate.value)
+                        owner.viewModel?.showFollowingUserView(tabState: 0)
                     }
                     .disposed(by: self.disposeBag)
                 
@@ -217,7 +217,7 @@ private extension UserProfileViewController {
                     .when(.recognized)
                     .withUnretained(self)
                     .bind { owner, _ in
-                        owner.viewModel?.showFollowingUserView(tabState: owner.tabstate.value)
+                        owner.viewModel?.showFollowingUserView(tabState: 1)
                     }
                     .disposed(by: self.disposeBag)
                 
