@@ -133,6 +133,7 @@
 		E9462F242AD4140D00EAF032 /* SearchUserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F232AD4140D00EAF032 /* SearchUserViewModel.swift */; };
 		E9462F262AD4156300EAF032 /* SearchUserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F252AD4156300EAF032 /* SearchUserTableCell.swift */; };
 		E9462F282AD7F60F00EAF032 /* UpdateUserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F272AD7F60F00EAF032 /* UpdateUserUseCase.swift */; };
+		E94FAE4A2B2DA9A90082B79F /* URLNetworkSessionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94FAE492B2DA9A90082B79F /* URLNetworkSessionService.swift */; };
 		E98D61E32AC02E20003EC5CD /* CommentDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61E22AC02E20003EC5CD /* CommentDTO.swift */; };
 		E98D61E62AC03A63003EC5CD /* CommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61E52AC03A63003EC5CD /* CommentRepository.swift */; };
 		E98D61ED2AC084DF003EC5CD /* CommentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61EC2AC084DF003EC5CD /* CommentCoordinator.swift */; };
@@ -326,6 +327,7 @@
 		E9462F232AD4140D00EAF032 /* SearchUserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserViewModel.swift; sourceTree = "<group>"; };
 		E9462F252AD4156300EAF032 /* SearchUserTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserTableCell.swift; sourceTree = "<group>"; };
 		E9462F272AD7F60F00EAF032 /* UpdateUserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserUseCase.swift; sourceTree = "<group>"; };
+		E94FAE492B2DA9A90082B79F /* URLNetworkSessionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLNetworkSessionService.swift; sourceTree = "<group>"; };
 		E98D61E22AC02E20003EC5CD /* CommentDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDTO.swift; sourceTree = "<group>"; };
 		E98D61E52AC03A63003EC5CD /* CommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepository.swift; sourceTree = "<group>"; };
 		E98D61EC2AC084DF003EC5CD /* CommentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCoordinator.swift; sourceTree = "<group>"; };
@@ -783,6 +785,7 @@
 				E90E64BC2A84F37E002A71B6 /* Spotify.swift */,
 				E90E64BE2A84F578002A71B6 /* SpotifyViewController.swift */,
 				E90E65232A8DF7B3002A71B6 /* FireBaseNetworkService.swift */,
+				E94FAE492B2DA9A90082B79F /* URLNetworkSessionService.swift */,
 			);
 			path = InfraStructure;
 			sourceTree = "<group>";
@@ -1788,6 +1791,7 @@
 				E90E649A2A80FAE4002A71B6 /* BrowseViewController.swift in Sources */,
 				E98D61F12AC0850D003EC5CD /* CommentViewModel.swift in Sources */,
 				E90E657E2AAB09F0002A71B6 /* MeloPlaceRepository.swift in Sources */,
+				E94FAE4A2B2DA9A90082B79F /* URLNetworkSessionService.swift in Sources */,
 				E9ECC0D02B03C01D001543B8 /* CommentMoreReadCell.swift in Sources */,
 				E90E656A2AAAEFBC002A71B6 /* UserProfileCollectionCell.swift in Sources */,
 				E90038A22AFCB56F0075ABFE /* FollowingUserListViewModel.swift in Sources */,

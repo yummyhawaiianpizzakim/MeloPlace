@@ -23,6 +23,7 @@ class DIContainer {
     
     func registerInfraStructure() {
         self.registerFireBaseNetworkService()
+        self.registerURLNetworkSessionService()
     }
     
     func registerService() {
@@ -89,6 +90,13 @@ private extension DIContainer {
     func registerFireBaseNetworkService() {
         self.container.register(FireBaseNetworkServiceProtocol.self) { resolver in
             return FireBaseNetworkService()
+        }
+        .inObjectScope(.container)
+    }
+    
+    func registerURLNetworkSessionService() {
+        self.container.register(URLNetworkSessionServiceProtocol.self) { resolver in
+            return URLNetworkSessionService()
         }
         .inObjectScope(.container)
     }
