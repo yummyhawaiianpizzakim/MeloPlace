@@ -33,6 +33,8 @@ protocol SpotifyServiceProtocol: AnyObject {
 }
 
 class SpotifyService: NSObject, SpotifyServiceProtocol {
+    private let urlNetworkService: URLNetworkSessionServiceProtocol
+    
     let accessTokenKey = "access-token-key"
     let redirectUri = URL(string:"MeloPlace://")!
     let spotifyClientId = "d9637d39e5de4cdb818324214648b5fe"
@@ -126,6 +128,10 @@ class SpotifyService: NSObject, SpotifyServiceProtocol {
     }()
 
     var lastPlayerState: SPTAppRemotePlayerState?
+    
+    init(urlNetworkService: URLNetworkSessionServiceProtocol) {
+        self.urlNetworkService = urlNetworkService
+    }
     
     func didTapPauseOrPlay() {
         if let lastPlayerState = lastPlayerState, lastPlayerState.isPaused {
@@ -241,16 +247,6 @@ extension SpotifyService {
         task.resume()
     }
 
-//    func fetchArtwork(for track: SPTAppRemoteTrack) {
-//        appRemote.imageAPI?.fetchImage(forItem: track, with: CGSize.zero, callback: { [weak self] (image, error) in
-//            if let error = error {
-//                print("Error fetching track image: " + error.localizedDescription)
-//            } else if let image = image as? UIImage {
-////                self?.imageView.image = image
-//            }
-//        })
-//    }
-
     func fetchPlayerState() {
         appRemote.playerAPI?.getPlayerState({ [weak self] (playerState, error) in
             if let error = error {
@@ -264,7 +260,6 @@ extension SpotifyService {
 }
 
 extension SpotifyService {
-    
     func tryConnect() {
         guard let sessionManager = sessionManager else { return }
         sessionManager.initiateSession(with: self.scopes, options: .clientOnly)
@@ -297,73 +292,75 @@ extension SpotifyService {
     }
     
     func searchMusic(query: String?, type: String) -> Observable<SpotifySearchDTO> {
-        guard let query, !query.isEmpty
-        else { return Observable.empty() }
-        let baseURLString = "https://api.spotify.com/v1"
-        let token = self.token.value
-        let searchRequestURLString = "/search"
-        let headers: HTTPHeaders = ["Accept":"application/json",
-                                    "Content-Type":"application/json",
-                                    "Authorization":"Bearer \(token)"]
-        
-        let parameters = [
-            "q": query,
-            "type": type
-        ]
-        
-        let url = baseURLString + searchRequestURLString
-        
-        return Observable.create {[weak self] observer in
-            AF.request(url,
-                       method: .get,
-                       parameters: parameters,
-                       headers: headers
-            )
-            .validate()
-            .responseDecodable(of: SpotifySearchDTO.self) { response in
-                switch response.result {
-                case .success(let dto):
-                    observer.onNext(dto)
-                    return
-                case .failure(let error):
-                    print("dto: \(error)")
-                    observer.onError(error)
-                    return
-                }
-            }
-            
-            return Disposables.create()
-        }
-        
+        guard let query, !query.isEmpty else { return Observable.empty() }
+        return self.urlNetworkService.request(SpotifyTarget
+            .searchMusic(token: self.token.value, query: query, type: type))
+            .asObservable()
     }
     
-    func fetchSpotifyUserProfile() -> Observable<SpotifyUserProfileDTO> {
-//        let url = URL(string: "https://api.spotify.com/v1/me")!
-        let url = "https://api.spotify.com/v1/me"
+    func fetchSpotifyUserProfile() -> Observable<SpotifyUserProfileDTO>  {
         let token = self.token.value
-        let headers: HTTPHeaders = ["Authorization":"Bearer \(token)"]
-        return Observable.create { observer in
-            AF.request(url,
-                       method: .get,
-                       headers: headers
-            )
-            .validate()
-            .responseDecodable(of: SpotifyUserProfileDTO.self) { response in
-                switch response.result {
-                case .success(let dto):
-                    return observer.onNext(dto)
-                case .failure(let error):
-                    return observer.onError(error)
-                }
-            }
-
-            return Disposables.create()
-        }
-
+        return self.urlNetworkService.request(SpotifyTarget
+            .userProfile(token: token))
+            .asObservable()
     }
     
     func seekMusic(to position: Int) {
         
+    }
+    
+}
+
+enum SpotifyTarget {
+    case userProfile(token: String)
+    case searchMusic(token: String, query: String, type: String)
+}
+
+extension SpotifyTarget: TargetType {
+    var baseURL: String {
+        return "https://api.spotify.com"
+    }
+    
+    var method: Alamofire.HTTPMethod {
+        switch self {
+        case .searchMusic, .userProfile:
+            return .get
+        }
+    }
+    
+    var header: Alamofire.HTTPHeaders {
+        switch self {
+        case .userProfile(token: let token), .searchMusic(token: let token, _, _):
+            return ["Accept":"application/json",
+                    "Content-Type":"application/json",
+                    "Authorization":"Bearer \(token)"]
+        }
+    }
+    
+    var path: String {
+        switch self {
+        case .userProfile:
+            return "/v1/me"
+        case .searchMusic:
+            return "/v1/search"
+        }
+    }
+    
+    var parameters: Parameters? {
+        switch self {
+        case .userProfile(_):
+            return nil
+        case .searchMusic(_, query: let query, type: let type):
+            let body = [
+                "q": query,
+                "type": type
+            ]
+            return body
+        }
+    }
+    
+    var encoding: Alamofire.ParameterEncoding {
+        return URLEncoding.default
     }
     
 }
