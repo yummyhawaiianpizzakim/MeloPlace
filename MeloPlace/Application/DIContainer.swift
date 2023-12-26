@@ -105,7 +105,8 @@ private extension DIContainer {
 private extension DIContainer {
     func registerSpotifyService() {
         self.container.register(SpotifyServiceProtocol.self) { resolver in
-            return SpotifyService()
+            let urlNetworkService = resolver.resolve(URLNetworkSessionServiceProtocol.self)
+            return SpotifyService(urlNetworkService: urlNetworkService!)
         }
         .inObjectScope(.container)
     }

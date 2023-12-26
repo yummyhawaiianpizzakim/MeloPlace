@@ -134,6 +134,8 @@
 		E9462F262AD4156300EAF032 /* SearchUserTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F252AD4156300EAF032 /* SearchUserTableCell.swift */; };
 		E9462F282AD7F60F00EAF032 /* UpdateUserUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F272AD7F60F00EAF032 /* UpdateUserUseCase.swift */; };
 		E94FAE4A2B2DA9A90082B79F /* URLNetworkSessionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94FAE492B2DA9A90082B79F /* URLNetworkSessionService.swift */; };
+		E94FAE4D2B2DC4D70082B79F /* SearchMusicUseCaseTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94FAE4C2B2DC4D70082B79F /* SearchMusicUseCaseTest.swift */; };
+		E94FAE502B2DC6D10082B79F /* MockURLNetworkSessionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E94FAE4F2B2DC6D10082B79F /* MockURLNetworkSessionService.swift */; };
 		E98D61E32AC02E20003EC5CD /* CommentDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61E22AC02E20003EC5CD /* CommentDTO.swift */; };
 		E98D61E62AC03A63003EC5CD /* CommentRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61E52AC03A63003EC5CD /* CommentRepository.swift */; };
 		E98D61ED2AC084DF003EC5CD /* CommentCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E98D61EC2AC084DF003EC5CD /* CommentCoordinator.swift */; };
@@ -328,6 +330,8 @@
 		E9462F252AD4156300EAF032 /* SearchUserTableCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchUserTableCell.swift; sourceTree = "<group>"; };
 		E9462F272AD7F60F00EAF032 /* UpdateUserUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateUserUseCase.swift; sourceTree = "<group>"; };
 		E94FAE492B2DA9A90082B79F /* URLNetworkSessionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLNetworkSessionService.swift; sourceTree = "<group>"; };
+		E94FAE4C2B2DC4D70082B79F /* SearchMusicUseCaseTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMusicUseCaseTest.swift; sourceTree = "<group>"; };
+		E94FAE4F2B2DC6D10082B79F /* MockURLNetworkSessionService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLNetworkSessionService.swift; sourceTree = "<group>"; };
 		E98D61E22AC02E20003EC5CD /* CommentDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentDTO.swift; sourceTree = "<group>"; };
 		E98D61E52AC03A63003EC5CD /* CommentRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentRepository.swift; sourceTree = "<group>"; };
 		E98D61EC2AC084DF003EC5CD /* CommentCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCoordinator.swift; sourceTree = "<group>"; };
@@ -477,6 +481,8 @@
 		E90E644D2A80F3F6002A71B6 /* MeloPlaceTests */ = {
 			isa = PBXGroup;
 			children = (
+				E94FAE4E2B2DC67A0082B79F /* MeloPlaceServiceTests */,
+				E94FAE4B2B2DC4B50082B79F /* MeloPlaceUseCaseTests */,
 				E90E644E2A80F3F6002A71B6 /* MeloPlaceTests.swift */,
 			);
 			path = MeloPlaceTests;
@@ -1333,6 +1339,22 @@
 			path = Location;
 			sourceTree = "<group>";
 		};
+		E94FAE4B2B2DC4B50082B79F /* MeloPlaceUseCaseTests */ = {
+			isa = PBXGroup;
+			children = (
+				E94FAE4C2B2DC4D70082B79F /* SearchMusicUseCaseTest.swift */,
+			);
+			path = MeloPlaceUseCaseTests;
+			sourceTree = "<group>";
+		};
+		E94FAE4E2B2DC67A0082B79F /* MeloPlaceServiceTests */ = {
+			isa = PBXGroup;
+			children = (
+				E94FAE4F2B2DC6D10082B79F /* MockURLNetworkSessionService.swift */,
+			);
+			path = MeloPlaceServiceTests;
+			sourceTree = "<group>";
+		};
 		E98D61E42AC03A51003EC5CD /* Comment */ = {
 			isa = PBXGroup;
 			children = (
@@ -1907,7 +1929,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E94FAE502B2DC6D10082B79F /* MockURLNetworkSessionService.swift in Sources */,
 				E90E644F2A80F3F6002A71B6 /* MeloPlaceTests.swift in Sources */,
+				E94FAE4D2B2DC4D70082B79F /* SearchMusicUseCaseTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

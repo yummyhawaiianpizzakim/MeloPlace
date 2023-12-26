@@ -16,95 +16,32 @@ enum URLSessionAPIError: Error {
     case invalidStatusCodeError
 }
 
-enum SpotifyConfiguration {
-    case base
-    case token
-    case searchMusic
-    case userProfile
-    
-    var path: String {
-        switch self {
-        case .base:
-            return "https://api.spotify.com"
-        case .token:
-            return "/api/token"
-        case .searchMusic:
-            return "/v1/search"
-        case .userProfile:
-            return "/v1/me"
-        }
-    }
+public protocol TargetType: URLRequestConvertible {
+    var baseURL: String { get }
+    var method: HTTPMethod { get }
+    var header: HTTPHeaders { get }
+    var path: String { get }
+    var parameters: Parameters? { get }
+    var encoding: ParameterEncoding { get }
 }
 
-enum SpotifyHeader {
-    case base
-    case authorization(token: String)
-    
-    var path: [String: String] {
-        switch self {
-        case .base:
-            return ["Accept":"application/json",
-                    "Content-Type":"application/json"]
-        case .authorization(token: let token):
-            return ["Authorization":"Bearer \(token)"]
-        }
-    }
-}
-
-enum SpotifyParameter {
-    case query(query: String)
-    case type(type: String)
-    
-    var path: [String: String] {
-        switch self {
-        case .query(query: let query):
-            return ["q": query]
-        case .type(type: let type):
-            return ["type": type]
-        }
+public extension TargetType {
+    func asURLRequest() throws -> URLRequest {
+        var urlRequest = try URLRequest(url: self.baseURL + self.path, method: self.method)
+        urlRequest.headers = self.header
+        let params = self.parameters
+        return try encoding.encode(urlRequest, with: params)
     }
 }
 
 protocol URLNetworkSessionServiceProtocol: AnyObject {
-    func get<T: Codable>(dto: T.Type, url: String, paramethers: [String: String], headers: HTTPHeaders) -> Single<T>
+    func request<T: Codable>(_ urlConvertible: URLRequestConvertible) -> Single<T>
 }
 
 final class URLNetworkSessionService: URLNetworkSessionServiceProtocol {
-    func get<T: Codable>(dto: T.Type, url: String, paramethers: [String: String], headers: HTTPHeaders) -> Single<T> {
-        return self.request(with: dto, url: url, method: .get, paramethers: paramethers, headers: headers)
-    }
-    
-    private func request<T: Codable>(with dto: T.Type, url: String, method: HTTPMethod, paramethers: [String: String], headers: HTTPHeaders) -> Single<T> {
+    func request<T: Codable>(_ urlConvertible: URLRequestConvertible) -> Single<T> {
         return Single.create { single in
-            AF.request(url,
-                       method: method,
-                       parameters: paramethers,
-                       headers: headers
-            )
-            .validate()
-            .responseDecodable(of: T.self) { response in
-                switch response.result {
-                case .success(let dto):
-                    single(.success(dto))
-                    return
-                case .failure(let error):
-                    print("dto: \(error)")
-                    single(.failure(error))
-                    return
-                }
-            }
-            
-            return Disposables.create()
-        }
-    }
-    
-    private func request<T: Codable>(with data: T, url: String, method: HTTPMethod, paramethers: [String: String], headers: HTTPHeaders) -> Single<T> {
-        return Single.create { single in
-            AF.request(url,
-                       method: method,
-                       parameters: paramethers,
-                       headers: headers
-            )
+            AF.request(urlConvertible)
             .validate()
             .responseDecodable(of: T.self) { response in
                 switch response.result {
