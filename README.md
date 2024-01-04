@@ -121,7 +121,7 @@
 
 ### 도입 이유  
 - 네트워크 기반의 서비스여서 대부분의 동작이 비동기적이기 때문에 Thread 관리에 주의해야합니다.
-- 실제 서버가 아닌 NoSQL기반의 파이어베이스를 사용하기 때문에 중첩된 네트워크 연산을 처리해야하므로 하나의 연산에 콜백이 중첩되어 가독성 저해 및 휴먼 에러로 인한 디버그 문제가 발생합니다.  
+- 파이어베이스를 사용하기 때문에 중첩된 네트워크 연산을 처리해야하므로 하나의 연산에 콜백이 중첩되어 가독성 저해 및 휴먼 에러로 인한 디버그 문제가 발생합니다.  
 
 ### 도입 결과  
 - escaping closure가 아닌 RxSwift의 Operator를 활용하여 코드 양이 감소하여 깔끔해지고 실수를 방지할 수 있었습니다.
@@ -158,5 +158,9 @@
 
 <br>
 
+# 🎥 시연 영상  
+https://drive.google.com/file/d/1Mb8IjErDrRb41u6DSfQXOIS0eYJtkfC0/view?usp=sharing
+
 # 추가 자료  
 https://www.notion.so/8473555de4e04cc3b1bdd375f91752c8  
+https://hawaiianpizzakim-ios.tistory.com/entry/IOS-MeloPlace-RxSwift-%EB%8F%84%EC%9E%85%EA%B3%BC-%EB%8A%90%EA%BC%88%EB%8D%98-%EC%9E%A5%EC%A0%90  
