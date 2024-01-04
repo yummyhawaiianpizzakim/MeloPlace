@@ -40,7 +40,9 @@ class AnotherUserProfileViewModel {
     }
     
     struct Input {
+        let viewDidLoad: Observable<Void>
         let tabstate: Observable<Int>
+        let refresh: Observable<Void>
     }
     
     struct Output {
@@ -48,6 +50,11 @@ class AnotherUserProfileViewModel {
     }
     
     func transform(input: Input) -> Output {
+        let dataLoadTrigger = Observable.combineLatest(
+            input.viewDidLoad.startWith(()),
+            input.refresh.startWith(())
+        )
+        
         let user = self.fetchUserUseCase
             .fetch(userID: self.userID)
             .do(onNext: { [weak self] user in
@@ -58,14 +65,18 @@ class AnotherUserProfileViewModel {
         let currentUser = self.fetchUserUseCase
             .fetch(userID: nil)
         
-        let meloPlaces = self.fetchMeloPlaceUseCase
-            .fetch(id: self.userID)
-            .share()
+        let meloPlaces = dataLoadTrigger.flatMap { [weak self] _ in
+            guard let self else { return Observable<[MeloPlace]>.just([]) }
+            return self.fetchMeloPlaceUseCase
+                .fetch(id: self.userID)
+        }.share()
                 
-        let tagedMeloPlaces = self.fetchMeloPlaceUseCase
-            .fetchTagedMeloPLace(id: self.userID)
-            .share()
-                
+        let tagedMeloPlaces = dataLoadTrigger.flatMap { [weak self] _ in
+            guard let self else { return Observable<[MeloPlace]>.just([]) }
+            return self.fetchMeloPlaceUseCase
+                .fetchTagedMeloPLace(id: self.userID)
+        }.share()
+            
         Observable.combineLatest(user, currentUser)
             .withUnretained(self)
             .map { onwer, val in

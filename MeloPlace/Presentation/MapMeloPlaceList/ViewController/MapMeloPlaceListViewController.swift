@@ -82,6 +82,7 @@ private extension MapMeloPlaceListViewController {
         self.contentView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
             make.width.equalToSuperview()
+            make.height.equalToSuperview()
         }
         
         self.locationLabel.snp.makeConstraints { make in
@@ -102,7 +103,6 @@ private extension MapMeloPlaceListViewController {
             make.top.equalTo(self.filterView.snp.bottom).offset(20)
             make.leading.equalTo(self.locationLabel.snp.leading)
             make.trailing.equalTo(self.locationLabel.snp.trailing)
-            make.height.equalTo(500)
             make.bottom.equalToSuperview().offset(-10)
         }
         

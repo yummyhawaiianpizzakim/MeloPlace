@@ -20,6 +20,8 @@ class AddMeloPlaceViewController: UIViewController {
     
     lazy var scrollView = UIScrollView()
     
+    private var indicator: UIActivityIndicatorView?
+    
     private lazy var imagePicker: PHPickerViewController = {
         var configuration = PHPickerConfiguration()
         configuration.selectionLimit = 1
@@ -49,9 +51,8 @@ class AddMeloPlaceViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.view.backgroundColor = .white
+        self.configureAttributes()
         self.configureUI()
-//        self.configureNavigationBar()
         self.bindUI()
         self.bindViewModel()
     }
@@ -64,6 +65,10 @@ class AddMeloPlaceViewController: UIViewController {
 }
 
 private extension AddMeloPlaceViewController {
+    func configureAttributes() {
+        self.hideKeyboardWhenTappedAround()
+    }
+    
     func configureUI() {
         self.view.addSubview(self.scrollView)
         self.view.addSubview(self.doneButton)
@@ -173,6 +178,18 @@ private extension AddMeloPlaceViewController {
                 owner.doneButton.isEnabled = isEnable
             })
             .disposed(by: self.disposeBag)
+        
+        output?.isIndicatorActived
+            .drive(with: self, onNext: { owner, isActived in
+                if isActived {
+                    owner.showFullSizeIndicator()
+                }
+                
+                if !isActived && owner.indicator != nil {
+                    owner.hideFullSizeIndicator()
+                }
+            })
+            .disposed(by: self.disposeBag)
     }
     
     func configureNavigationBar() {
@@ -250,56 +267,32 @@ extension AddMeloPlaceViewController: PHPickerViewControllerDelegate {
 }
 
 extension AddMeloPlaceViewController {
-//    func showDateSelectView() {
-//
-//        let alert = UIAlertController(
-//            title: "만료 기한을 선택해주세요",
-//            message: nil,
-//            preferredStyle: .alert
-//        )
-//
-//        let datePicker = createDatePicker()
-//        alert.view.addSubview(datePicker)
-//        datePicker.snp.makeConstraints { make in
-//            make.centerX.equalTo(alert.view)
-//            make.top.equalTo(alert.view).inset(55)
-//            make.bottom.equalTo(alert.view).inset(60)
-//        }
-//
-//
-//        let cancelAction = UIAlertAction(
-//            title: "취소",
-//            style: .cancel,
-//            handler: nil
-//        )
-//
-//        let selectAction = UIAlertAction(
-//            title: "선택",
-//            style: .default,
-//            handler: { [weak self] _ in
-//                let date = datePicker.date
-//                let dateString = date.toString()
-//                self?.addMeloPlaceView.dateButton.setText(dateString)
-////                self?.date.accept(date)
-//            }
-//        )
-//
-//        alert.addAction(cancelAction)
-//        alert.addAction(selectAction)
-//        alert.view.tintColor = .white
-//        present(alert, animated: true)
-//
-//    }
-//
-//    func createDatePicker() -> UIDatePicker {
-//        let datePicker = UIDatePicker()
-////        datePicker.date = Date()
-//        datePicker.preferredDatePickerStyle = .wheels
-//        datePicker.datePickerMode = .date
-//        datePicker.locale = Locale(identifier: "ko-KR")
-//        datePicker.timeZone = .autoupdatingCurrent
-//        datePicker.tintColor = .gray
-//
-//        return datePicker
-//    }
+    func showFullSizeIndicator() {
+            let indicator = createIndicator()
+            self.indicator = indicator
+            
+            self.view.addSubview(indicator)
+            indicator.snp.makeConstraints { make in
+                make.width.equalTo(258)
+                make.height.equalTo(280)
+                make.center.equalToSuperview()
+            }
+            
+            indicator.startAnimating()
+        }
+        
+    func hideFullSizeIndicator() {
+        self.indicator?.stopAnimating()
+        self.indicator?.removeFromSuperview()
+        self.indicator = nil
+    }
+    
+    private func createIndicator() -> UIActivityIndicatorView {
+        let indicator = UIActivityIndicatorView(style: .large)
+        
+        indicator.backgroundColor = .themeGray100?.withAlphaComponent(0.7)
+        indicator.color = .black
+        indicator.layer.cornerRadius = 20
+        return indicator
+    }
 }

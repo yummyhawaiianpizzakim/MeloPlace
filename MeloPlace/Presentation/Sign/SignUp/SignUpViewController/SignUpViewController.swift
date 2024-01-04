@@ -216,3 +216,13 @@ private extension SignUpViewController {
         }
     }
 }
+
+#if canImport(SwiftUI) && DEBUG
+import SwiftUI
+
+struct signUpViewController: PreviewProvider {
+    static var previews: some View {
+        SignUpViewController().showPreview(.iPhone8)
+    }
+}
+#endif

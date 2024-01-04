@@ -56,6 +56,8 @@ class AddMeloPlaceView: UIView {
     lazy var titleTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "제목"
+        textField.leftView = UIView(frame: .init(x: 0, y: 0, width: 5, height: textField.frame.height))
+        textField.leftViewMode = .always
         textField.layer.borderWidth = 1
         textField.layer.cornerRadius = 8
         textField.layer.borderColor = UIColor.white.cgColor
@@ -230,12 +232,10 @@ private extension AddMeloPlaceView {
     }
     
     func setImage(at profileImageURL: URL?) {
-        let maxProfileImageSize = CGSize(width: 80, height: 80)
+        let maxProfileImageSize = CGSize(width: 100, height: 100)
         let downsamplingProcessor = DownsamplingImageProcessor(size: maxProfileImageSize)
         self.imageView.kf.setImage(with: profileImageURL, options: [.processor(downsamplingProcessor)])
     }
-    
-    
 }
 extension AddMeloPlaceView: UITextFieldDelegate, UITextViewDelegate {
     func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {

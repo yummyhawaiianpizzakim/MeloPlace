@@ -24,6 +24,8 @@ class AnotherUserProfileViewController: UIViewController {
     
     let tabstate = BehaviorRelay<Int>(value: 0)
     
+    private lazy var refreshControl = UIRefreshControl()
+    
     private lazy var placeholderView: PlaceHolderView = {
         let view = PlaceHolderView(text: "게시물이 없습니다.")
         view.isHidden = true
@@ -35,6 +37,7 @@ class AnotherUserProfileViewController: UIViewController {
         view.register(AnotherUserProfileCollectionCell.self, forCellWithReuseIdentifier: AnotherUserProfileCollectionCell.identifier)
         view.register(UserContentCollectionCell.self, forCellWithReuseIdentifier: UserContentCollectionCell.identifier)
         view.allowsMultipleSelection = true
+        view.refreshControl = self.refreshControl
 
         return view
     }()
@@ -106,7 +109,9 @@ private extension AnotherUserProfileViewController {
     func bindViewModel() {
         
         let input = AnotherUserProfileViewModel.Input(
-            tabstate: self.tabstate.asObservable()
+            viewDidLoad: self.rx.viewDidLoad.asObservable(),
+            tabstate: self.tabstate.asObservable(),
+            refresh:  self.refreshControl.rx.controlEvent(.valueChanged).asObservable()
         )
         let output = self.viewModel?.transform(input: input)
         
@@ -125,7 +130,7 @@ private extension AnotherUserProfileViewController {
                 self?.generateSnapshot(dataSources: dataSources)
             })
             .drive(onNext: {[weak self] snapshot in
-//                self?.hideFullSizeIndicator()
+                self?.refreshControl.endRefreshing()
                 self?.dataSource?.apply(snapshot, animatingDifferences: false)
             })
             .disposed(by: self.disposeBag)
