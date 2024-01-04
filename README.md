@@ -28,12 +28,14 @@
 <br>
 
 # ✨ 주요 기능  
-
-## 🎧 내 게시물의 음악을 플레이리스트로 들을 수 있습니다.  
-| 로그인 | 플레이리스트 |
+## 🎧 Spotify 계정 정보 기반으로 로그인합니다.  
+| 로그인 | 회원가입 |
 |:-:|:-:|
-| <img src="https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/af6b2ae6-41b4-4e26-9f97-07c38d9b61fb" width="200"> | <img src="https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/63753ee6-8219-417d-9879-688283e7399c" width="200"> |  
- 
+| <img src="https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/af6b2ae6-41b4-4e26-9f97-07c38d9b61fb" width="200"> | <img src="https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/008ce4f1-430d-4ba0-bf12-74e41034e88f" width="200"> |  
+## 🎧 내 게시물의 음악을 플레이리스트로 들을 수 있습니다.  
+| 플레이리스트 |
+|:-:|
+| <img src="https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/63753ee6-8219-417d-9879-688283e7399c" width="200"> |  
 
 ## 🗺️ 나와 팔로잉한 유저의 게시물을 지도에서 볼 수 있습니다.  
 | 지도 | 장소 검색 | 현재 위치 검색 |
@@ -162,5 +164,6 @@
 https://drive.google.com/file/d/1Mb8IjErDrRb41u6DSfQXOIS0eYJtkfC0/view?usp=sharing
 
 # 추가 자료  
-https://www.notion.so/8473555de4e04cc3b1bdd375f91752c8  
-https://hawaiianpizzakim-ios.tistory.com/entry/IOS-MeloPlace-RxSwift-%EB%8F%84%EC%9E%85%EA%B3%BC-%EB%8A%90%EA%BC%88%EB%8D%98-%EC%9E%A5%EC%A0%90  
+[노션](https://www.notion.so/8473555de4e04cc3b1bdd375f91752c8)  
+[MeloPlace: RxSwift 적용과 느꼈던 장점](https://hawaiianpizzakim-ios.tistory.com/entry/IOS-MeloPlace-RxSwift-%EB%8F%84%EC%9E%85%EA%B3%BC-%EB%8A%90%EA%BC%88%EB%8D%98-%EC%9E%A5%EC%A0%90)  
+
