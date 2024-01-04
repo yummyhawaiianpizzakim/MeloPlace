@@ -41,7 +41,9 @@ class UserProfileViewModel {
     }
     
     struct Input {
+        let viewDidLoad: Observable<Void>
         let tabstate: Observable<Int>
+        let refresh: Observable<Void>
     }
     
     struct Output {
@@ -49,6 +51,11 @@ class UserProfileViewModel {
     }
     
     func transform(input: Input) -> Output {
+        let dataLoadTrigger = Observable.combineLatest(
+            input.viewDidLoad.startWith(()),
+            input.refresh.startWith(())
+        )
+        
         let user = self.fetchUserUseCase
             .fetch(userID: nil)
             .do(onNext: { [weak self] user in
@@ -56,14 +63,18 @@ class UserProfileViewModel {
                 self?.userID = user.id
             })
             .share()
-        
-        let meloPlaces = self.fetchMeloPlaceUseCase
-            .fetch(id: nil)
-            .share()
+               
+        let meloPlaces = dataLoadTrigger.flatMap { [weak self] _ in
+            guard let self else { return Observable<[MeloPlace]>.just([]) }
+            return self.fetchMeloPlaceUseCase
+                .fetch(id: nil)
+        }.share()
                 
-        let tagedMeloPlaces = self.fetchMeloPlaceUseCase
-            .fetchTagedMeloPLace(id: nil)
-            .share()
+        let tagedMeloPlaces = dataLoadTrigger.flatMap { [weak self] _ in
+            guard let self else { return Observable<[MeloPlace]>.just([]) }
+            return self.fetchMeloPlaceUseCase
+                .fetchTagedMeloPLace(id: nil)
+        }.share()
         
         let dataSources = Observable.combineLatest(input.tabstate, user, meloPlaces, tagedMeloPlaces)
             .do(onNext: { [weak self] val in

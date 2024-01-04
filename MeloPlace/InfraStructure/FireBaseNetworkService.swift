@@ -282,11 +282,11 @@ extension FireBaseNetworkService {
                 return query
             case .taged(let data):
                 guard let data = data.first,
-                      let values = data.value as? [String],
-                      !values.isEmpty
+                      let value = data.value as? String,
+                      !value.isEmpty
                 else { throw NetworkServiceError.needFilterError }
                 query = collection
-                    .whereField(data.key, arrayContains: data.value)
+                    .whereField(data.key, arrayContains: value)
                 
                 return query
             case .anotherUser(let data):

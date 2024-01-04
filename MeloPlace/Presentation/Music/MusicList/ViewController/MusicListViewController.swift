@@ -76,7 +76,7 @@ class MusicListViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.backgroundColor = .white
+        self.configureAttributes()
         self.configureUI()
         self.setDataSource()
         self.bindUI()
@@ -85,6 +85,11 @@ class MusicListViewController: UIViewController {
 }
 
 private extension MusicListViewController {
+    func configureAttributes() {
+        self.view.backgroundColor = .white
+        self.hideKeyboardWhenTappedAround()
+    }
+    
     func configureUI() {
         [self.topView, self.musicCollectionView, self.doneButton].forEach {
             self.view.addSubview($0)

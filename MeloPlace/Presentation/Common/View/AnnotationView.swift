@@ -86,6 +86,8 @@ final class AnnotationView: MKAnnotationView {
     
     func setImage(imageURLString: String) {
         let url = URL(string: imageURLString)
-        self.imageView.kf.setImage(with: url)
+        let size = CGSize(width: 100, height: 100)
+        let downSampling = DownsamplingImageProcessor(size: size)
+        self.imageView.kf.setImage(with: url,options: [.processor(downSampling)])
     }
 }

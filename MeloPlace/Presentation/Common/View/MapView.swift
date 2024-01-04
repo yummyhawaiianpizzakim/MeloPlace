@@ -41,6 +41,7 @@ class MapView: MKMapView {
         self.showsUserLocation = true
         self.showsCompass = false
         self.setUserTrackingMode(.follow, animated: true)
+        self.isPitchEnabled = false
     }
 
     private func addSubViews() {

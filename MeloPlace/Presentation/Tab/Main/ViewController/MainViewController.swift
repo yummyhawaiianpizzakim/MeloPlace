@@ -103,6 +103,8 @@ private extension MainViewController {
         self.addressLabel.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(50)
             make.centerX.equalToSuperview()
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
         }
         
         self.mainCollectionView.snp.makeConstraints { make in
@@ -114,6 +116,8 @@ private extension MainViewController {
         self.titleLabel.snp.makeConstraints { make in
             make.top.equalTo(self.addressLabel.snp.bottom).offset(10)
             make.centerX.equalToSuperview()
+            make.leading.equalToSuperview().offset(10)
+            make.trailing.equalToSuperview().offset(-10)
         }
         
         self.playerView.snp.makeConstraints { make in

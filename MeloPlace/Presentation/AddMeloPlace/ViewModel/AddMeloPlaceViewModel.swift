@@ -53,6 +53,7 @@ class AddMeloPlaceViewModel {
         let selectedUserNames: Driver<[String]>
         let deletedUserName: Driver<String>
         let isEnableDoneButton: Driver<Bool>
+        let isIndicatorActived: Driver<Bool>
     }
     
     let userInfo = PublishRelay<User>()
@@ -63,6 +64,7 @@ class AddMeloPlaceViewModel {
     let selectedMusic = BehaviorRelay<Music?>(value: nil)
     let tagedFollowings = BehaviorRelay<[User]>(value: [])
     let deletedName = BehaviorRelay<String>(value: "")
+    let isIndicatorActived = BehaviorRelay<Bool>(value: false)
     
     var actions: AddMeloPlaceViewModelActions?
     
@@ -137,6 +139,7 @@ class AddMeloPlaceViewModel {
             .withUnretained(self)
             .flatMapFirst { owner, data -> Observable<String> in
                 guard let data else { return Observable.empty() }
+                owner.isIndicatorActived.accept(true)
                 return owner.uploadImageUseCase.upload(data: data)
                     .do { owner.pickedImageURL.accept($0) }
             }
@@ -146,6 +149,7 @@ class AddMeloPlaceViewModel {
                  owner.createMeloPlaceUseCase.create(meloPlace: meloPlace)
             }
             .subscribe { [weak self] meloPlace in
+                self?.isIndicatorActived.accept(false)
                 self?.actions?.closeAddMeloPlaceView()
             } onError: { error in
                 print(error)
@@ -174,7 +178,8 @@ class AddMeloPlaceViewModel {
             selectedMusic: self.selectedMusic.asDriver(onErrorJustReturn: nil),
             selectedUserNames: tagedFollowingIDs.asDriver(onErrorJustReturn: []),
             deletedUserName: self.deletedName.asDriver(),
-            isEnableDoneButton: isEnableDoneButton.asDriver(onErrorJustReturn: false)
+            isEnableDoneButton: isEnableDoneButton.asDriver(onErrorJustReturn: false),
+            isIndicatorActived: self.isIndicatorActived.asDriver()
         )
     }
 }

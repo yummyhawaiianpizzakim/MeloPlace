@@ -66,6 +66,7 @@ class MeloPlaceRepository: MeloPlaceRepositoryProtocol {
             )
             .map { $0.toDomain() }
             .toArray()
+            .debug("fetchTagedMeloPlace")
             .catchAndReturn([])
             .asObservable()
     }
