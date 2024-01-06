@@ -20,3 +20,15 @@ extension Space: Hashable {
         hasher.combine(id)
     }
 }
+
+extension Space {
+    static func stub(name: String = "",
+              address: String = "",
+              lat: Double = 0,
+              lng: Double = 0) -> Self {
+        return .init(name: name,
+                     address: address,
+                     lat: lat,
+                     lng: lng)
+    }
+}

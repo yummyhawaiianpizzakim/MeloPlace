@@ -19,6 +19,7 @@ target 'MeloPlace' do
   pod 'FirebaseFirestoreSwift'
   pod 'FirebaseStorage'	
   pod 'FloatingPanel'
+  pod 'RxBlocking'
 
 
 
@@ -39,6 +40,8 @@ target 'MeloPlace' do
   target 'MeloPlaceTests' do
     inherit! :search_paths
     # Pods for testing
+	pod 'RxTest'
+
   end
 
   target 'MeloPlaceUITests' do
