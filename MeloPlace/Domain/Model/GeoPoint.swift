@@ -30,3 +30,9 @@ struct GeoPoint: Codable, Hashable {
                         longitude: self.longitude + longitudeDelta)
     }
 }
+
+extension GeoPoint {
+    static func stub(latitude: Double = 1, longitude: Double = 1) -> Self {
+        return .init(latitude: latitude, longitude: longitude)
+    }
+}

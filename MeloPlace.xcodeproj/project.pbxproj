@@ -170,6 +170,12 @@
 		E9CBF2C82AEA6E32007181F1 /* TagedUserCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9CBF2C72AEA6E32007181F1 /* TagedUserCollectionCell.swift */; };
 		E9ECC0D02B03C01D001543B8 /* CommentMoreReadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9ECC0CF2B03C01D001543B8 /* CommentMoreReadCell.swift */; };
 		E9ECC0D22B0B5CC8001543B8 /* PlaceHolderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9ECC0D12B0B5CC8001543B8 /* PlaceHolderView.swift */; };
+		E9F8DDE32B47FEC800E1F26C /* MockSpotifyRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F8DDE22B47FEC800E1F26C /* MockSpotifyRepository.swift */; };
+		E9F8DDE62B481ABA00E1F26C /* MapViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F8DDE52B481ABA00E1F26C /* MapViewModelTests.swift */; };
+		E9F8DDE82B494EC000E1F26C /* MockFetchMapMeloPlaceUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F8DDE72B494EC000E1F26C /* MockFetchMapMeloPlaceUseCase.swift */; };
+		E9F8DDEA2B4992EC00E1F26C /* MockUpdateLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F8DDE92B4992EC00E1F26C /* MockUpdateLocationUseCase.swift */; };
+		E9F8DDEC2B49931300E1F26C /* MockFetchCurrentLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F8DDEB2B49931300E1F26C /* MockFetchCurrentLocationUseCase.swift */; };
+		E9F8DDEE2B49933F00E1F26C /* MockReverseGeoCodeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9F8DDED2B49933F00E1F26C /* MockReverseGeoCodeUseCase.swift */; };
 		F5799F688EC91F2B993C799E /* Pods_MeloPlaceTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 74DFAEE2E1A6B5551A2A2277 /* Pods_MeloPlaceTests.framework */; };
 		FA5C3C5E8A3EA8B36C6D1BCA /* Pods_MeloPlace_MeloPlaceUITests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9FED2394756A4B4F983B47D3 /* Pods_MeloPlace_MeloPlaceUITests.framework */; };
 /* End PBXBuildFile section */
@@ -366,6 +372,12 @@
 		E9CBF2C72AEA6E32007181F1 /* TagedUserCollectionCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TagedUserCollectionCell.swift; sourceTree = "<group>"; };
 		E9ECC0CF2B03C01D001543B8 /* CommentMoreReadCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentMoreReadCell.swift; sourceTree = "<group>"; };
 		E9ECC0D12B0B5CC8001543B8 /* PlaceHolderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceHolderView.swift; sourceTree = "<group>"; };
+		E9F8DDE22B47FEC800E1F26C /* MockSpotifyRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSpotifyRepository.swift; sourceTree = "<group>"; };
+		E9F8DDE52B481ABA00E1F26C /* MapViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewModelTests.swift; sourceTree = "<group>"; };
+		E9F8DDE72B494EC000E1F26C /* MockFetchMapMeloPlaceUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFetchMapMeloPlaceUseCase.swift; sourceTree = "<group>"; };
+		E9F8DDE92B4992EC00E1F26C /* MockUpdateLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUpdateLocationUseCase.swift; sourceTree = "<group>"; };
+		E9F8DDEB2B49931300E1F26C /* MockFetchCurrentLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockFetchCurrentLocationUseCase.swift; sourceTree = "<group>"; };
+		E9F8DDED2B49933F00E1F26C /* MockReverseGeoCodeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockReverseGeoCodeUseCase.swift; sourceTree = "<group>"; };
 		F48083693CF0EB1227383675 /* Pods-MeloPlace.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MeloPlace.release.xcconfig"; path = "Target Support Files/Pods-MeloPlace/Pods-MeloPlace.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -481,8 +493,10 @@
 		E90E644D2A80F3F6002A71B6 /* MeloPlaceTests */ = {
 			isa = PBXGroup;
 			children = (
-				E94FAE4E2B2DC67A0082B79F /* MeloPlaceServiceTests */,
+				E9F8DDE12B47FEB100E1F26C /* Mock */,
+				E9F8DDE42B48172700E1F26C /* MeloPlaceViewModelTests */,
 				E94FAE4B2B2DC4B50082B79F /* MeloPlaceUseCaseTests */,
+				E94FAE4E2B2DC67A0082B79F /* MeloPlaceServiceTests */,
 				E90E644E2A80F3F6002A71B6 /* MeloPlaceTests.swift */,
 			);
 			path = MeloPlaceTests;
@@ -1523,6 +1537,26 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		E9F8DDE12B47FEB100E1F26C /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				E9F8DDE22B47FEC800E1F26C /* MockSpotifyRepository.swift */,
+				E9F8DDE72B494EC000E1F26C /* MockFetchMapMeloPlaceUseCase.swift */,
+				E9F8DDE92B4992EC00E1F26C /* MockUpdateLocationUseCase.swift */,
+				E9F8DDEB2B49931300E1F26C /* MockFetchCurrentLocationUseCase.swift */,
+				E9F8DDED2B49933F00E1F26C /* MockReverseGeoCodeUseCase.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		E9F8DDE42B48172700E1F26C /* MeloPlaceViewModelTests */ = {
+			isa = PBXGroup;
+			children = (
+				E9F8DDE52B481ABA00E1F26C /* MapViewModelTests.swift */,
+			);
+			path = MeloPlaceViewModelTests;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1556,6 +1590,7 @@
 				E90E64462A80F3F6002A71B6 /* Sources */,
 				E90E64472A80F3F6002A71B6 /* Frameworks */,
 				E90E64482A80F3F6002A71B6 /* Resources */,
+				60D58960E4207039D7B6FCC2 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -1663,6 +1698,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		60D58960E4207039D7B6FCC2 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MeloPlaceTests/Pods-MeloPlaceTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-MeloPlaceTests/Pods-MeloPlaceTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-MeloPlaceTests/Pods-MeloPlaceTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		635B96BB4FD43DB082C25E5D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1930,7 +1982,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				E94FAE502B2DC6D10082B79F /* MockURLNetworkSessionService.swift in Sources */,
+				E9F8DDEE2B49933F00E1F26C /* MockReverseGeoCodeUseCase.swift in Sources */,
+				E9F8DDEC2B49931300E1F26C /* MockFetchCurrentLocationUseCase.swift in Sources */,
+				E9F8DDEA2B4992EC00E1F26C /* MockUpdateLocationUseCase.swift in Sources */,
+				E9F8DDE62B481ABA00E1F26C /* MapViewModelTests.swift in Sources */,
+				E9F8DDE82B494EC000E1F26C /* MockFetchMapMeloPlaceUseCase.swift in Sources */,
 				E90E644F2A80F3F6002A71B6 /* MeloPlaceTests.swift in Sources */,
+				E9F8DDE32B47FEC800E1F26C /* MockSpotifyRepository.swift in Sources */,
 				E94FAE4D2B2DC4D70082B79F /* SearchMusicUseCaseTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
