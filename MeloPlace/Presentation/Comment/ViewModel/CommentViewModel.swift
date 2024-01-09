@@ -47,7 +47,6 @@ class CommentViewModel {
     
     func transform(input: Input) -> Output {
         self.meloPlace
-//            .debug("loadComments")
             .compactMap({ $0 })
             .withUnretained(self)
             .flatMap { owner, meloPlace in
@@ -55,29 +54,6 @@ class CommentViewModel {
             }
             .bind(to: self.comments)
             .disposed(by: self.disposeBag)
-        
-//        input.didTapPostWithComment
-//            .withLatestFrom(Observable.combineLatest(
-//                self.meloPlace, input.didTapPostWithComment)
-//            )
-//            .flatMapFirst { [weak self] val -> Observable<Comment> in
-//                let (meloPlace, contents) = val
-//                let date = Date()
-//                guard let self,
-//                      let meloPlace
-//                else { return Observable.empty() }
-//                return self.postCommentUseCase.post(meloPlaceID: meloPlace.id, contents: contents, createdDate: date)
-//
-//            }
-//            .withLatestFrom(self.meloPlace)
-//            .withUnretained(self)
-//            .flatMap({ owner, meloPlace -> Observable<[Comment]> in
-//                guard let meloPlace else { return Observable.just([]) }
-//
-//                return owner.fetchCommentUseCase.fetchComment(meloPlaceID: meloPlace.id, limit: self.limit, isInit: false)
-//            })
-//            .bind(to: self.comments)
-//            .disposed(by: self.disposeBag)
         
         input.didTapPostWithComment
             .withLatestFrom(Observable.combineLatest(
@@ -121,14 +97,6 @@ class CommentViewModel {
                 return oldComments + comments
             }
             .bind(to: self.comments)
-            .disposed(by: self.disposeBag)
-        
-        self.comments
-            .asObservable()
-            .debug("commentsASDSAD")
-            .subscribe { comments in
-                print( comments.element?.count)
-            }
             .disposed(by: self.disposeBag)
         
         return Output(meloPlace: self.meloPlace.asDriver(),
