@@ -280,8 +280,9 @@ private extension DIContainer {
     func registerPostCommentUseCase() {
         self.container.register(PostCommentUseCaseProtocol.self) { resolver in
             let commentRepository = resolver.resolve(CommentRepositoryProtocol.self)
-            
-            return PostCommentUseCase(commentRepository: commentRepository!)
+            let userRepository = resolver.resolve(UserRepositoryProtocol.self)
+            return PostCommentUseCase(commentRepository: commentRepository!,
+            userRepository: userRepository!)
         }
         .inObjectScope(.container)
     }

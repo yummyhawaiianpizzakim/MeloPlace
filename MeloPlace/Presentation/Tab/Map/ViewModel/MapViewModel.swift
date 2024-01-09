@@ -134,13 +134,11 @@ class MapViewModel {
                     input.region,
                     input.mapMeloPlaceFilter
                         .map({ $0.rawValue })
-//                        .startWith(0)
                 )
             )
             .flatMap({ [weak self] val -> Observable<[MapDataSource]> in
                 let (region, state) = val
                 guard
-//                    let region,
                       let meloPlaceObservable = self?.fetchMapMeloPlaceUseCase
                     .fetch(region: region, tapState: state)
                     .do(onNext: { [weak self] meloPlaces in
@@ -153,7 +151,7 @@ class MapViewModel {
                     .asObservable()
                 else { return Observable.just([]) }
                 
-                return meloPlaceObservable.map { [weak self] meloPlaces in
+                return meloPlaceObservable.map { meloPlaces in
                     guard let dataSource = self?.mappingDataSource(state: state, meloPlaces: meloPlaces)
                     else { return [] }
                     
@@ -161,7 +159,6 @@ class MapViewModel {
                 }
             })
             .share()
-        
         
         return Output(
             annotations: self.annotations.asDriver(),

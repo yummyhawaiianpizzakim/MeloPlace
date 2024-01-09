@@ -456,9 +456,10 @@ extension FireBaseNetworkService {
                         guard let snapshot
                         else { return }
                         
-                        for document in snapshot.documents {
+                        for documentChange in snapshot.documentChanges {
                             do {
-                                let comment = try document.data(as: type)
+                                
+                                let comment = try documentChange.document.data(as: type)
                                 observer.onNext(comment)
                             } catch let error {
                                 observer.onError(error)
@@ -601,9 +602,9 @@ extension FireBaseNetworkService {
                     query.addSnapshotListener { snapshot, error in
                         guard let snapshot else { return }
                     self.commentLastSnapshot = snapshot.documents.last
-                        for document in snapshot.documents {
+                        for documentChange in snapshot.documentChanges {
                             do {
-                                let comment = try document.data(as: type)
+                                let comment = try documentChange.document.data(as: type)
                                 observer.onNext(comment)
                             } catch let error {
                                 observer.onError(error)
