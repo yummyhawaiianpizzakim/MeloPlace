@@ -51,6 +51,7 @@ class CommentCollectionCell: UICollectionViewCell {
         
         self.disposeBag = DisposeBag()
         self.profileImageView.image = nil
+        self.contentTextView.attributedText = nil
     }
     
     override func layoutSubviews() {

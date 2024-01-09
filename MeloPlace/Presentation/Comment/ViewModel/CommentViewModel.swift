@@ -68,12 +68,11 @@ class CommentViewModel {
                 return self.postCommentUseCase.post(meloPlaceID: meloPlace.id, contents: contents, createdDate: date)
                     
             }
-            .withLatestFrom(self.meloPlace)
             .withUnretained(self)
-            .flatMap({ owner, meloPlace -> Observable<[Comment]> in
-                guard let meloPlace else { return Observable.just([]) }
-                
-                return owner.fetchCommentUseCase.fetchComment(meloPlaceID: meloPlace.id, limit: self.limit, isInit: false)
+            .map({ owner, comment in
+                var comments = owner.comments.value
+                comments.insert(comment, at: 0)
+                return comments
             })
             .bind(to: self.comments)
             .disposed(by: self.disposeBag)

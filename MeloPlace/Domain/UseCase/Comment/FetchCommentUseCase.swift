@@ -31,9 +31,9 @@ class FetchCommentUseCase: FetchCommentUseCaseProtocol {
             .withUnretained(self)
             .flatMap { owner, comments -> Observable<[Comment]> in
             let userIDs = comments.map { $0.creatorUserID }
-            return self.userRepository.fetchUserWithComments(userID: userIDs)
+            return owner.userRepository.fetchUserWithComments(userID: userIDs)
                     .map { users in
-                        self.mapCommentWithUser(comments: comments, users: users)
+                        owner.mapCommentWithUser(comments: comments, users: users)
                     }.asObservable()
             }
     }
