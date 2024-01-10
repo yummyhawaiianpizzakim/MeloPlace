@@ -18,7 +18,7 @@ protocol SpotifyRepositoryProtocol: AnyObject {
     func observePlayerState() -> Observable<Bool> 
 }
 
-class SpotifyRepository: SpotifyRepositoryProtocol {
+final class SpotifyRepository: SpotifyRepositoryProtocol {
     private let spotifyService: SpotifyServiceProtocol
     
     init(spotifyService: SpotifyServiceProtocol) {

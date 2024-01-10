@@ -12,7 +12,7 @@ protocol TryConnectSpotifyUseCaseProtocol: AnyObject {
     func tryConnect() -> Observable<SpotifyUserProfile> 
 }
 
-class TryConnectSpotifyUseCase: TryConnectSpotifyUseCaseProtocol {
+final class TryConnectSpotifyUseCase: TryConnectSpotifyUseCaseProtocol {
     private let spotifyRepository: SpotifyRepositoryProtocol
     
     init(spotifyRepository: SpotifyRepositoryProtocol) {

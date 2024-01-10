@@ -11,7 +11,7 @@ import SnapKit
 import RxSwift
 import RxCocoa
 
-class CommentInputView: UIView {
+final class CommentInputView: UIView {
     
     let disposeBag = DisposeBag()
     
@@ -22,13 +22,6 @@ class CommentInputView: UIView {
         textField.font = .systemFont(ofSize: 14)
         return textField
     }()
-    
-//        private lazy var actionButton: UIButton = {
-//            let button = UIButton()
-//
-//            button.setImage(TrinapAsset.chatPlus.image, for: .normal)
-//            return button
-//        }()
         
     lazy var postCommentButton: UIButton = {
         let button = UIButton()
@@ -96,12 +89,6 @@ extension CommentInputView {
             make.width.equalTo(self.postCommentButton.snp.height)
         }
         
-//        actionButton.snp.makeConstraints { make in
-//            make.leading.equalTo(chatTextField.snp.trailing).offset(8)
-//            make.trailing.equalTo(sendChatButton.snp.leading)
-//            make.top.bottom.equalToSuperview()
-//            make.width.equalTo(self.sendChatButton.snp.height)
-//        }
     }
     
     func bindUI() {
@@ -115,14 +102,6 @@ extension CommentInputView {
 }
 
 extension CommentInputView {
-//    var didTapAction: Signal<Void> {
-//        return actionButton.rx.tap.asSignal()
-//    }
-    
-//    var didTapSend: Signal<Void> {
-//        return sendChatButton.rx.tap.asSignal()
-//    }
-    
     var textObservable: Observable<String> {
         return self.commentTextField.rx.text.orEmpty.asObservable()
     }

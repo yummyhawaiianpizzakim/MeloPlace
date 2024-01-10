@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class BrowseCoordinator: CoordinatorProtocol {
+final class BrowseCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []
@@ -58,7 +58,6 @@ class BrowseCoordinator: CoordinatorProtocol {
         
         coordinator.meloPlaces.accept(meloPlaces)
         coordinator.indexPath.accept(indexPath)
-//        coordinator.indexPath = indexPath
         self.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
         coordinator.start()

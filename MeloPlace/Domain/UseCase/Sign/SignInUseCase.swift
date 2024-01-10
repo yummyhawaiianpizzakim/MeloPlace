@@ -12,7 +12,7 @@ protocol SignInUseCaseProtocol: AnyObject {
     func signIn(with profile: SpotifyUserProfile) -> Observable<Bool>
 }
 
-class SignInUseCase: SignInUseCaseProtocol {
+final class SignInUseCase: SignInUseCaseProtocol {
     private let signRepository: SignRepositoryProtocol
     
     init(signRepository: SignRepositoryProtocol) {

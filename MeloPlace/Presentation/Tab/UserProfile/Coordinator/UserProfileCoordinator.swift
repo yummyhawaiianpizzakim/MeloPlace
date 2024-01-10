@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class UserProfileCoordinator: CoordinatorProtocol {
+final class UserProfileCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []
@@ -48,7 +48,6 @@ class UserProfileCoordinator: CoordinatorProtocol {
         
         coordinator.meloPlaces.accept(meloPlaces)
         coordinator.indexPath.accept(indexPath)
-//        coordinator.indexPath = indexPath
         self.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
         coordinator.start()

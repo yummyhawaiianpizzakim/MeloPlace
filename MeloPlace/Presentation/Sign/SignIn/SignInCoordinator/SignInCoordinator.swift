@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class SignInCoordinator: CoordinatorProtocol {
+final class SignInCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []
@@ -74,6 +74,4 @@ extension SignInCoordinator: CoordinatorFinishDelegate {
             $0.type != childCoordinator.type
         }
     }
-    
-    
 }

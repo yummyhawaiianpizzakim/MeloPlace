@@ -20,7 +20,7 @@ protocol UserRepositoryProtocol: AnyObject {
     func deleteFollowingUser(id: String) -> Observable<Bool>
 }
 
-class UserRepository: UserRepositoryProtocol {
+final class UserRepository: UserRepositoryProtocol {
     let disposeBag = DisposeBag()
     private let fireBaseService: FireBaseNetworkServiceProtocol
     

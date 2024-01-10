@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MapCoordinator: CoordinatorProtocol {
+final class MapCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []
@@ -33,8 +33,6 @@ class MapCoordinator: CoordinatorProtocol {
         
         vm.setActions(
             actions: MapViewModelActions(
-//                showMapMeloPlaceListView:
-//                    self.showMapMeloPlaceListView,
                 showMeloPlaceDetailView: self.showMeloPlaceDetailView,
                 showSearchView:
                     self.showSearchView
@@ -43,15 +41,6 @@ class MapCoordinator: CoordinatorProtocol {
         
         self.navigation.pushViewController(vc, animated: true)
     }
-    
-//    lazy var showMapMeloPlaceListView: (_ meloPlaces: [MeloPlace]) -> Void = { [weak self] meloPlaces in
-//        guard let self = self else { return }
-//        let coordinator = MapMeloPlaceListCoordinator(navigation: self.navigation)
-//        coordinator.meloPlaces.accept(meloPlaces)
-//        self.childCoordinators.append(coordinator)
-//        coordinator.finishDelegate = self
-//        coordinator.start()
-//    }
     
     lazy var showSearchView: () -> Void = { [weak self] in
         guard let self = self else { return }
@@ -67,7 +56,6 @@ class MapCoordinator: CoordinatorProtocol {
         
         coordinator.meloPlaces.accept(meloPlaces)
         coordinator.indexPath.accept(indexPath)
-//        coordinator.indexPath = indexPath
         self.childCoordinators.append(coordinator)
         coordinator.finishDelegate = self
         coordinator.start()

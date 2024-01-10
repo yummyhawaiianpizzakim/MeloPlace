@@ -6,7 +6,6 @@
 //
 
 import Foundation
-//import UIKit
 import MapKit
 import RxSwift
 import RxCocoa
@@ -17,7 +16,7 @@ struct MeloPlaceDetailViewModelActions {
     let closeCommentsView: () -> Void
 }
 
-class MeloPlaceDetailViewModel {
+final class MeloPlaceDetailViewModel {
     let disposeBag = DisposeBag()
     private let playMusicUseCase: PlayMusicUseCaseProtocol
     private let updatePlayerStateUseCase: UpdatePlayerStateUseCaseProtocol

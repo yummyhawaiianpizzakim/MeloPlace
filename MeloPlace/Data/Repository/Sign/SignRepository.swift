@@ -14,7 +14,7 @@ protocol SignRepositoryProtocol: AnyObject {
     func fetchUserInfor(withSpotifyID id: String) -> Observable<User?>
 }
 
-class SignRepository: SignRepositoryProtocol {
+final class SignRepository: SignRepositoryProtocol {
     private let firebaseService: FireBaseNetworkServiceProtocol
     
     init(firebaseService: FireBaseNetworkServiceProtocol) {

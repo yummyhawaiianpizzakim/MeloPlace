@@ -12,7 +12,7 @@ protocol PlayMusicUseCaseProtocol: AnyObject {
     func stop() 
 }
 
-class PlayMusicUseCase: PlayMusicUseCaseProtocol {
+final class PlayMusicUseCase: PlayMusicUseCaseProtocol {
     private let spotifyRepository: SpotifyRepositoryProtocol
     
     init(spotifyRepository: SpotifyRepositoryProtocol) {

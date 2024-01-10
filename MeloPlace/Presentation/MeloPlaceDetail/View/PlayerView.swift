@@ -12,7 +12,7 @@ import RxRelay
 import RxSwift
 import RxCocoa
 
-class PlayerView: UIView {
+final class PlayerView: UIView {
     let disposeBag = DisposeBag()
     
     var isEnableBackButton: Bool = false {
@@ -104,19 +104,16 @@ private extension PlayerView {
             make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(5)
             make.trailing.equalToSuperview().offset(-5)
-//            make.height.equalTo(20)
         }
         
         self.artistLabel.snp.makeConstraints { make in
             make.top.equalTo(self.musicLabel.snp.bottom).offset(5)
             make.leading.equalToSuperview().offset(5)
             make.trailing.equalToSuperview().offset(-5)
-//            make.height.equalTo(20)
         }
         
         self.playerStackView.snp.makeConstraints { make in
             make.top.equalTo(self.artistLabel.snp.bottom).offset(10)
-//            make.horizontalEdges.equalToSuperview()
             make.centerX.equalToSuperview()
             make.height.equalTo(30)
         }

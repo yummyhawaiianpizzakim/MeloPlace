@@ -9,8 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SearchTableCell: UITableViewCell {
-    
+final class SearchTableCell: UITableViewCell {
     static var id: String {
         return "SearchTableCell"
     }
@@ -38,7 +37,6 @@ class SearchTableCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
 }
 
 private extension SearchTableCell {
@@ -48,7 +46,6 @@ private extension SearchTableCell {
         }
         
         self.label.snp.makeConstraints { make in
-//            make.centerY.equalToSuperview()
             make.top.equalToSuperview().offset(15)
             make.leading.equalToSuperview().offset(15)
             make.trailing.equalToSuperview().offset(-15)

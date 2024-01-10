@@ -16,7 +16,7 @@ struct MainViewModelActions {
     let showMeloPlaceDetailView: (_ meloPlaces: [MeloPlace], _ indexPath: IndexPath) -> Void
 }
 
-class MainViewModel {
+final class MainViewModel {
     let disposeBag = DisposeBag()
     private let fetchMeloPlaceUseCase: FetchMeloPlaceUseCaseProtocol
     private let playMusicUseCase: PlayMusicUseCaseProtocol

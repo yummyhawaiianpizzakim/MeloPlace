@@ -48,7 +48,7 @@ enum TabBarPage: Int, CaseIterable {
     }
 }
 
-class TabBarCoordinator: NSObject, CoordinatorProtocol {
+final class TabBarCoordinator: NSObject, CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     var childCoordinators: [CoordinatorProtocol] = []
     var type: CoordinatorType = .tab
@@ -151,7 +151,6 @@ extension TabBarCoordinator: UITabBarControllerDelegate {
             self.childCoordinators.append(addMeloPlaceCoordinator)
             addMeloPlaceCoordinator.start()
             return false
-//            return true
         }
         
         return true

@@ -26,7 +26,7 @@ enum MapContentSection: Int, Hashable {
     }
 }
 
-class MapViewController: UIViewController {
+final class MapViewController: UIViewController {
     var viewModel: MapViewModel?
     let disposeBag = DisposeBag()
     

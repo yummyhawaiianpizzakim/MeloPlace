@@ -14,7 +14,7 @@ import RxCocoa
 import RxGesture
 import PhotosUI
 
-class AddMeloPlaceViewController: UIViewController {
+final class AddMeloPlaceViewController: UIViewController {
     var viewModel: AddMeloPlaceViewModel?
     let disposeBag = DisposeBag()
     
@@ -84,7 +84,6 @@ private extension AddMeloPlaceViewController {
         }
         
         self.doneButton.snp.makeConstraints { make in
-//            make.bottom.equalToSuperview().offset(-20)
             make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-10)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
@@ -232,7 +231,6 @@ extension AddMeloPlaceViewController: PHPickerViewControllerDelegate {
             }
             
             self.viewModel?.addImage(data: data)
-//            self.pickedImage.accept(data)
         }
         
     }

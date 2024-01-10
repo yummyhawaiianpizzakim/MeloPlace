@@ -12,7 +12,7 @@ protocol ReverseGeoCodeUseCaseProtocol: AnyObject {
     func reverse(point: GeoPoint) -> Observable<Space>
 }
 
-class ReverseGeoCodeUseCase: ReverseGeoCodeUseCaseProtocol {
+final class ReverseGeoCodeUseCase: ReverseGeoCodeUseCaseProtocol {
     private let mapRepository: MapRepositoryProtocol
     
     init(mapRepository: MapRepositoryProtocol) {

@@ -12,7 +12,7 @@ import RxSwift
 import RxRelay
 import RxCocoa
 
-class MusicListViewController: UIViewController {
+final class MusicListViewController: UIViewController {
     var viewModel: MusicListViewModel?
     let disposeBag = DisposeBag()
     

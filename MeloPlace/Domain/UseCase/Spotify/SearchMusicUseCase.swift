@@ -12,7 +12,7 @@ protocol SearchMusicUseCaseProtocol: AnyObject {
     func search(query: String, type: String) -> Observable<[Music]> 
 }
 
-class SearchMusicUseCase: SearchMusicUseCaseProtocol {
+final class SearchMusicUseCase: SearchMusicUseCaseProtocol {
     private let spotifyRepository: SpotifyRepositoryProtocol
     
     init(spotifyRepository: SpotifyRepositoryProtocol) {

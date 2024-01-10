@@ -12,7 +12,7 @@ protocol ObservePlayerStateUseCaseProtocol: AnyObject {
     func observe() -> Observable<Bool> 
 }
 
-class ObservePlayerStateUseCase: ObservePlayerStateUseCaseProtocol {
+final class ObservePlayerStateUseCase: ObservePlayerStateUseCaseProtocol {
     private let spotifyRepository: SpotifyRepositoryProtocol
     
     init(spotifyRepository: SpotifyRepositoryProtocol) {

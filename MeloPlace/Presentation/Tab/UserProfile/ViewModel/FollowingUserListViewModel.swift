@@ -26,7 +26,7 @@ struct FollowingUserListViewModelActions {
 
 typealias FollowingListDataSource = [FollowingListSection: [FollowingListSection.Item]]
 
-class FollowingUserListViewModel {
+final class FollowingUserListViewModel {
     private let disposeBag = DisposeBag()
     private let fetchUserUseCase: FetchUserUseCaseProtocol
     
@@ -134,9 +134,4 @@ extension FollowingUserListViewModel {
             return
         }
     }
-    
-    func showFollowingUserView() {
-//        self.actions?.showFollowingUserView()
-    }
-    
 }

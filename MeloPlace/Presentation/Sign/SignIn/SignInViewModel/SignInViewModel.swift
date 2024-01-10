@@ -15,7 +15,7 @@ struct SignInViewModelActions {
     let closeSinInView: () -> Void
 }
 
-class SignInViewModel {
+final class SignInViewModel {
     private let disposeBag = DisposeBag()
     private let tryConnectSpotifyUseCase: TryConnectSpotifyUseCaseProtocol
     private let signInUseCase: SignInUseCaseProtocol
@@ -67,9 +67,4 @@ class SignInViewModel {
     func setActions(actions: SignInViewModelActions) {
         self.actions = actions
     }
-    
-    
-}
-
-extension SignInViewModel {
 }

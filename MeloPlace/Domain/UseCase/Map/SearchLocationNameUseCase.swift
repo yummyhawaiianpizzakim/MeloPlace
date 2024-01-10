@@ -12,7 +12,7 @@ protocol SearchLocationNameUseCaseProtocol: AnyObject {
     func search(query: String) -> Observable<[Space]> 
 }
 
-class SearchLocationNameUseCase: SearchLocationNameUseCaseProtocol {
+final class SearchLocationNameUseCase: SearchLocationNameUseCaseProtocol {
     private let mapRepository: MapRepositoryProtocol
     
     init(mapRepository: MapRepositoryProtocol) {

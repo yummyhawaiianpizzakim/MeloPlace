@@ -10,17 +10,12 @@ import RxCocoa
 import RxSwift
 import RxRelay
 
-//protocol MusicListViewModelDelegate: AnyObject {
-//    func musicDidSelect(music: Music)
-//}
-
 struct MusicListViewModelActions {
-    let showMusicPlayerView: (_ music: Music) -> Void
     let closeMusicListView: () -> Void
     let submitSelectedMusic: (_ music: Music) -> Void
 }
 
-class MusicListViewModel {
+final class MusicListViewModel {
     let disposeBag = DisposeBag()
     private let searchMusicUseCase: SearchMusicUseCaseProtocol
     private let playMusicUseCase: PlayMusicUseCaseProtocol
@@ -29,7 +24,6 @@ class MusicListViewModel {
     let selectedMusic = BehaviorRelay<Music?>(value: nil)
 
     var actions: MusicListViewModelActions?
-//    weak var delegate: MusicListViewModelDelegate?
     
     init(searchMusicUseCase: SearchMusicUseCaseProtocol, playMusicUseCase: PlayMusicUseCaseProtocol) {
         self.searchMusicUseCase = searchMusicUseCase
@@ -40,15 +34,10 @@ class MusicListViewModel {
         var searchText: Observable<String>
         var didSelectItem: Observable<IndexPath>
         var didDeselectItem: Observable<IndexPath>
-//        var selectedMusic: Observable<Music>
-//        var deSelectedMusic: Observable<Music>
         var didTapDoneButton: Observable<Void>
     }
     
     struct Output {
-//        let dataSource = BehaviorRelay<[Music]>(value: [])
-//        let isDoneButtonEnable = BehaviorRelay<Bool>(value: false)
-        
         let dataSource: Driver<[Music]>
         let isDoneButtonEnable: Driver<Bool>
     }
@@ -97,9 +86,7 @@ class MusicListViewModel {
             .withLatestFrom(self.selectedMusic)
             .subscribe {[weak self] music in
                 guard let music = music else { return }
-//                self?.delegate?.musicDidSelect(music: music)
                 self?.actions?.submitSelectedMusic(music)
-//                self?.actions?.closeMusicListView()
             }
             .disposed(by: self.disposeBag)
         

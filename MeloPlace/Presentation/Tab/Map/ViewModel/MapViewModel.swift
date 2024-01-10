@@ -12,14 +12,13 @@ import RxRelay
 import CoreLocation
 
 struct MapViewModelActions {
-//    let showMapMeloPlaceListView: (_ meloPlaces: [MeloPlace]) -> Void
     let showMeloPlaceDetailView: (_ meloPlaces: [MeloPlace], _ indexPath: IndexPath) -> Void
     let showSearchView: () -> Void
 }
 
 typealias MapDataSource = [MapContentSection: [MapContentSection.Item]]
 
-class MapViewModel {
+final class MapViewModel {
     private let updateLocationUseCase: UpdateLocationUseCaseProtocol
     private let fetchMapMeloPlaceUseCase: FetchMapMeloPlaceUseCaseProtocol
     private let fetchCurrentLocationUseCase: FetchCurrentLocationUseCaseProtocol
@@ -113,7 +112,7 @@ class MapViewModel {
         self.fetchCurrentLocationUseCase.fetchCurrentLocation()
             .flatMap { [weak self] value -> Observable<String> in
                 guard let self = self else { return Observable.error(LocationError.invalidGeopoint)}
-                let (geoPoint, address) = value
+                let (geoPoint, _) = value
 
                 self.geoPoint.accept(geoPoint)
                 return self.reverseGeoCodeUseCase.reverse(point: geoPoint).map { $0.name }

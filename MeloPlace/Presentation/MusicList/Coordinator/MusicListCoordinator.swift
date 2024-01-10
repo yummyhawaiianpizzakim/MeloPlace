@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MusicListCoordinator: CoordinatorProtocol {
+final class MusicListCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []
@@ -17,13 +17,9 @@ class MusicListCoordinator: CoordinatorProtocol {
     
     var navigation: UINavigationController
     
-//    var addViewModel: AddMeloPlaceViewModel?
-    
     init(navigation : UINavigationController
-//         addViewModel: AddMeloPlaceViewModel
     ) {
         self.navigation = navigation
-//        self.addViewModel = addViewModel
     }
     
     init() {
@@ -38,34 +34,20 @@ class MusicListCoordinator: CoordinatorProtocol {
         let container = DIContainer.shared.container
         guard let vm = container.resolve(MusicListViewModel.self) else { return }
         
-//        vm.delegate = self.addViewModel
         let vc = MusicListViewController(viewModel: vm)
         
         vm.setActions(
             actions: MusicListViewModelActions(
-//                closeMeloLocationView: self.closeMeloLocationView
-                showMusicPlayerView: self.showMusicPlayerView,
                 closeMusicListView: self.closeMusicListView,
                 submitSelectedMusic: self.submitSelectedMusic
             )
         )
         
         self.navigation.present(vc, animated: true)
-//        self.navigation.pushViewController(vc, animated: true)
     }
     
     lazy var closeMusicListView: () -> Void = { [weak self] in
         self?.finish()
-//        self?.viewController?.dismiss(animated: true)
-    }
-    
-    lazy var showMusicPlayerView: (_ music: Music) -> Void = { [weak self] music in
-//        let container = DIContainer.shared.container
-//        guard let vm = container.resolve(PhotoDetailViewModel.self) else { return }
-//        vm.indexpath = indexPath
-//        let vc = PhotoDetailViewController(viewModel: vm)
-////        self?.navigation.present(vc, animated: true)
-//        self?.navigation.pushViewController(vc, animated: true)
     }
     
     lazy var submitSelectedMusic: (_ music: Music) -> Void = { [weak self] music in

@@ -8,7 +8,7 @@
 import Foundation
 import Swinject
 
-class DIContainer {
+final class DIContainer {
     static let shared = DIContainer()
     
     let container = Container()

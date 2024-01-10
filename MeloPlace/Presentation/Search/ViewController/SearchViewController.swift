@@ -13,7 +13,7 @@ import RxSwift
 import RxRelay
 import RxCocoa
 
-class SearchViewController: UIViewController {
+final class SearchViewController: UIViewController {
     var viewModel: SearchViewModel?
     let disposeBag = DisposeBag()
     
@@ -82,7 +82,6 @@ private extension SearchViewController {
         }
         
         self.searchTableView.snp.makeConstraints { make in
-//            make.edges.equalToSuperview()
             make.top.equalTo(self.currentLocationButton.snp.bottom).offset(5)
             make.horizontalEdges.bottom.equalTo(self.view.safeAreaLayoutGuide)
         }

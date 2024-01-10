@@ -24,8 +24,7 @@ protocol MapRepositoryProtocol {
     func reverseGeocode(point: GeoPoint) -> Observable<Address?>
 }
 
-class MapRepository: MapRepositoryProtocol {
-//    let locationManager = LocationManager.shared
+final class MapRepository: MapRepositoryProtocol {
     private let locationManager: LocationManagerProtocol
     
     init(locationManager: LocationManagerProtocol) {

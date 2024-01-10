@@ -16,7 +16,7 @@ protocol UserContentCollectionCellDelegate: AnyObject {
     func didTapContentImage(sender: UserContentCollectionCell)
 }
 
-class UserContentCollectionCell: UICollectionViewCell {
+final class UserContentCollectionCell: UICollectionViewCell {
     static var identifier: String {
         return "UserContentCollectionCell"
     }
@@ -63,7 +63,6 @@ private extension UserContentCollectionCell {
         self.contentView.addSubview(self.nameLabel)
         self.contentView.addSubview(self.imageView)
         self.nameLabel.snp.makeConstraints { make in
-//            make.edges.equalToSuperview()
             make.leading.equalToSuperview().offset(5)
             make.bottom.equalToSuperview().offset(-5)
             
@@ -74,13 +73,6 @@ private extension UserContentCollectionCell {
     }
     
     func bindUI() {
-//        self.imageView.rx.tapGesture()
-//            .when(.recognized)
-//            .withUnretained(self)
-//            .subscribe { owner, _ in
-//                owner.delegate?.didTapContentImage(sender: owner)
-//            }
-//            .disposed(by: self.disposeBag)
     }
     
     func setImage(imageURLString: String) {

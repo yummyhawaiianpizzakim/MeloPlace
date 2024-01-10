@@ -11,7 +11,7 @@ import FloatingPanel
 import RxSwift
 import RxRelay
 
-class MapMeloPlaceListCoordinator: CoordinatorProtocol {
+final class MapMeloPlaceListCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []
@@ -33,39 +33,7 @@ class MapMeloPlaceListCoordinator: CoordinatorProtocol {
     }
     
     private func showMapMeloPlaceListViewFlow() {
-//        let container = DIContainer.shared.container
-//        guard let vm = container.resolve(MapMeloPlaceListViewModel.self) else { return }
-//        let floatingPanelController = FloatingPanelController()
-//        let vc = MapMeloPlaceListViewController(viewModel: vm)
-//        self.meloPlaces
-//            .bind(to: vm.meloPlaces)
-//            .disposed(by: self.disposeBag)
-        
-//        vm.setActions(
-//            actions: PhotoListViewModelActions(
-//                showPhotoDetail: self.showPhotoDetail
-//            )
-//        )
-        
-//        floatingPanelController.set(contentViewController: vc)
-//        floatingPanelController.addPanel(toParent: self.navigation)
-//        floatingPanelController.track(scrollView: vc.meloPlaceCollectionView)
-//        floatingPanelController.changePanelStyle()
-//        floatingPanelController.layout = CustomFloatingPanelLayout()
-//
-//        vc.loadViewIfNeeded()
-//        self.navigation.present(floatingPanelController, animated: true)
-//        self.navigation.pushViewController(vc, animated: true)
     }
-    
-//    lazy var showPhotoDetail: (_ IndexPath: IndexPath) -> Void = { [weak self] indexPath in
-//        let container = DIContainer.shared.container
-//        guard let vm = container.resolve(PhotoDetailViewModel.self) else { return }
-//        vm.indexpath = indexPath
-//        let vc = PhotoDetailViewController(viewModel: vm)
-////        self?.navigation.present(vc, animated: true)
-//        self?.navigation.pushViewController(vc, animated: true)
-//    }
 }
 
 extension MapMeloPlaceListCoordinator: CoordinatorFinishDelegate {

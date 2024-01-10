@@ -13,7 +13,7 @@ import RxRelay
 import RxCocoa
 import RxKeyboard
 
-class SignUpViewController: UIViewController {
+final class SignUpViewController: UIViewController {
     var viewModel: SignUpViewModel?
     let disposeBag = DisposeBag()
     
@@ -30,12 +30,6 @@ class SignUpViewController: UIViewController {
     }()
     
     lazy var marginView = UIView()
-    
-//    lazy var textStackView: UIStackView = {
-//        let view = UIStackView()
-//        view.axis = .vertical
-//        return view
-//    }()
     
     lazy var emailTextLabel: UILabel = {
         let label = UILabel()
@@ -103,12 +97,7 @@ private extension SignUpViewController {
         self.view.addSubview(self.scrollView)
         self.scrollView.addSubview(self.contentView)
         
-//        self.view.addSubview(self.textStackView)
         self.view.addSubview(self.doneButton)
-        
-//        [self.textStackView].forEach {
-//            self.contentView.addSubview($0)
-//        }
         
         [self.emailTextLabel, self.emailTextField,
          self.passwordTextLabel, self.passwordTextField,
@@ -128,7 +117,6 @@ private extension SignUpViewController {
         }
         
         self.emailTextLabel.snp.makeConstraints { make in
-//            make.top.equalToSuperview().offset(100)
             make.top.equalToSuperview().inset(150)
             make.leading.equalToSuperview().inset(20)
             make.trailing.equalToSuperview().inset(20)
@@ -161,7 +149,6 @@ private extension SignUpViewController {
         }
         
         self.doneButton.snp.makeConstraints { make in
-//            make.top.equalTo(self.marginView.snp.bottom)
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.bottom.equalToSuperview().offset(-40)
@@ -175,7 +162,6 @@ private extension SignUpViewController {
             .skip(1)
             .drive(onNext: { [weak self] keyboardVisibleHeight in
                 guard let self else { return }
-//                self.updateContentViewLayout(height: keyboardVisibleHeight)
                 self.scrollView.contentInset.bottom = keyboardVisibleHeight
             })
             .disposed(by: disposeBag)

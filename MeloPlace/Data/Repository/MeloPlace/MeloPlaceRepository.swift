@@ -13,14 +13,12 @@ import RxSwift
 protocol MeloPlaceRepositoryProtocol: AnyObject {
     func createMeloPlace(meloPlace: MeloPlace) -> Observable<MeloPlace> 
     func fetchUserMeloPlace(id: String?) -> Observable<[MeloPlace]>
-//    func fetchMapMeloPlaces(region: Region) -> Single<[MeloPlace]>
     func fetchTagedMeloPlace(id: String?) -> Observable<[MeloPlace]> 
     func fetchMapMeloPlaces(region: Region, userID: [String]) -> Observable<[MeloPlace]>
-//    func fetchBrowseMeloPlace(limit: Int) -> Observable<[MeloPlace]>
     func fetchBrowseMeloPlace(limit: Int, isInit: Bool) -> Observable<[MeloPlace]>
 }
 
-class MeloPlaceRepository: MeloPlaceRepositoryProtocol {
+final class MeloPlaceRepository: MeloPlaceRepositoryProtocol {
     let disposeBag = DisposeBag()
     private let fireBaseService: FireBaseNetworkServiceProtocol
     

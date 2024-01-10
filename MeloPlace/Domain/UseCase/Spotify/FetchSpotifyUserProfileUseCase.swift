@@ -12,7 +12,7 @@ protocol FetchSpotifyUserProfileUseCaseProtocol: AnyObject {
     func fetch() -> Observable<SpotifyUserProfile>
 }
 
-class FetchSpotifyUserProfileUseCase: FetchSpotifyUserProfileUseCaseProtocol {
+final class FetchSpotifyUserProfileUseCase: FetchSpotifyUserProfileUseCaseProtocol {
     private let spotifyRepository: SpotifyRepositoryProtocol
     
     init(spotifyRepository: SpotifyRepositoryProtocol) {

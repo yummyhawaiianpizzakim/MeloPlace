@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SearchBarView: UIView {
+final class SearchBarView: UIView {
     // MARK: UI
     private lazy var searchImageView: UIImageView = {
         let view = UIImageView()

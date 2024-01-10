@@ -14,7 +14,7 @@ struct SignUpViewModelActions {
     let closeSignUpView: () -> Void
 }
 
-class SignUpViewModel {
+final class SignUpViewModel {
     let disposeBag = DisposeBag()
     private let signUpUseCase: SignUpUseCaseProtocol
     var actions: SignUpViewModelActions?

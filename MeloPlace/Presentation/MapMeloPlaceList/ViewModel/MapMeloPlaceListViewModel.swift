@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 import RxRelay
 
-class MapMeloPlaceListViewModel {
+final class MapMeloPlaceListViewModel {
     let disposeBag = DisposeBag()
     
     let meloPlaces = BehaviorRelay<[MeloPlace]>(value: [])

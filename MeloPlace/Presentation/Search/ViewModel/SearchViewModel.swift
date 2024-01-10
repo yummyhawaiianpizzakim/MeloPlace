@@ -11,17 +11,15 @@ import RxCocoa
 import RxRelay
 
 struct SearchViewModelActions {
-//    let closeSearchView: () -> Void
     let showLocationView: () -> Void
     let closeSearchView: (_ space: Space) -> Void
 }
 
-class SearchViewModel {
+final class SearchViewModel {
     let disposeBag = DisposeBag()
     private let searchLocationNameUseCase: SearchLocationNameUseCaseProtocol
     
     var actions: SearchViewModelActions?
-//    var delegate: SearchViewModelDelegate?
     
     let searchSpaces = BehaviorRelay<[Space]>(value: [])
     let currentSpace = BehaviorRelay<Space?>(value: nil)
@@ -37,7 +35,6 @@ class SearchViewModel {
     }
     
     struct Output {
-//        let searchSpaces = PublishRelay<[Space]>()
         let searchSpaces: Driver<[Space]>
     }
     
@@ -80,14 +77,6 @@ class SearchViewModel {
                 owner.actions?.closeSearchView(space)
             }
             .disposed(by: self.disposeBag)
-        
-//        self.locationManager.results
-//            .withUnretained(self)
-//            .subscribe(onNext: { owner, spaces in
-//                owner.searchSpaces.accept(spaces)
-//                output.searchSpaces.accept(spaces)
-//            })
-//            .disposed(by: self.disposeBag)
         
         return Output(searchSpaces: spaces)
     }

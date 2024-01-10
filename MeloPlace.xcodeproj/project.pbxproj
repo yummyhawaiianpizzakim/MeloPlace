@@ -41,7 +41,6 @@
 		E90E64982A80FAD9002A71B6 /* BrowseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64972A80FAD9002A71B6 /* BrowseCoordinator.swift */; };
 		E90E649A2A80FAE4002A71B6 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64992A80FAE4002A71B6 /* BrowseViewController.swift */; };
 		E90E649C2A80FAED002A71B6 /* BrowseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E649B2A80FAED002A71B6 /* BrowseViewModel.swift */; };
-		E90E649F2A810B37002A71B6 /* MainCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E649E2A810B37002A71B6 /* MainCollectionViewFlowLayout.swift */; };
 		E90E64A12A810D3E002A71B6 /* MainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64A02A810D3E002A71B6 /* MainCell.swift */; };
 		E90E64A52A820FB5002A71B6 /* MeloPlace.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64A42A820FB5002A71B6 /* MeloPlace.swift */; };
 		E90E64AC2A8237AD002A71B6 /* AddMeloPlaceCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64AB2A8237AD002A71B6 /* AddMeloPlaceCoordinator.swift */; };
@@ -49,8 +48,6 @@
 		E90E64B02A82384E002A71B6 /* AddMeloPlaceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64AF2A82384E002A71B6 /* AddMeloPlaceViewModel.swift */; };
 		E90E64B22A824BDF002A71B6 /* AddMeloPlaceView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64B12A824BDF002A71B6 /* AddMeloPlaceView.swift */; };
 		E90E64B52A84CAD5002A71B6 /* Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64B42A84CAD5002A71B6 /* Extension.swift */; };
-		E90E64BD2A84F37E002A71B6 /* Spotify.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64BC2A84F37E002A71B6 /* Spotify.swift */; };
-		E90E64BF2A84F578002A71B6 /* SpotifyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64BE2A84F578002A71B6 /* SpotifyViewController.swift */; };
 		E90E64C92A876AD7002A71B6 /* MeloLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64C82A876AD7002A71B6 /* MeloLocationViewController.swift */; };
 		E90E64CB2A876E40002A71B6 /* MeloLocationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64CA2A876E40002A71B6 /* MeloLocationViewModel.swift */; };
 		E90E64CD2A876E6B002A71B6 /* MeloLocationCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E64CC2A876E6B002A71B6 /* MeloLocationCoordinator.swift */; };
@@ -124,7 +121,6 @@
 		E90E65902AB32884002A71B6 /* FetchMapMeloPlaceUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E658F2AB32884002A71B6 /* FetchMapMeloPlaceUseCase.swift */; };
 		E90E65932AB47958002A71B6 /* FetchCurrentLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65922AB47958002A71B6 /* FetchCurrentLocationUseCase.swift */; };
 		E90E65952AB83D1D002A71B6 /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65942AB83D1D002A71B6 /* Region.swift */; };
-		E90E65972AB85AB0002A71B6 /* MainPlayerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E90E65962AB85AB0002A71B6 /* MainPlayerView.swift */; };
 		E91B7C522ADD3A6A00CDCE44 /* UpdateLocationUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E91B7C512ADD3A6A00CDCE44 /* UpdateLocationUseCase.swift */; };
 		E9462F1B2ACFF76C00EAF032 /* SearchLocationNameUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F1A2ACFF76C00EAF032 /* SearchLocationNameUseCase.swift */; };
 		E9462F1D2ACFFEE600EAF032 /* ReverseGeoCodeUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E9462F1C2ACFFEE600EAF032 /* ReverseGeoCodeUseCase.swift */; };
@@ -243,7 +239,6 @@
 		E90E64972A80FAD9002A71B6 /* BrowseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseCoordinator.swift; sourceTree = "<group>"; };
 		E90E64992A80FAE4002A71B6 /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
 		E90E649B2A80FAED002A71B6 /* BrowseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewModel.swift; sourceTree = "<group>"; };
-		E90E649E2A810B37002A71B6 /* MainCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		E90E64A02A810D3E002A71B6 /* MainCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCell.swift; sourceTree = "<group>"; };
 		E90E64A42A820FB5002A71B6 /* MeloPlace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloPlace.swift; sourceTree = "<group>"; };
 		E90E64AB2A8237AD002A71B6 /* AddMeloPlaceCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMeloPlaceCoordinator.swift; sourceTree = "<group>"; };
@@ -252,8 +247,6 @@
 		E90E64B12A824BDF002A71B6 /* AddMeloPlaceView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddMeloPlaceView.swift; sourceTree = "<group>"; };
 		E90E64B42A84CAD5002A71B6 /* Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extension.swift; sourceTree = "<group>"; };
 		E90E64B82A84EE74002A71B6 /* MeloPlace-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MeloPlace-Bridging-Header.h"; sourceTree = "<group>"; };
-		E90E64BC2A84F37E002A71B6 /* Spotify.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Spotify.swift; sourceTree = "<group>"; };
-		E90E64BE2A84F578002A71B6 /* SpotifyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotifyViewController.swift; sourceTree = "<group>"; };
 		E90E64C82A876AD7002A71B6 /* MeloLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloLocationViewController.swift; sourceTree = "<group>"; };
 		E90E64CA2A876E40002A71B6 /* MeloLocationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloLocationViewModel.swift; sourceTree = "<group>"; };
 		E90E64CC2A876E6B002A71B6 /* MeloLocationCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MeloLocationCoordinator.swift; sourceTree = "<group>"; };
@@ -326,7 +319,6 @@
 		E90E658F2AB32884002A71B6 /* FetchMapMeloPlaceUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchMapMeloPlaceUseCase.swift; sourceTree = "<group>"; };
 		E90E65922AB47958002A71B6 /* FetchCurrentLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FetchCurrentLocationUseCase.swift; sourceTree = "<group>"; };
 		E90E65942AB83D1D002A71B6 /* Region.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Region.swift; sourceTree = "<group>"; };
-		E90E65962AB85AB0002A71B6 /* MainPlayerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainPlayerView.swift; sourceTree = "<group>"; };
 		E91B7C512ADD3A6A00CDCE44 /* UpdateLocationUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateLocationUseCase.swift; sourceTree = "<group>"; };
 		E9462F1A2ACFF76C00EAF032 /* SearchLocationNameUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchLocationNameUseCase.swift; sourceTree = "<group>"; };
 		E9462F1C2ACFFEE600EAF032 /* ReverseGeoCodeUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverseGeoCodeUseCase.swift; sourceTree = "<group>"; };
@@ -534,9 +526,8 @@
 				E90E65372A987651002A71B6 /* MeloPlaceDetail */,
 				E90E65152A8DEDCF002A71B6 /* Sign */,
 				E90E65092A8CB826002A71B6 /* Date */,
-				E90E64E82A8B460B002A71B6 /* Music */,
+				E90E64FC2A8B6227002A71B6 /* MusicList */,
 				E90E64C42A876A8C002A71B6 /* Location */,
-				E90E64A62A823750002A71B6 /* AddMeloPlace */,
 				E90E64C32A876A26002A71B6 /* Tab */,
 				E90E64852A80F9D6002A71B6 /* Common */,
 			);
@@ -705,9 +696,7 @@
 		E90E649D2A810B2B002A71B6 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				E90E649E2A810B37002A71B6 /* MainCollectionViewFlowLayout.swift */,
 				E90E64A02A810D3E002A71B6 /* MainCell.swift */,
-				E90E65962AB85AB0002A71B6 /* MainPlayerView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -802,8 +791,6 @@
 		E90E64BB2A84F35D002A71B6 /* InfraStructure */ = {
 			isa = PBXGroup;
 			children = (
-				E90E64BC2A84F37E002A71B6 /* Spotify.swift */,
-				E90E64BE2A84F578002A71B6 /* SpotifyViewController.swift */,
 				E90E65232A8DF7B3002A71B6 /* FireBaseNetworkService.swift */,
 				E94FAE492B2DA9A90082B79F /* URLNetworkSessionService.swift */,
 			);
@@ -816,6 +803,7 @@
 				E90E64862A80F9DB002A71B6 /* Coordinator */,
 				E90E64702A80F8FF002A71B6 /* Browse */,
 				E90E646F2A80F7ED002A71B6 /* Map */,
+				E90E64A62A823750002A71B6 /* AddMeloPlace */,
 				E90E646E2A80F7E6002A71B6 /* UserProfile */,
 				E90E646D2A80F7D3002A71B6 /* Main */,
 			);
@@ -885,15 +873,6 @@
 				E9ECC0D12B0B5CC8001543B8 /* PlaceHolderView.swift */,
 			);
 			path = View;
-			sourceTree = "<group>";
-		};
-		E90E64E82A8B460B002A71B6 /* Music */ = {
-			isa = PBXGroup;
-			children = (
-				E90E65062A8BE817002A71B6 /* MusicPlayer */,
-				E90E64FC2A8B6227002A71B6 /* MusicList */,
-			);
-			path = Music;
 			sourceTree = "<group>";
 		};
 		E90E64E92A8B4632002A71B6 /* Coordinator */ = {
@@ -977,29 +956,6 @@
 				E98D61E22AC02E20003EC5CD /* CommentDTO.swift */,
 			);
 			path = DTO;
-			sourceTree = "<group>";
-		};
-		E90E65062A8BE817002A71B6 /* MusicPlayer */ = {
-			isa = PBXGroup;
-			children = (
-				E90E65082A8BE82E002A71B6 /* ViewController */,
-				E90E65072A8BE821002A71B6 /* Coordinator */,
-			);
-			path = MusicPlayer;
-			sourceTree = "<group>";
-		};
-		E90E65072A8BE821002A71B6 /* Coordinator */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Coordinator;
-			sourceTree = "<group>";
-		};
-		E90E65082A8BE82E002A71B6 /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = ViewController;
 			sourceTree = "<group>";
 		};
 		E90E65092A8CB826002A71B6 /* Date */ = {
@@ -1823,7 +1779,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E90E653E2A9876B2002A71B6 /* MeloPlaceDetailViewController.swift in Sources */,
-				E90E65972AB85AB0002A71B6 /* MainPlayerView.swift in Sources */,
 				E9ECC0D22B0B5CC8001543B8 /* PlaceHolderView.swift in Sources */,
 				E90E655C2AA5C11A002A71B6 /* SearchViewController.swift in Sources */,
 				E98D61E32AC02E20003EC5CD /* CommentDTO.swift in Sources */,
@@ -1831,7 +1786,6 @@
 				E98D61FA2AC2A63E003EC5CD /* PostCommentUseCase.swift in Sources */,
 				E90E655A2AA5C0F5002A71B6 /* SearchCoordintor.swift in Sources */,
 				E90E64882A80F9EB002A71B6 /* TabBarCoordinator.swift in Sources */,
-				E90E64BD2A84F37E002A71B6 /* Spotify.swift in Sources */,
 				E99BA7B82AF1576D0009697A /* AnotherUserProfileCollectionCell.swift in Sources */,
 				E90E64AE2A823812002A71B6 /* AddMeloPlaceViewController.swift in Sources */,
 				E90E64A52A820FB5002A71B6 /* MeloPlace.swift in Sources */,
@@ -1926,7 +1880,6 @@
 				E90E65952AB83D1D002A71B6 /* Region.swift in Sources */,
 				E90E64AC2A8237AD002A71B6 /* AddMeloPlaceCoordinator.swift in Sources */,
 				E90E64EE2A8B4688002A71B6 /* MusicListCoordinator.swift in Sources */,
-				E90E64BF2A84F578002A71B6 /* SpotifyViewController.swift in Sources */,
 				E90E64382A80F3F4002A71B6 /* AppDelegate.swift in Sources */,
 				E90E654E2AA0976E002A71B6 /* MapMeloPlaceListViewModel.swift in Sources */,
 				E98D62142ACEA57D003EC5CD /* ObservePlayerStateUseCase.swift in Sources */,
@@ -1958,7 +1911,6 @@
 				E90E64CF2A876ED3002A71B6 /* MeloLocationView.swift in Sources */,
 				E9462F1D2ACFFEE600EAF032 /* ReverseGeoCodeUseCase.swift in Sources */,
 				E9462F262AD4156300EAF032 /* SearchUserTableCell.swift in Sources */,
-				E90E649F2A810B37002A71B6 /* MainCollectionViewFlowLayout.swift in Sources */,
 				E98D62122ACE9325003EC5CD /* UpdatePlayerStateUseCase.swift in Sources */,
 				E900389C2AF796AB0075ABFE /* BrowseCollectionCell.swift in Sources */,
 				E90E64942A80FAB3002A71B6 /* MapViewController.swift in Sources */,

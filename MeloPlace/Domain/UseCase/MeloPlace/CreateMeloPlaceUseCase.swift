@@ -12,7 +12,7 @@ protocol CreateMeloPlaceUseCaseProtocol: AnyObject {
     func create(meloPlace: MeloPlace) -> Observable<MeloPlace> 
 }
 
-class CreateMeloPlaceUseCase: CreateMeloPlaceUseCaseProtocol {
+final class CreateMeloPlaceUseCase: CreateMeloPlaceUseCaseProtocol {
     var meloPlaceRepository: MeloPlaceRepositoryProtocol
     
     init(meloPlaceRepository: MeloPlaceRepositoryProtocol) {

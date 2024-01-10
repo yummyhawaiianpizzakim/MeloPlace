@@ -12,7 +12,7 @@ import RxSwift
 import RxRelay
 import RxCocoa
 
-class MapMeloPlaceListViewController: UIViewController {
+final class MapMeloPlaceListViewController: UIViewController {
     var viewModel: MapMeloPlaceListViewModel?
     let disposeBag = DisposeBag()
     

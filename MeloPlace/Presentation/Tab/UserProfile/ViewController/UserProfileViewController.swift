@@ -13,7 +13,7 @@ import RxRelay
 import RxCocoa
 import RxGesture
 
-class UserProfileViewController: UIViewController {
+final class UserProfileViewController: UIViewController {
     var viewModel: UserProfileViewModel?
     var disposeBag = DisposeBag()
     
@@ -248,54 +248,4 @@ private extension UserProfileViewController {
             }
         })
     }
-    
-//    func setStickyView(with collView: UICollectionView, of cell: UserProfileCollectionCell) {
-//        collView.rx.contentOffset
-//            .observe(on: MainScheduler.asyncInstance)
-//            .bind { offset in
-//                let     initialFilterViewPosition = cell.filterView.frame.origin.y // filterView의 초기 위치 저장
-//
-//                let navBarHeight = self.navigationController?.navigationBar.frame.height ?? 0
-//                var statusBarHeight: CGFloat = 0
-//                if #available(iOS 13.0, *) {
-//                    statusBarHeight = self.view.window?.windowScene?.statusBarManager?.statusBarFrame.height ?? 0
-//                } else {
-//                    statusBarHeight = UIApplication.shared.statusBarFrame.height
-//                }
-//
-//                if offset.y >= cell.frame.height - cell.filterView.frame.height {
-//                    collView.contentInset = UIEdgeInsets(
-//                        top:
-////                                    navBarHeight + statusBarHeight +
-//                        cell.filterView.frame.height,
-//                        left: 0,
-//                        bottom: 0,
-//                        right: 0
-//                    )
-//
-//                    cell.filterView.frame = CGRect(
-//                        x: 0,
-//                        y: offset.y,
-//                        width: self.view.frame.width,
-//                        height: cell.filterView.frame.height
-//                    )
-//                } else {
-//                    collView.contentInset = UIEdgeInsets(
-//                        top: offset.y,
-//                        left: 0,
-//                        bottom: 0,
-//                        right: 0
-//                    )
-//
-//                    cell.filterView.frame = CGRect(
-//                        x: 0,
-//                        y: initialFilterViewPosition,
-//                        width: self.view.frame.width,
-//                        height: cell.filterView.frame.height
-//                    )
-//                }
-//            }
-//            .disposed(by: self.disposeBag)
-//
-//    }
 }

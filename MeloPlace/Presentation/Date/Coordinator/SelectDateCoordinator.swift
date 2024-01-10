@@ -9,7 +9,7 @@ import Foundation
 
 import UIKit
 
-class SelectDateCoordinator: CoordinatorProtocol {
+final class SelectDateCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []
@@ -18,13 +18,9 @@ class SelectDateCoordinator: CoordinatorProtocol {
     
     var navigation: UINavigationController
     
-//    var addViewModel: AddMeloPlaceViewModel
-    
     init(navigation : UINavigationController
-//         addViewModel: AddMeloPlaceViewModel
     ) {
         self.navigation = navigation
-//        self.addViewModel = addViewModel
     }
     
     func start() {
@@ -34,7 +30,6 @@ class SelectDateCoordinator: CoordinatorProtocol {
     private func showBrowseViewFlow() {
         let container = DIContainer.shared.container
         guard let vm = container.resolve(SelectDateViewModel.self) else { return }
-//        vm.delegate = self.addViewModel
         let vc = SelectDateViewController(viewModel: vm)
         
         vm.setActions(
@@ -44,7 +39,6 @@ class SelectDateCoordinator: CoordinatorProtocol {
             )
         )
         
-//        self.navigation.pushViewController(vc, animated: true)
         self.navigation.present(vc, animated: true)
     }
     

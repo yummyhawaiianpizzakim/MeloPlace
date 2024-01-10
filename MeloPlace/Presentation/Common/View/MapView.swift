@@ -10,7 +10,7 @@ import MapKit
 import SnapKit
 import UIKit
 
-class MapView: MKMapView {
+final class MapView: MKMapView {
     lazy var currentLocationButton: MKUserTrackingButton = {
         let button = MKUserTrackingButton(mapView: self)
         button.backgroundColor = .white
