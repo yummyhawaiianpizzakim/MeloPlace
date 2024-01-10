@@ -9,8 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class SelectButtonView: UIView {
-//    private let label = ThemeLabel(size: FrameResource.fontSize100, color: .themeGray400)
+final class SelectButtonView: UIView {
     lazy var label: UILabel = {
         let label = UILabel()
         label.font = .systemFont(ofSize: 20)

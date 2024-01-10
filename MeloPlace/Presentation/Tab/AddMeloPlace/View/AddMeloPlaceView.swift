@@ -12,7 +12,7 @@ import Kingfisher
 import RxSwift
 import RxCocoa
 
-class AddMeloPlaceView: UIView {
+final class AddMeloPlaceView: UIView {
     let disposeBag = DisposeBag()
     
     lazy var topView: UIView = {

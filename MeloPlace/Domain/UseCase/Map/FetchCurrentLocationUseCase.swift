@@ -12,7 +12,7 @@ protocol FetchCurrentLocationUseCaseProtocol {
     func fetchCurrentLocation() -> Observable<(GeoPoint, Address)>
 }
 
-class FetchCurrentLocationUseCase: FetchCurrentLocationUseCaseProtocol {
+final class FetchCurrentLocationUseCase: FetchCurrentLocationUseCaseProtocol {
     
     // MARK: Properties
     private let mapRepository: MapRepositoryProtocol

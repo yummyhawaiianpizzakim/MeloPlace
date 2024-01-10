@@ -9,16 +9,12 @@ import Foundation
 import RxSwift
 import RxRelay
 
-//protocol SelectDateViewModelDelegate {
-//    func dateDidSelect(date: Date)
-//}
-
 struct SelectDateViewModelActions {
     let closeSelectDateView: () -> Void
     let closeSelectDateViewWith: (_ date: Date) -> Void
 }
 
-class SelectDateViewModel {
+final class SelectDateViewModel {
     
     struct Input {
         var selectedDate: Observable<Date>
@@ -33,7 +29,6 @@ class SelectDateViewModel {
     let disposeBag = DisposeBag()
     
     var actions: SelectDateViewModelActions?
-//    var delegate: SelectDateViewModelDelegate?
     
     func setActions(actions: SelectDateViewModelActions) {
         self.actions = actions
@@ -42,18 +37,9 @@ class SelectDateViewModel {
     func transform(input: Input) -> Output {
         let output = Output()
         
-//        input.selectedDate
-//            .withUnretained(self)
-//            .subscribe { owner, date in
-//                owner.delegate?.dateDidSelect(date: date)
-//                print(date)
-//            }
-//            .disposed(by: self.disposeBag)
-        
         input.didTapDoneButton
             .withLatestFrom(input.selectedDate)
             .map({[weak self] date in
-//                self?.delegate?.dateDidSelect(date: date)
                 self?.actions?.closeSelectDateViewWith(date)
                 return true
             })

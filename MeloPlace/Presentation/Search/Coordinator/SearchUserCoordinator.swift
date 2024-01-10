@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class SearchUserCoordinator: CoordinatorProtocol {
+final class SearchUserCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []
@@ -86,15 +86,6 @@ class SearchUserCoordinator: CoordinatorProtocol {
             return
         }
     }
-    
-//    lazy var showPhotoDetail: (_ IndexPath: IndexPath) -> Void = { [weak self] indexPath in
-//        let container = DIContainer.shared.container
-//        guard let vm = container.resolve(PhotoDetailViewModel.self) else { return }
-//        vm.indexpath = indexPath
-//        let vc = PhotoDetailViewController(viewModel: vm)
-////        self?.navigation.present(vc, animated: true)
-//        self?.navigation.pushViewController(vc, animated: true)
-//    }
 }
 
 extension SearchUserCoordinator: CoordinatorFinishDelegate {

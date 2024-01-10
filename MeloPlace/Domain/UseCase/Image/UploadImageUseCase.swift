@@ -12,7 +12,7 @@ protocol UploadImageUseCaseProtocol: AnyObject {
     func upload(data: Data) -> Observable<String>
 }
 
-class UploadImageUseCase: UploadImageUseCaseProtocol {
+final class UploadImageUseCase: UploadImageUseCaseProtocol {
     private let imageRepository: ImageRepositoryProtocol
     
     init(imageRepository: ImageRepositoryProtocol) {

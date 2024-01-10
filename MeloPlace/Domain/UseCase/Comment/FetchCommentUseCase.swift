@@ -12,13 +12,10 @@ protocol FetchCommentUseCaseProtocol: AnyObject {
     func fetchComment(meloPlaceID: String, limit: Int, isInit: Bool) -> Observable<[Comment]>
 }
 
-class FetchCommentUseCase: FetchCommentUseCaseProtocol {
+final class FetchCommentUseCase: FetchCommentUseCaseProtocol {
     var commentRepository: CommentRepositoryProtocol
     var userRepository: UserRepositoryProtocol
     
-//    init(commentRepository: CommentRepositoryProtocol) {
-//        self.commentRepository = commentRepository
-//    }
     init(commentRepository: CommentRepositoryProtocol,
          userRepository: UserRepositoryProtocol) {
         self.commentRepository = commentRepository

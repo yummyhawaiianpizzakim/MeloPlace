@@ -10,8 +10,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class SearchUserTableCell: UITableViewCell {
-    
+final class SearchUserTableCell: UITableViewCell {
     static var id: String {
         return "SearchUserTableCell"
     }
@@ -57,14 +56,12 @@ private extension SearchUserTableCell {
         self.profileImageView.snp.makeConstraints { make in
             make.width.height.equalTo(appOffset * 6)
             make.top.equalToSuperview().offset(appOffset)
-//            make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(appOffset)
             make.bottom.equalToSuperview().offset(-appOffset)
         }
         
         self.label.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-//            make.top.equalTo(self.profileImageView.snp.top)
             make.leading.equalTo(self.profileImageView.snp.trailing).offset(appOffset * 2)
             make.trailing.equalToSuperview().offset(-(appOffset * 2))
         }
@@ -72,12 +69,10 @@ private extension SearchUserTableCell {
     
     
     private func setImage(at profileImageURL: String) {
-//        let url = try? profileImageURL.asURL()
         let url = URL(string: profileImageURL)
         let size = appOffset * 10
         let maxProfileImageSize = CGSize(width: size, height: size)
         let downsamplingProcessor = DownsamplingImageProcessor(size: maxProfileImageSize)
-//        let url = URL(string: profileImageURL!)
         let placeholder = UIImage(systemName: "person")
         self.profileImageView.kf.setImage(with: url, placeholder: placeholder, options: [.processor(downsamplingProcessor)] )
     }

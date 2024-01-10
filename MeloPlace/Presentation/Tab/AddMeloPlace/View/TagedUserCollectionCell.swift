@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
-class TagedUserCollectionCell: UICollectionViewCell {
+final class TagedUserCollectionCell: UICollectionViewCell {
     static var identifier: String {
         return "TagedUserCollectionCell"
     }

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class AddMeloPlaceCoordinator: CoordinatorProtocol {
+final class AddMeloPlaceCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []
@@ -97,6 +97,4 @@ extension AddMeloPlaceCoordinator: CoordinatorFinishDelegate {
             $0.type != childCoordinator.type
         }
     }
-    
-    
 }

@@ -11,7 +11,7 @@ import SnapKit
 import Kingfisher
 import RxSwift
 
-class FollowingUserListCollectionCell: UICollectionViewCell {
+final class FollowingUserListCollectionCell: UICollectionViewCell {
     static var identifier: String {
         return "FollowingUserListCollectionCell"
     }
@@ -22,7 +22,6 @@ class FollowingUserListCollectionCell: UICollectionViewCell {
         let view = UIImageView(frame: .zero)
         view.clipsToBounds = true
         view.contentMode = .scaleAspectFill
-//        let cornerRadius = view.frame.height / 2
         let cornerRadius = appOffset * 6 / 2
         view.layer.cornerRadius = cornerRadius
         view.layer.borderWidth = 1.5
@@ -57,14 +56,12 @@ extension FollowingUserListCollectionCell {
         
         self.profileImageView.snp.makeConstraints { make in
             make.width.height.equalTo(appOffset * 6)
-//            make.top.equalToSuperview().offset(appOffset)
             make.centerY.equalToSuperview()
             make.leading.equalToSuperview().offset(appOffset)
         }
         
         self.label.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
-//            make.leading.equalToSuperview().offset(10)
             make.leading.equalTo(self.profileImageView.snp.trailing).offset(appOffset * 2)
         }
     }
@@ -78,9 +75,7 @@ extension FollowingUserListCollectionCell {
         let url = URL(string: profileImageURL)
         let size = appOffset * 10
         let maxProfileImageSize = CGSize(width: size, height: size)
-//        let downsamplingProcessor = DownsamplingImageProcessor(size: maxProfileImageSize)
         let placeholderImage = UIImage(systemName: "person")?.withTintColor(.black, renderingMode: .alwaysTemplate)
-//            .processor(downsamplingProcessor)
         self.profileImageView.kf.setImage(with: url, placeholder: placeholderImage, options: [] )
     }
     

@@ -11,7 +11,7 @@ import SnapKit
 import RxSwift
 import Kingfisher
 
-class CommentMoreReadCell: UICollectionViewCell {
+final class CommentMoreReadCell: UICollectionViewCell {
     static var id: String {
         return "CommentMoreReadCell"
     }

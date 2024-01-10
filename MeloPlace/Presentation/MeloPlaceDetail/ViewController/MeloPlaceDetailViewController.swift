@@ -14,7 +14,7 @@ import RxCocoa
 import RxGesture
 import Kingfisher
 
-class MeloPlaceDetailViewController: UIViewController {
+final class MeloPlaceDetailViewController: UIViewController {
     var viewModel: MeloPlaceDetailViewModel?
     let disposeBag = DisposeBag()
     
@@ -47,7 +47,6 @@ class MeloPlaceDetailViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.configureUI()
-        self.configureAttributes()
         self.setDataSource()
         self.bindViewModel()
         self.currentIndexPathDidLoad()
@@ -66,7 +65,6 @@ class MeloPlaceDetailViewController: UIViewController {
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.currentIndexTrigger.onNext(())
-        self.didLayoutSubviewsAtributes()
     }
 }
 
@@ -83,17 +81,12 @@ private extension MeloPlaceDetailViewController {
         }
     }
     
-    func configureAttributes() {
-//        self.mainView.imageCollectionView.delegate = self
-    }
-    
     func bindViewModel() {
         
         let input = MeloPlaceDetailViewModel.Input(
             didTapPlayPauseButton: self.mainView.playPauseButton.rx.tap.asObservable(),
             didTapCommentsView: self.mainView.commentsLabel.rx.tapGesture().when(.recognized).withLatestFrom(self.mainView.currentIndex).asObservable(),
             didTapBackButton: self.mainView.backButton.rx.tap.asObservable()
-//            didTapPlayNextButton: self.mainView.playerView.playNextButton.rx.tap.asObservable()
         )
         let output = self.viewModel?.transform(input: input)
         
@@ -122,24 +115,9 @@ private extension MeloPlaceDetailViewController {
                 else { return }
                 
                 self?.mainView.setImage(imageURLString: meloPlace.musicURI)
-//                self?.currentIndexPathDidLoad()
             }
             .disposed(by: self.disposeBag)
     }
-    
-    func didLayoutSubviewsAtributes() {
-//        self.mainView.gradientBackground.frame = self.mainView.backgroundView.bounds
-//        self.mainView.backgroundView.layer.addSublayer(self.mainView.gradientBackground)
-//        self.mainView.backgroundView.layer.insertSublayer(self.mainView.gradientBackground, at: 0)
-//        let blurEffect = UIBlurEffect(style: .light)
-//        let blurEffectView = UIVisualEffectView(effect: blurEffect)
-//        let bounds = self.mainView.imageBackgroundView.bounds
-//        blurEffectView.frame =  bounds
-////        blurEffectView.tag = 129
-//        self.mainView.imageBackgroundView.addSubview(blurEffectView)
-        
-    }
-    
 }
 
 extension MeloPlaceDetailViewController {

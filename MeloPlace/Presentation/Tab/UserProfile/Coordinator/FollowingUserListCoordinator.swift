@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class FollowingUserListCoordinator: CoordinatorProtocol {
+final class FollowingUserListCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []

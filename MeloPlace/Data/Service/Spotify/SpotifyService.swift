@@ -32,7 +32,7 @@ protocol SpotifyServiceProtocol: AnyObject {
     
 }
 
-class SpotifyService: NSObject, SpotifyServiceProtocol {
+final class SpotifyService: NSObject, SpotifyServiceProtocol {
     private let urlNetworkService: URLNetworkSessionServiceProtocol
     
     let accessTokenKey = "access-token-key"

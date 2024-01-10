@@ -12,7 +12,7 @@ import RxSwift
 import RxRelay
 import RxGesture
 
-class SelectTagUserButtonView: UIView {
+final class SelectTagUserButtonView: UIView {
     private let disposeBag = DisposeBag()
     
     typealias DataSource = UICollectionViewDiffableDataSource<Int, String>

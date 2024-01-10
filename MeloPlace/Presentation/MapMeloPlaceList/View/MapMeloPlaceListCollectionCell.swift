@@ -80,7 +80,6 @@ final class MapMeloPlaceListCollectionCell: UICollectionViewCell {
     func makeConstraints() {
         self.imageView.snp.makeConstraints {
             $0.centerY.equalToSuperview()
-//            $0.top.equalToSuperview()
             $0.leading.equalToSuperview()
             $0.width.equalTo(75.0)
             $0.height.equalTo(75.0)
@@ -88,7 +87,6 @@ final class MapMeloPlaceListCollectionCell: UICollectionViewCell {
 
         self.addressLabel.snp.makeConstraints {
             $0.top.equalTo(self.imageView.snp.top)
-//            $0.centerX.equalToSuperview()
             $0.leading.equalTo(self.imageView.snp.trailing).offset(10)
             $0.trailing.equalToSuperview().offset(-10)
             $0.height.equalTo(25.0)

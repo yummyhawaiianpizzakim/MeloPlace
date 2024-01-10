@@ -11,7 +11,7 @@ import SnapKit
 import Kingfisher
 import RxSwift
 
-class UserProfileCollectionCell: UICollectionViewCell {
+final class UserProfileCollectionCell: UICollectionViewCell {
     static var identifier: String {
         return "UserProfileCollectionCell"
     }
@@ -208,10 +208,9 @@ extension UserProfileCollectionCell {
         let url = URL(string: profileImageURL)
         let size = appOffset * 10
         let maxProfileImageSize = CGSize(width: size, height: size)
-//        let downsamplingProcessor = DownsamplingImageProcessor(size: maxProfileImageSize)
+        let downSamplingProccess = DownsamplingImageProcessor(size: maxProfileImageSize)
         let placeholderImage = UIImage(systemName: "person")?.withTintColor(.black, renderingMode: .alwaysTemplate)
-//            .processor(downsamplingProcessor)
-        self.profileImageView.kf.setImage(with: url, placeholder: placeholderImage, options: [] )
+        self.profileImageView.kf.setImage(with: url, placeholder: placeholderImage, options: [.processor(downSamplingProccess)] )
     }
     
 }

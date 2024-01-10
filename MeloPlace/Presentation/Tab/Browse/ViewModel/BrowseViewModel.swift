@@ -15,10 +15,9 @@ struct BrowseViewModelActions {
     let showMeloPlaceDetailView: (_ meloPlaces: [MeloPlace], _ indexPath: IndexPath) -> Void
     let showAnotherUserProfileView: (_ id: String) -> Void
     let showCommentsView: (_ meloPlace: MeloPlace) -> Void
-//    let closeCommentsView: () -> Void
 }
 
-class BrowseViewModel {
+final class BrowseViewModel {
     let disposeBag = DisposeBag()
     private let fetchBrowseUseCase: FetchBrowseUseCaseProtocol
     private let playMusicUseCase: PlayMusicUseCaseProtocol

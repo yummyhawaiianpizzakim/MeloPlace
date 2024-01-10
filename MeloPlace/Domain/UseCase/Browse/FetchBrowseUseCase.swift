@@ -9,11 +9,10 @@ import Foundation
 import RxSwift
 
 protocol FetchBrowseUseCaseProtocol: AnyObject {
-//    func fetch(limit: Int) -> Observable<[Browse]>
     func fetch(limit: Int, isInit: Bool) -> Observable<[Browse]>
 }
 
-class FetchBrowseUseCase: FetchBrowseUseCaseProtocol {
+final class FetchBrowseUseCase: FetchBrowseUseCaseProtocol {
     private let userRepository: UserRepositoryProtocol
     private let meloPlaceRepository: MeloPlaceRepositoryProtocol
     

@@ -12,7 +12,7 @@ protocol ImageRepositoryProtocol: AnyObject {
     func upload(data: Data) -> Observable<String>
 }
 
-class ImageRepository: ImageRepositoryProtocol {
+final class ImageRepository: ImageRepositoryProtocol {
     private let fireBaseService: FireBaseNetworkServiceProtocol
 
     init(fireBaseService: FireBaseNetworkServiceProtocol) {

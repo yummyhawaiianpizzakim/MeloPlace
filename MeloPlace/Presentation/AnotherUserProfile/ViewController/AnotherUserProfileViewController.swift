@@ -13,7 +13,7 @@ import RxRelay
 import RxCocoa
 import RxGesture
 
-class AnotherUserProfileViewController: UIViewController {
+final class AnotherUserProfileViewController: UIViewController {
     var viewModel: AnotherUserProfileViewModel?
     var disposeBag = DisposeBag()
     

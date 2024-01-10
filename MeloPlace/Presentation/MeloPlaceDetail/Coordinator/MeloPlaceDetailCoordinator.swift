@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxRelay
 
-class MeloPlaceDetailCoordinator: CoordinatorProtocol {
+final class MeloPlaceDetailCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []
@@ -23,9 +23,7 @@ class MeloPlaceDetailCoordinator: CoordinatorProtocol {
     
     let meloPlaces = BehaviorRelay<[MeloPlace]>(value: [])
     
-//    let indexPath = PublishRelay<IndexPath>()
     let indexPath = BehaviorRelay<IndexPath>(value: [0, 0])
-//    var indexPath: IndexPath?
     
     init(navigation : UINavigationController) {
         self.navigation = navigation
@@ -47,7 +45,6 @@ class MeloPlaceDetailCoordinator: CoordinatorProtocol {
         self.indexPath
             .bind(to: vm.indexPath)
             .disposed(by: self.disposeBag)
-//        vm.indexPath = self.indexPath
         
         let vc = MeloPlaceDetailViewController(viewModel: vm)
         
@@ -59,10 +56,8 @@ class MeloPlaceDetailCoordinator: CoordinatorProtocol {
                 closeCommentsView: self.closeCommentsView
             )
         )
-//        vc.modalPresentationStyle = .overFullScreen
-//        self.navigation.present(vc, animated: true)
-        self.navigation.pushViewController(vc, animated: true)
         
+        self.navigation.pushViewController(vc, animated: true)
     }
     
     lazy var showCommentsView: (_ meloPlace: MeloPlace) -> Void = { [weak self] meloPlace in

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class SearchCoordinator: CoordinatorProtocol {
+final class SearchCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []
@@ -29,7 +29,6 @@ class SearchCoordinator: CoordinatorProtocol {
     private func showSearchViewFlow() {
         let container = DIContainer.shared.container
         guard let vm = container.resolve(SearchViewModel.self) else { return }
-//        vm.delegate = self.mapViewModel
         let vc = SearchViewController(viewModel: vm)
         
         vc.hidesBottomBarWhenPushed = true
@@ -69,35 +68,6 @@ class SearchCoordinator: CoordinatorProtocol {
             return
         }
     }
-    
-//    lazy var closeSearchView: () -> Void = { [weak self] in
-//        self?.navigation.popViewController(animated: false)
-//        self?.finish()
-//
-//        switch self?.navigation.viewControllers.last {
-//        case is MapViewController:
-//            let viewController = self?.navigation.viewControllers.last as? MapViewController
-//            viewController?.viewModel.
-//        case is AddMeloPlaceViewController:
-//            let viewController = self?.navigation.viewControllers.last as? AddMeloPlaceViewController
-//            viewController?.viewModel
-//
-//        }
-//
-//        let viewController = self?.navigation.viewControllers.last as? MapViewController
-//
-//        viewController?.viewModel.
-//
-//    }
-    
-//    lazy var showPhotoDetail: (_ IndexPath: IndexPath) -> Void = { [weak self] indexPath in
-//        let container = DIContainer.shared.container
-//        guard let vm = container.resolve(PhotoDetailViewModel.self) else { return }
-//        vm.indexpath = indexPath
-//        let vc = PhotoDetailViewController(viewModel: vm)
-////        self?.navigation.present(vc, animated: true)
-//        self?.navigation.pushViewController(vc, animated: true)
-//    }
 }
 
 extension SearchCoordinator: CoordinatorFinishDelegate {
@@ -106,6 +76,4 @@ extension SearchCoordinator: CoordinatorFinishDelegate {
             $0.type != childCoordinator.type
         }
     }
-    
-    
 }

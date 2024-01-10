@@ -15,7 +15,7 @@ struct CommentViewModelActions {
     let showAnotherUserProfileView: (_ id: String) -> Void
 }
 
-class CommentViewModel {
+final class CommentViewModel {
     let disposeBag = DisposeBag()
     
     var actions: CommentViewModelActions?
@@ -116,6 +116,5 @@ private extension CommentViewModel {
 
 extension CommentViewModel {
     func showUserProfileView(id: String) {
-//        self.actions?.showAnotherUserProfileView(id)
     }
 }

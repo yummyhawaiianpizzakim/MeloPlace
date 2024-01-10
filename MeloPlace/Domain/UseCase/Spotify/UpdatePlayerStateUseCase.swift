@@ -12,7 +12,7 @@ protocol UpdatePlayerStateUseCaseProtocol: AnyObject {
     func update()
 }
 
-class UpdatePlayerStateUseCase: UpdatePlayerStateUseCaseProtocol {
+final class UpdatePlayerStateUseCase: UpdatePlayerStateUseCaseProtocol {
     private let spotifyRepository: SpotifyRepositoryProtocol
     
     init(spotifyRepository: SpotifyRepositoryProtocol) {

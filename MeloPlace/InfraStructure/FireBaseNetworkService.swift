@@ -110,7 +110,7 @@ protocol FireBaseNetworkServiceProtocol {
     func downloadDataStorage(fileName: String) -> Single<Data>
 }
 
-class FireBaseNetworkService: FireBaseNetworkServiceProtocol {
+final class FireBaseNetworkService: FireBaseNetworkServiceProtocol {
     static let shared = FireBaseNetworkService()
     var db: Firestore
     var auth: Auth

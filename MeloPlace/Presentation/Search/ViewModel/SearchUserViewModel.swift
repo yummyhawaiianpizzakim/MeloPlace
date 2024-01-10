@@ -10,16 +10,12 @@ import RxSwift
 import RxCocoa
 import RxRelay
 
-//protocol SearchViewModelDelegate {
-//    func searchSpaceDidSelect(space: Space)
-//}
-
 struct SearchUserViewModelActions {
     let showUserProfileView: (_ userID: String) -> Void
     let closeSearchView: (_ user: User) -> Void
 }
 
-class SearchUserViewModel {
+final class SearchUserViewModel {
     let disposeBag = DisposeBag()
     private let fetchUserUseCase: FetchUserUseCaseProtocol
     
@@ -69,7 +65,6 @@ class SearchUserViewModel {
                 } else {
                     owner.actions?.closeSearchView(user)
                 }
-//                owner.actions?.showUserProfileView(user.id)
             })
             .disposed(by: self.disposeBag)
         

@@ -12,7 +12,7 @@ import RxSwift
 import RxRelay
 import Kingfisher
 
-class CommentCollectionCell: UICollectionViewCell {
+final class CommentCollectionCell: UICollectionViewCell {
     static var id: String {
         return "CommentCollectionCell"
     }

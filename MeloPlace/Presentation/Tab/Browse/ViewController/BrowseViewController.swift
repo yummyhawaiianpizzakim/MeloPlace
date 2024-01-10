@@ -13,7 +13,7 @@ import RxRelay
 import RxCocoa
 import RxGesture
 
-class BrowseViewController: UIViewController {
+final class BrowseViewController: UIViewController {
     let disposeBag = DisposeBag()
     var viewModel: BrowseViewModel?
     

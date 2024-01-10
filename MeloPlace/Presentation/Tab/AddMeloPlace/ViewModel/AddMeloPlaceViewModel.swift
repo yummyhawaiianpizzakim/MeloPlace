@@ -19,9 +19,8 @@ struct AddMeloPlaceViewModelActions {
     let closeAddMeloPlaceView: () -> Void
 }
 
-class AddMeloPlaceViewModel {
+final class AddMeloPlaceViewModel {
     let disposeBag = DisposeBag()
-//    let fireBaseService = FireBaseNetworkService.shared
     private let fetchUserUseCase: FetchUserUseCaseProtocol
     private let createMeloPlaceUseCase: CreateMeloPlaceUseCaseProtocol
     private let uploadImageUseCase: UploadImageUseCaseProtocol
@@ -91,7 +90,6 @@ class AddMeloPlaceViewModel {
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
                 print("music tap!")
-//                owner.actions?.showMusicListView( self )
                 owner.actions?.showMusicListView()
             })
             .disposed(by: self.disposeBag)
@@ -99,8 +97,6 @@ class AddMeloPlaceViewModel {
         input.didTapPlaceButton
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-//                owner.actions?.showMeloLocationView( self )
-//                owner.actions?.showMeloLocationView()
                 owner.actions?.showSearchView()
             })
             .disposed(by: self.disposeBag)
@@ -108,7 +104,6 @@ class AddMeloPlaceViewModel {
         input.didTapDateButton
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-//                owner.actions?.showSelectDateView( self )
                 owner.actions?.showSelectDateView()
             })
             .disposed(by: self.disposeBag)

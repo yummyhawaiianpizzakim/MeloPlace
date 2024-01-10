@@ -13,7 +13,7 @@ import RxRelay
 import RxCocoa
 import RxGesture
 
-class FollowingUserListViewController: UIViewController {
+final class FollowingUserListViewController: UIViewController {
     var viewModel: FollowingUserListViewModel?
     var disposeBag = DisposeBag()
     
@@ -23,7 +23,6 @@ class FollowingUserListViewController: UIViewController {
     var dataSource: DataSource?
     var searchText = ""
     let tabstate = BehaviorRelay<Int>(value: 0)
-//    private lazy var placeholderView = profilePlaceholderView()
     
     private lazy var filterView = FilterCollectionView(filterMode: .follingUserList)
     
@@ -78,11 +77,9 @@ private extension FollowingUserListViewController {
     func constraintView() {
         self.filterView.snp.makeConstraints { make in
             make.top.equalTo(self.view.safeAreaLayoutGuide)
-//                .offset(self.view.appOffset)
             make.horizontalEdges.equalToSuperview()
             make.height.equalTo(self.view.appOffset * 6)
         }
-//        self.colView.backgroundColor = .blue
         self.colView.snp.makeConstraints { make in
             make.top.equalTo(self.filterView.snp.bottom).offset(self.view.appOffset)
             make.horizontalEdges.bottom.equalTo(self.view.safeAreaLayoutGuide)
@@ -157,8 +154,6 @@ private extension FollowingUserListViewController {
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(self.view.appOffset * 6))
         let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         group.interItemSpacing = NSCollectionLayoutSpacing.fixed(10)
-//        group.contentInsets = .init(top: self.view.appOffset, leading: 0, bottom: 0, trailing: 0)
-        
         let section = NSCollectionLayoutSection(group: group)
         
         let layout = UICollectionViewCompositionalLayout(section: section)

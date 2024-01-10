@@ -13,7 +13,7 @@ protocol FetchMeloPlaceUseCaseProtocol: AnyObject {
     func fetchTagedMeloPLace(id: String?) -> Observable<[MeloPlace]>
 }
 
-class FetchMeloPlaceUseCase: FetchMeloPlaceUseCaseProtocol {
+final class FetchMeloPlaceUseCase: FetchMeloPlaceUseCaseProtocol {
     var meloPlaceRepository: MeloPlaceRepositoryProtocol
     
     init(meloPlaceRepository: MeloPlaceRepositoryProtocol) {

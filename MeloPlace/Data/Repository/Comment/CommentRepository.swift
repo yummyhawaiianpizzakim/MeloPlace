@@ -13,7 +13,7 @@ protocol CommentRepositoryProtocol {
     func fetchComment(limit: Int, meloPlaceID: String, isInit: Bool) -> Observable<[Comment]> 
 }
 
-class CommentRepository: CommentRepositoryProtocol {
+final class CommentRepository: CommentRepositoryProtocol {
     private let fireBaseService: FireBaseNetworkServiceProtocol
     
     init(fireBaseService: FireBaseNetworkServiceProtocol) {

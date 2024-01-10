@@ -13,7 +13,7 @@ import RxRelay
 import RxCocoa
 
 
-class SelectDateViewController: UIViewController {
+final class SelectDateViewController: UIViewController {
     var viewModel: SelectDateViewModel?
     let disposeBag = DisposeBag()
     
@@ -95,7 +95,6 @@ private extension SelectDateViewController {
         
         self.cancelButton.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(10)
-//            make.bottom.equalToSuperview().offset(-10)
             make.centerY.equalToSuperview()
             make.height.equalTo(15)
         }
@@ -141,8 +140,5 @@ private extension SelectDateViewController {
             didTapDoneButton: self.doneButton.rx.tap.asObservable()
         )
         let output = self.viewModel?.transform(input: input)
-        
-        
-        
     }
 }

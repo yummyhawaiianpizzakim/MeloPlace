@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxRelay
 
-class CommentCoordinator: CoordinatorProtocol {
+final class CommentCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []

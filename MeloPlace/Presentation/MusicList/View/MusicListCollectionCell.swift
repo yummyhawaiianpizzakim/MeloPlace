@@ -10,7 +10,7 @@ import UIKit
 import SnapKit
 import Kingfisher
 
-class MusicListCollectionCell: UICollectionViewCell {
+final class MusicListCollectionCell: UICollectionViewCell {
     static var identifier: String {
         return "MusicListCollectionCell"
     }

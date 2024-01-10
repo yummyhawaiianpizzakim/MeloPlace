@@ -15,7 +15,7 @@ import RxGesture
 import RxKeyboard
 import Kingfisher
 
-class CommentViewController: UIViewController {
+final class CommentViewController: UIViewController {
     var viewModel: CommentViewModel?
     let disposeBag = DisposeBag()
     
@@ -38,7 +38,6 @@ class CommentViewController: UIViewController {
     lazy var commentTableView: UICollectionView = {
         let view = UICollectionView(frame: .zero, collectionViewLayout: self.configureLayout())
         view.register(CommentCollectionCell.self, forCellWithReuseIdentifier: CommentCollectionCell.id)
-//        view.allowsSelection = false
         return view
     }()
     

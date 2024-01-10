@@ -12,7 +12,7 @@ protocol UpdateUserUseCaseProtocol: AnyObject {
     func updateFollowingUser(isFollowing: Bool, id: String) -> Observable<Bool>
 }
 
-class UpdateUserUseCase: UpdateUserUseCaseProtocol {
+final class UpdateUserUseCase: UpdateUserUseCaseProtocol {
     private let userRepository: UserRepositoryProtocol
     
     init(userRepository: UserRepositoryProtocol) {

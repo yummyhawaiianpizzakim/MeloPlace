@@ -112,7 +112,7 @@ final class MeloLocationViewModel {
         
         let geoPoint = self.fetchCurrentLocationUseCase.fetchCurrentLocation()
             .map { val in
-                let (geoPoint, address) = val
+                let (geoPoint, _) = val
                 return geoPoint
             }
         

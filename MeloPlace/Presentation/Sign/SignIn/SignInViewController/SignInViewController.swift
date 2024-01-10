@@ -13,7 +13,7 @@ import RxRelay
 import RxCocoa
 
 
-class SignInViewController: UIViewController {
+final class SignInViewController: UIViewController {
     var viewModel: SignInViewModel?
     let disposeBag = DisposeBag()
     
@@ -113,7 +113,6 @@ private extension SignInViewController {
     
     private func createIndicator() -> UIActivityIndicatorView {
         let indicator = UIActivityIndicatorView(style: .large)
-        
         indicator.backgroundColor = .themeGray100?.withAlphaComponent(0.7)
         indicator.color = .black
         indicator.layer.cornerRadius = 20

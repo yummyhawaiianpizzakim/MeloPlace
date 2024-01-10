@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class AppCoordinator: CoordinatorProtocol {
+final class AppCoordinator: CoordinatorProtocol {
     
     
 
@@ -27,17 +27,7 @@ class AppCoordinator: CoordinatorProtocol {
     }
 
     func start() {
-//        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-//          if error != nil || user == nil {
-//            // Show the app's signed-out state.
-//              self.showSignInFlow()
-//          } else {
-//            // Show the app's signed-in state.
-//              self.showTabBarFlow()
-//          }
-//        }
         self.showSignInFlow()
-//        self.showTabBarFlow()
     }
 
 }

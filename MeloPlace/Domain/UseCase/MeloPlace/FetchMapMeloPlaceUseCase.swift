@@ -12,7 +12,7 @@ protocol FetchMapMeloPlaceUseCaseProtocol: AnyObject {
     func fetch(region: Region, tapState: Int) -> Observable<[MeloPlace]> 
 }
 
-class FetchMapMeloPlaceUseCase: FetchMapMeloPlaceUseCaseProtocol {
+final class FetchMapMeloPlaceUseCase: FetchMapMeloPlaceUseCaseProtocol {
     var userRepository: UserRepositoryProtocol
     var meloPlaceRepository: MeloPlaceRepositoryProtocol
     var mapRepository: MapRepositoryProtocol

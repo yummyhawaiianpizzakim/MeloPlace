@@ -68,11 +68,9 @@ extension MeloPlaceDetailCollectionCell {
     private func setImage(imageURLString: String) {
         guard let url = URL(string: imageURLString) else { return }
         let maxProfileImageSize = CGSize(width: 100, height: 100)
-        let downsamplingProcessor = DownsamplingImageProcessor(size: maxProfileImageSize)
         self.imageView.kf.setImage(
             with: url,
             placeholder: .none
-//            options: [.processor(downsamplingProcessor)]
         )
     }
     

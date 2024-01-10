@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-class FilterCollectionCell: UICollectionViewCell {
+final class FilterCollectionCell: UICollectionViewCell {
     static var identifier: String {
         return "FilterCollectionCell"
     }
@@ -62,7 +62,6 @@ extension FilterCollectionCell {
     func sizeFittingWith(cellWidth: CGFloat, cellHeight: CGFloat, text: String) -> CGSize {
         self.titleLabel.text = text
         
-        //            let targetSize = CGSize(width: UIView.layoutFittingCompressedSize.width, height: cellHeight)
         let targetSize = CGSize(width: cellWidth, height: cellHeight)
         
         return self.contentView.systemLayoutSizeFitting(

@@ -14,7 +14,7 @@ protocol FetchUserUseCaseProtocol: AnyObject {
     func fetchFollowersAndFollowingsUser(followers: [String], followings: [String]) -> Observable<([User], [User])>
 }
 
-class FetchUserUseCase: FetchUserUseCaseProtocol {
+final class FetchUserUseCase: FetchUserUseCaseProtocol {
     
     var userRepository: UserRepositoryProtocol
     let disposeBag = DisposeBag()

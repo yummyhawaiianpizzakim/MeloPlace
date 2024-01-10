@@ -12,7 +12,7 @@ protocol PostCommentUseCaseProtocol: AnyObject {
     func post(meloPlaceID: String, contents: String, createdDate: Date) -> Observable<Comment>
 }
 
-class PostCommentUseCase: PostCommentUseCaseProtocol {
+final class PostCommentUseCase: PostCommentUseCaseProtocol {
     var commentRepository: CommentRepositoryProtocol
     var userRepository: UserRepositoryProtocol
     

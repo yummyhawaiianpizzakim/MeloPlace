@@ -11,7 +11,6 @@ import RxSwift
 import RxRelay
 
 struct UserProfileViewModelActions {
-//    var showSignIn: () -> Void
     var showMeloPlaceDetailView: (_ meloPlaces: [MeloPlace], _ indexPath: IndexPath) -> Void
     var showSearchUserView: () -> Void
     var showFollowingUserView: (_ id: String, _ tabState: Int) -> Void
@@ -19,7 +18,7 @@ struct UserProfileViewModelActions {
 
 typealias UserDataSource = [UserProfileSection: [UserProfileSection.Item]]
 
-class UserProfileViewModel {
+final class UserProfileViewModel {
     private let disposeBag = DisposeBag()
     private let fetchUserUseCase: FetchUserUseCaseProtocol
     private let fetchMeloPlaceUseCase: FetchMeloPlaceUseCaseProtocol

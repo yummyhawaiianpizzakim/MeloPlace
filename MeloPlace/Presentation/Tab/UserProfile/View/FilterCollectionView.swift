@@ -115,7 +115,7 @@ enum FilterMode: Hashable {
     }
 }
 
-class FilterCollectionView: UICollectionView {
+final class FilterCollectionView: UICollectionView {
 
     var filterMode: FilterMode
     var filterDataSource: UICollectionViewDiffableDataSource<Int, FilterMode.Item>?

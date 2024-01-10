@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class MeloLocationCoordinator: CoordinatorProtocol {
+final class MeloLocationCoordinator: CoordinatorProtocol {
     var finishDelegate: CoordinatorFinishDelegate?
     
     var childCoordinators: [CoordinatorProtocol] = []
@@ -19,13 +19,9 @@ class MeloLocationCoordinator: CoordinatorProtocol {
     
     var viewController: MeloLocationViewController?
     
-//    var addViewModel: AddMeloPlaceViewModel?
-    
     init(navigation : UINavigationController
-//         addViewModel: AddMeloPlaceViewModel
     ) {
         self.navigation = navigation
-//        self.addViewModel = addViewModel
     }
     
     init() {
@@ -40,7 +36,6 @@ class MeloLocationCoordinator: CoordinatorProtocol {
         let container = DIContainer.shared.container
         guard let vm = container.resolve(MeloLocationViewModel.self) else { return }
         
-//        vm.delegate = self.addViewModel
         let vc = MeloLocationViewController(viewModel: vm)
         
         vm.setActions(
@@ -51,7 +46,6 @@ class MeloLocationCoordinator: CoordinatorProtocol {
         
         self.viewController = vc
         self.navigation.present(vc, animated: true)
-//        self.navigation.pushViewController(vc, animated: true)
     }
     
     lazy var closeMeloLocationView: (_ space: Space?) -> Void = { [weak self] space in
@@ -62,17 +56,7 @@ class MeloLocationCoordinator: CoordinatorProtocol {
             let vc = self.navigation.viewControllers.last as? SearchViewController
             vc?.viewModel?.currentSpace.accept(space)
         }
-//        self?.viewController?.dismiss(animated: true)
     }
-    
-//    lazy var showPhotoDetail: (_ IndexPath: IndexPath) -> Void = { [weak self] indexPath in
-//        let container = DIContainer.shared.container
-//        guard let vm = container.resolve(PhotoDetailViewModel.self) else { return }
-//        vm.indexpath = indexPath
-//        let vc = PhotoDetailViewController(viewModel: vm)
-////        self?.navigation.present(vc, animated: true)
-//        self?.navigation.pushViewController(vc, animated: true)
-//    }
 }
 
 extension MeloLocationCoordinator: CoordinatorFinishDelegate {

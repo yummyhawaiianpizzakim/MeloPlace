@@ -14,7 +14,7 @@ import RxCocoa
 import SpotifyiOS
 
 
-class MainViewController: UIViewController {
+final class MainViewController: UIViewController {
     var viewModel: MainViewModel?
     let disposeBag = DisposeBag()
     
@@ -123,7 +123,6 @@ private extension MainViewController {
         self.playerView.snp.makeConstraints { make in
             make.horizontalEdges.equalToSuperview()
             make.top.equalTo(self.mainCollectionView.snp.bottom).offset(10)
-//            make.bottom.equalTo(self.view.safeAreaLayoutGuide).offset(-20)
             make.height.equalTo(150)
         }
     }
@@ -336,8 +335,7 @@ private extension MainViewController {
     }
     
     func setDataSource() {
-        self.dataSource = UICollectionViewDiffableDataSource<Section, MeloPlace>(collectionView: self.mainCollectionView, cellProvider: { [weak self] collectionView, indexPath, itemIdentifier in
-            guard let self = self else { return UICollectionViewCell() }
+        self.dataSource = UICollectionViewDiffableDataSource<Section, MeloPlace>(collectionView: self.mainCollectionView, cellProvider: { collectionView, indexPath, itemIdentifier in
             
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: MainCell.id, for: indexPath) as? MainCell else { return UICollectionViewCell() }
             cell.configureCell(item: itemIdentifier)

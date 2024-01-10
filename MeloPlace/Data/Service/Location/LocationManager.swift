@@ -25,10 +25,8 @@ protocol LocationManagerProtocol: AnyObject {
 }
 
 final class LocationManager: NSObject, LocationManagerProtocol {
-//    static let shared = LocationManager()
     let disposeBag = DisposeBag()
     
-//    static let openableRange = 100.0
     private var searchCompleter = MKLocalSearchCompleter()
     
     var results = BehaviorRelay<[Space]>(value: [])

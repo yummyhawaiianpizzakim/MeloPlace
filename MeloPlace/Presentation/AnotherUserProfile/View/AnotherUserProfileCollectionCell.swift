@@ -11,7 +11,7 @@ import SnapKit
 import Kingfisher
 import RxSwift
 
-class AnotherUserProfileCollectionCell: UICollectionViewCell {
+final class AnotherUserProfileCollectionCell: UICollectionViewCell {
     static var identifier: String {
         return "AnotherUserProfileCollectionCell"
     }
@@ -91,8 +91,6 @@ class AnotherUserProfileCollectionCell: UICollectionViewCell {
         label.textAlignment = .center
         return label
     }()
-    
-//    lazy var editProfileButton = ThemeButton(title: "프로필 수정")
     
     lazy var followingButton = ThemeButton(title: "팔로잉")
     
@@ -215,9 +213,7 @@ extension AnotherUserProfileCollectionCell {
         let size = appOffset * 10
         let maxProfileImageSize = CGSize(width: size, height: size)
         let downsamplingProcessor = DownsamplingImageProcessor(size: maxProfileImageSize)
-//        let url = URL(string: profileImageURL!)
-//            .processor(downsamplingProcessor)
-        self.profileImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "person"), options: [] )
+        self.profileImageView.kf.setImage(with: url, placeholder: UIImage(systemName: "person"), options: [.processor(downsamplingProcessor)] )
     }
     
     func configureFollowButton(_ isFollowed: Bool) {

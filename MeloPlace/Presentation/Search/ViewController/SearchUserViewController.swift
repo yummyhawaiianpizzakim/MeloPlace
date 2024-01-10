@@ -14,7 +14,7 @@ import RxRelay
 import RxCocoa
 
 
-class SearchUserViewController: UIViewController {
+final class SearchUserViewController: UIViewController {
     var viewModel: SearchUserViewModel?
     let disposeBag = DisposeBag()
     
@@ -71,7 +71,6 @@ private extension SearchUserViewController {
         }
         
         self.searchTableView.snp.makeConstraints { make in
-//            make.edges.equalToSuperview()
             make.top.equalTo(self.view.safeAreaLayoutGuide).offset(10)
             make.horizontalEdges.equalToSuperview()
             make.bottom.equalTo(self.view.safeAreaLayoutGuide)
