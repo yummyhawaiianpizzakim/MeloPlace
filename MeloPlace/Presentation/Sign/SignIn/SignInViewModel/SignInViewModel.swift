@@ -45,9 +45,9 @@ final class SignInViewModel {
             .flatMapLatest { owner, _ in
                 owner.tryConnectSpotifyUseCase.tryConnect()
             }
-            .do(onNext: { profile in
+            .do(onNext: {[weak self] profile in
                 print("spotify::: \(profile)")
-                self.userProfile.accept(profile)
+                self?.userProfile.accept(profile)
             })
             .flatMapLatest { [weak self] profile -> Observable<Bool> in
                 self?.isIndicatorActived.accept(true)
