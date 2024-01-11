@@ -21,9 +21,10 @@ final class SignInUseCase: SignInUseCaseProtocol {
     
     func signIn(with profile: SpotifyUserProfile) -> Observable<Bool> {
         self.signRepository.fetchUserInfor(withSpotifyID: profile.id)
-            .flatMap { user in
+            .withUnretained(self)
+            .flatMap { owner, user in
                 guard let user else { return Observable.just(false) }
-                return self.signRepository.signIn(email: user.email, password: user.password).asObservable()
+                return owner.signRepository.signIn(email: user.email, password: user.password).asObservable()
             }
     }
 }
