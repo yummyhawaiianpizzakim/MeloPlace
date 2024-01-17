@@ -1,6 +1,6 @@
 # MeloPlace
 
-  ![MeloPlaceThumNail](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/93c9c2f8-1d45-4cee-8ebe-1a25762c4f6c)  
+![MeloPlaceThumnail2](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/d8665d28-e818-41bb-8d32-eda6220078da)  
 
 # 🎧 프로젝트 소개  
 
