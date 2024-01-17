@@ -103,6 +103,7 @@
 - 의존성 주입이 복잡해질 경우 DI Container를 추가적으로 구현하여 의존성에 관한 내용을 분리하였습니다.  
 
 ## ➡️ FireBase  
+![MeloPlaceData drawio (1)](https://github.com/yummyhawaiianpizzakim/MeloPlace/assets/116874091/6fd0a075-51dc-4131-9565-7fbd0aa6d5dd)  
 
 ### 도입 이유  
 - 사용자 인증, 정보 저장 등의 기능 구현을 위해 별도의 서버 구현없이 빠르게 개발 가능한 FireBase를 사용하였습니다.  
